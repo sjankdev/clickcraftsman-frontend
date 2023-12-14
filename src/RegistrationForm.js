@@ -24,16 +24,23 @@ const RegistrationForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await axios.post('http://localhost:8080/api/auth/signup', formData);
-      console.log(response.data); // Assuming the server sends a response message
-    } catch (error) {
-      console.error('Error during registration:', error);
-    }
-  };
+  try {
+    const response = await axios.post('http://localhost:8080/api/auth/signup', {
+      ...formData,
+      role: userType === 'worker' ? ['worker'] : ['client'],
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error during registration:', error);
+  }
+};
 
   return (
     <div>

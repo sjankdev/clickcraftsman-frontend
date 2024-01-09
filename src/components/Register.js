@@ -20,6 +20,7 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
+    role: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -49,11 +50,13 @@ const Register = () => {
   });
 
   const handleRegister = (formValue) => {
-    const { username, email, password } = formValue;
-
+    const { username, email, password, role } = formValue;
+  
     setSuccessful(false);
-
-    dispatch(register({ username, email, password }))
+  
+    const rolesArray = Array.isArray(role) ? role : [role];
+  
+    dispatch(register({ username, email, password, role: rolesArray }))
       .unwrap()
       .then(() => {
         setSuccessful(true);
@@ -61,6 +64,10 @@ const Register = () => {
       .catch(() => {
         setSuccessful(false);
       });
+  };
+  
+  const handleRoleChange = (event, setFieldValue) => {
+    setFieldValue("role", event.target.value);
   };
 
   return (
@@ -76,49 +83,75 @@ const Register = () => {
           validationSchema={validationSchema}
           onSubmit={handleRegister}
         >
-          <Form>
-            {!successful && (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <Field name="username" type="text" className="form-control" />
-                  <ErrorMessage
-                    name="username"
-                    component="div"
-                    className="alert alert-danger"
-                  />
-                </div>
+          {({ setFieldValue }) => (
+            <Form>
+              {!successful && (
+                <div>
+                  <div className="form-group">
+                    <label htmlFor="username">Username</label>
+                    <Field name="username" type="text" className="form-control" />
+                    <ErrorMessage
+                      name="username"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <Field name="email" type="email" className="form-control" />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="alert alert-danger"
-                  />
-                </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <Field name="email" type="email" className="form-control" />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <Field
-                    name="password"
-                    type="password"
-                    className="form-control"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="alert alert-danger"
-                  />
-                </div>
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <Field
+                      name="password"
+                      type="password"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                  <div className="form-group">
+                    <label htmlFor="role">Select Role:</label>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={(e) => handleRoleChange(e, setFieldValue)}
+                        value="client"
+                        className="btn btn-secondary"
+                      >
+                        Client
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => handleRoleChange(e, setFieldValue)}
+                        value="worker"
+                        className="btn btn-secondary ml-2"
+                      >
+                        Worker
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <button type="submit" className="btn btn-primary btn-block">
+                      Sign Up
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </Form>
+              )}
+            </Form>
+          )}
         </Formik>
       </div>
 

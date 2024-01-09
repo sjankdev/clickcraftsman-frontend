@@ -8,6 +8,7 @@ import { clearMessage } from "../slices/message";
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
@@ -50,13 +51,23 @@ const Register = () => {
   });
 
   const handleRegister = (formValue) => {
-    const { username, email, password, role } = formValue;
+    const { username, email, password, role, firstName, lastName, contactPhone, location, skills, portfolio, yearsOfExperience } = formValue;
   
     setSuccessful(false);
   
     const rolesArray = Array.isArray(role) ? role : [role];
   
-    dispatch(register({ username, email, password, role: rolesArray }))
+    const additionalFields = {
+      firstName,
+      lastName,
+      contactPhone,
+      location,
+      skills,
+      portfolio,
+      yearsOfExperience,
+    };
+  
+    dispatch(register({ username, email, password, role: rolesArray, ...additionalFields }))
       .unwrap()
       .then(() => {
         setSuccessful(true);
@@ -67,7 +78,9 @@ const Register = () => {
   };
   
   const handleRoleChange = (event, setFieldValue) => {
-    setFieldValue("role", event.target.value);
+    const role = event.target.value;
+    setSelectedRole(role);
+    setFieldValue("role", role);
   };
 
   return (
@@ -96,7 +109,6 @@ const Register = () => {
                       className="alert alert-danger"
                     />
                   </div>
-
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <Field name="email" type="email" className="form-control" />
@@ -106,7 +118,6 @@ const Register = () => {
                       className="alert alert-danger"
                     />
                   </div>
-
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
                     <Field
@@ -142,9 +153,121 @@ const Register = () => {
                       </button>
                     </div>
                   </div>
-
+  
+                  {selectedRole === "client" && (
+                    <div>
+                      <div className="form-group">
+                        <label htmlFor="firstName">First Name</label>
+                        <Field
+                          name="firstName"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="lastName">Last Name</label>
+                        <Field
+                          name="lastName"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="contactPhone">Contact Phone</label>
+                        <Field
+                          name="contactPhone"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="location">Location</label>
+                        <Field
+                          name="location"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                  )}
+  
+                  {selectedRole === "worker" && (
+                    <div>
+                      <div className="form-group">
+                        <label htmlFor="firstName">First Name</label>
+                        <Field
+                          name="firstName"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="lastName">Last Name</label>
+                        <Field
+                          name="lastName"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="contactPhone">Contact Phone</label>
+                        <Field
+                          name="contactPhone"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="location">Location</label>
+                        <Field
+                          name="location"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="skills">Skills</label>
+                        <Field
+                          name="skills"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="portfolio">Portfolio</label>
+                        <Field
+                          name="portfolio"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+  
+                      <div className="form-group">
+                        <label htmlFor="yearsOfExperience">
+                          Years of Experience
+                        </label>
+                        <Field
+                          name="yearsOfExperience"
+                          type="number"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                  )}
+  
                   <div className="form-group">
-                    <button type="submit" className="btn btn-primary btn-block">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-block"
+                    >
                       Sign Up
                     </button>
                   </div>
@@ -154,7 +277,7 @@ const Register = () => {
           )}
         </Formik>
       </div>
-
+  
       {message && (
         <div className="form-group">
           <div
@@ -166,7 +289,7 @@ const Register = () => {
         </div>
       )}
     </div>
-  );
+  );  
 };
 
 export default Register;

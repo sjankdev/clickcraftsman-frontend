@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
 
 import { register } from "../slices/auth";
 import { clearMessage } from "../slices/message";
+import validationSchema from "../services/validationSchemas";
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
@@ -31,26 +31,7 @@ const Register = () => {
     yearsOfExperience: 0,
   };
 
-  const validationSchema = Yup.object().shape({
-    username: Yup.string()
-      .test(
-        "len",
-        "The username must be between 3 and 20 characters.",
-        (val) => val && val.toString().length >= 3 && val.toString().length <= 20
-      )
-      .required("This field is required!"),
-    email: Yup.string().email("This is not a valid email.").required("This field is required!"),
-    password: Yup.string()
-      .test(
-        "len",
-        "The password must be between 6 and 40 characters.",
-        (val) => val && val.toString().length >= 6 && val.toString().length <= 40
-      )
-      .required("This field is required!"),
-  });
-  
-
-  const handleRegister = (formValue) => {
+  const handleRegister = (formValue, { resetForm }) => {
     const {
       username,
       email,
@@ -78,10 +59,19 @@ const Register = () => {
       yearsOfExperience,
     };
 
-    dispatch(register({ username, email, password, role: rolesArray, ...additionalFields }))
+    dispatch(
+      register({
+        username,
+        email,
+        password,
+        role: rolesArray,
+        ...additionalFields,
+      })
+    )
       .unwrap()
       .then(() => {
         setSuccessful(true);
+        resetForm();
       })
       .catch(() => {
         setSuccessful(false);
@@ -99,8 +89,8 @@ const Register = () => {
       <div className="card card-container">
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchema}
           onSubmit={handleRegister}
+          validationSchema={validationSchema}
         >
           {({ setFieldValue }) => (
             <Form>
@@ -126,89 +116,22 @@ const Register = () => {
                 </div>
               </div>
 
-              {selectedRole === "client" && (
-                <>
-                  <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <Field name="username" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="username"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <Field name="email" type="email" className="form-control" />
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <Field
-                      name="password"
-                      type="password"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="firstName">First Name</label>
-                    <Field
-                      name="firstName"
-                      type="text"
-                      className="form-control"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="lastName">Last Name</label>
-                    <Field
-                      name="lastName"
-                      type="text"
-                      className="form-control"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="contactPhone">Contact Phone</label>
-                    <Field
-                      name="contactPhone"
-                      type="text"
-                      className="form-control"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="location">Location</label>
-                    <Field
-                      name="location"
-                      type="text"
-                      className="form-control"
-                    />
-                  </div>
-                </>
-              )}
-
               {selectedRole === "worker" && (
                 <>
                   <div className="form-group">
                     <label htmlFor="username">Username</label>
-                    <Field name="username" type="text" className="form-control" />
+                    <Field
+                      name="username"
+                      type="text"
+                      className="form-control"
+                    />
                     <ErrorMessage
                       name="username"
                       component="div"
                       className="alert alert-danger"
                     />
                   </div>
+
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <Field name="email" type="email" className="form-control" />
@@ -218,6 +141,7 @@ const Register = () => {
                       className="alert alert-danger"
                     />
                   </div>
+
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
                     <Field
@@ -239,6 +163,11 @@ const Register = () => {
                       type="text"
                       className="form-control"
                     />
+                    <ErrorMessage
+                      name="firstName"
+                      component="div"
+                      className="alert alert-danger"
+                    />
                   </div>
 
                   <div className="form-group">
@@ -247,6 +176,11 @@ const Register = () => {
                       name="lastName"
                       type="text"
                       className="form-control"
+                    />
+                    <ErrorMessage
+                      name="lastName"
+                      component="div"
+                      className="alert alert-danger"
                     />
                   </div>
 
@@ -257,6 +191,11 @@ const Register = () => {
                       type="text"
                       className="form-control"
                     />
+                    <ErrorMessage
+                      name="contactPhone"
+                      component="div"
+                      className="alert alert-danger"
+                    />
                   </div>
 
                   <div className="form-group">
@@ -265,16 +204,17 @@ const Register = () => {
                       name="location"
                       type="text"
                       className="form-control"
+                    />
+                    <ErrorMessage
+                      name="location"
+                      component="div"
+                      className="alert alert-danger"
                     />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="skills">Skills</label>
-                    <Field
-                      name="skills"
-                      type="text"
-                      className="form-control"
-                    />
+                    <Field name="skills" type="text" className="form-control" />
                   </div>
 
                   <div className="form-group">
@@ -299,14 +239,111 @@ const Register = () => {
                 </>
               )}
 
-              <div className="form-group">
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-block"
-                >
-                  Sign Up
-                </button>
-              </div>
+              {selectedRole === "client" && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="username">Username</label>
+                    <Field
+                      name="username"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="username"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <Field name="email" type="email" className="form-control" />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <Field
+                      name="password"
+                      type="password"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="firstName">First Name</label>
+                    <Field
+                      name="firstName"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="firstName"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="lastName">Last Name</label>
+                    <Field
+                      name="lastName"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="lastName"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="contactPhone">Contact Phone</label>
+                    <Field
+                      name="contactPhone"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="contactPhone"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="location">Location</label>
+                    <Field
+                      name="location"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="location"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                </>
+              )}
+
+              {selectedRole && (
+                <div className="form-group">
+                  <button type="submit" className="btn btn-primary btn-block">
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </Form>
           )}
         </Formik>
@@ -315,7 +352,9 @@ const Register = () => {
       {message && (
         <div className="form-group">
           <div
-            className={successful ? "alert alert-success" : "alert alert-danger"}
+            className={
+              successful ? "alert alert-success" : "alert alert-danger"
+            }
             role="alert"
           >
             {message}

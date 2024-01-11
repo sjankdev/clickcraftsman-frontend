@@ -9,12 +9,28 @@ import validationSchema from "../services/validationSchemas";
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
+  const [skills, setSkills] = useState([]);
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(clearMessage());
+
+    const fetchSkills = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/skills/getAllSkills"
+        );
+        const data = await response.json();
+        console.log("Raw response:", response);
+        setSkills(data || []);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      }
+    };
+
+    fetchSkills();
   }, [dispatch]);
 
   const initialValues = {
@@ -26,7 +42,6 @@ const Register = () => {
     lastName: "",
     contactPhone: "",
     location: "",
-    skills: "",
     portfolio: "",
     yearsOfExperience: 0,
   };
@@ -41,20 +56,22 @@ const Register = () => {
       lastName,
       contactPhone,
       location,
-      skills,
       portfolio,
       yearsOfExperience,
+      skills,
     } = formValue;
     setSuccessful(false);
 
     const rolesArray = Array.isArray(role) ? role : [role];
+
+    // Ensure that skills is an array
+    const skillsArray = Array.isArray(skills) ? skills : [skills];
 
     const additionalFields = {
       firstName,
       lastName,
       contactPhone,
       location,
-      skills,
       portfolio,
       yearsOfExperience,
     };
@@ -65,6 +82,7 @@ const Register = () => {
         email,
         password,
         role: rolesArray,
+        skills: skillsArray,
         ...additionalFields,
       })
     )
@@ -213,8 +231,22 @@ const Register = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="skills">Skills</label>
-                    <Field name="skills" type="text" className="form-control" />
+                    <label htmlFor="skills">Select Skills:</label>
+                    <Field
+                      name="skills"
+                      as="select"
+                      multiple
+                      className="form-control"
+                    >
+                      {skills.map((skill) => (
+                        <option
+                          key={skill.id || skill.skillName}
+                          value={skill.skillName}
+                        >
+                          {skill.skillName}
+                        </option>
+                      ))}
+                    </Field>
                   </div>
 
                   <div className="form-group">

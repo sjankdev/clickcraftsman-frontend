@@ -5,11 +5,13 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { register } from "../slices/auth";
 import { clearMessage } from "../slices/message";
 import validationSchema from "../services/validationSchemas";
+import Select from "react-select";
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [skills, setSkills] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
@@ -32,6 +34,24 @@ const Register = () => {
 
     fetchSkills();
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/locations/getAllLocations"
+        );
+        const data = await response.json();
+        console.log("Data from API:", data);
+        setLocations(data || []);
+        console.log("Locations after setting state:", locations);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   const initialValues = {
     email: "",
@@ -97,6 +117,19 @@ const Register = () => {
     setSelectedRole(role);
     setFieldValue("role", role);
   };
+
+  const locationOptions = locations.map((location) => ({
+    value: location,
+    label: formatLocationName(location),
+  }));  
+
+  function formatLocationName(location) {
+    const words = location.split("_");
+    const formattedWords = words.map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    );
+    return formattedWords.join(" ");
+  }
 
   return (
     <div className="col-md-12 signup-form">
@@ -197,14 +230,27 @@ const Register = () => {
                       className="alert alert-danger"
                     />
                   </div>
-
                   <div className="form-group">
-                    <label htmlFor="location">Location</label>
-                    <Field
-                      name="location"
-                      type="text"
-                      className="form-control"
-                    />
+                    <label htmlFor="location">Location:</label>
+                    <Field name="location">
+                      {({ field, form }) => (
+                        <Select
+                          {...field}
+                          options={locationOptions}
+                          isSearchable
+                          placeholder="Search or select a location"
+                          value={locationOptions.find(
+                            (option) => option.value === field.value
+                          )}
+                          onChange={(selectedOption) =>
+                            form.setFieldValue(
+                              "location",
+                              selectedOption ? selectedOption.value : ""
+                            )
+                          }
+                        />
+                      )}
+                    </Field>
                     <ErrorMessage
                       name="location"
                       component="div"
@@ -322,12 +368,26 @@ const Register = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="location">Location</label>
-                    <Field
-                      name="location"
-                      type="text"
-                      className="form-control"
-                    />
+                    <label htmlFor="location">Location:</label>
+                    <Field name="location">
+                      {({ field, form }) => (
+                        <Select
+                          {...field}
+                          options={locationOptions}
+                          isSearchable
+                          placeholder="Search or select a location"
+                          value={locationOptions.find(
+                            (option) => option.value === field.value
+                          )}
+                          onChange={(selectedOption) =>
+                            form.setFieldValue(
+                              "location",
+                              selectedOption ? selectedOption.value : ""
+                            )
+                          }
+                        />
+                      )}
+                    </Field>
                     <ErrorMessage
                       name="location"
                       component="div"

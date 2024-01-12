@@ -1,13 +1,6 @@
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .test(
-      "len",
-      "The username must be between 3 and 20 characters.",
-      (val) => val && val.trim().length >= 3 && val.trim().length <= 20
-    )
-    .required("This field is required!"),
   email: Yup.string()
     .email("This is not a valid email.")
     .required("This field is required!"),

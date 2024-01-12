@@ -34,7 +34,6 @@ const Register = () => {
   }, [dispatch]);
 
   const initialValues = {
-    username: "",
     email: "",
     password: "",
     role: "",
@@ -48,7 +47,6 @@ const Register = () => {
 
   const handleRegister = (formValue, { resetForm }) => {
     const {
-      username,
       email,
       password,
       role,
@@ -64,7 +62,6 @@ const Register = () => {
 
     const rolesArray = Array.isArray(role) ? role : [role];
 
-    // Ensure that skills is an array
     const skillsArray = Array.isArray(skills) ? skills : [skills];
 
     const additionalFields = {
@@ -78,7 +75,6 @@ const Register = () => {
 
     dispatch(
       register({
-        username,
         email,
         password,
         role: rolesArray,
@@ -136,20 +132,6 @@ const Register = () => {
 
               {selectedRole === "worker" && (
                 <>
-                  <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <Field
-                      name="username"
-                      type="text"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="username"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <Field name="email" type="email" className="form-control" />
@@ -273,20 +255,6 @@ const Register = () => {
 
               {selectedRole === "client" && (
                 <>
-                  <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <Field
-                      name="username"
-                      type="text"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="username"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <Field name="email" type="email" className="form-control" />

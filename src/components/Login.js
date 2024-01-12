@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -22,20 +22,20 @@ const Login = () => {
   }, [dispatch]);
 
   const initialValues = {
-    username: "",
+    email: "",
     password: "",
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("This field is required!"),
+    email: Yup.string().required("This field is required!"),
     password: Yup.string().required("This field is required!"),
   });
 
   const handleLogin = (formValue) => {
-    const { username, password } = formValue;
+    const { email, password } = formValue;
     setLoading(true);
 
-    dispatch(login({ username, password }))
+    dispatch(login({ email, password }))
       .unwrap()
       .then(() => {
         navigate("/profile");
@@ -65,10 +65,10 @@ const Login = () => {
         >
           <Form>
             <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Field name="username" type="text" className="form-control" />
+              <label htmlFor="email">Email</label>
+              <Field name="email" type="text" className="form-control" />
               <ErrorMessage
-                name="username"
+                name="email"
                 component="div"
                 className="alert alert-danger"
               />
@@ -85,7 +85,11 @@ const Login = () => {
             </div>
 
             <div className="form-group">
-              <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary btn-block"
+                disabled={loading}
+              >
                 {loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}

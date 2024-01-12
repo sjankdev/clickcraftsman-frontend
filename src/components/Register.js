@@ -5,6 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { register } from "../slices/auth";
 import { clearMessage } from "../slices/message";
 import validationSchema from "../services/validationSchemas";
+import Select from "react-select";
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
@@ -117,10 +118,17 @@ const Register = () => {
     setFieldValue("role", role);
   };
 
+  const locationOptions = locations.map((location) => ({
+    value: location,
+    label: formatLocationName(location),
+  }));  
+
   function formatLocationName(location) {
-    const words = location.split('_');
-    const formattedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-    return formattedWords.join(' ');
+    const words = location.split("_");
+    const formattedWords = words.map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    );
+    return formattedWords.join(" ");
   }
 
   return (
@@ -222,17 +230,26 @@ const Register = () => {
                       className="alert alert-danger"
                     />
                   </div>
-
                   <div className="form-group">
                     <label htmlFor="location">Location:</label>
-                    <Field name="location" as="select" className="form-control">
-                      <option value="" label="Select a location" />
-                      {locations.map((location) => (
-                        <option key={location} value={location}>
-                          {location.charAt(0).toUpperCase() +
-                            location.slice(1).toLowerCase()}
-                        </option>
-                      ))}
+                    <Field name="location">
+                      {({ field, form }) => (
+                        <Select
+                          {...field}
+                          options={locationOptions}
+                          isSearchable
+                          placeholder="Search or select a location"
+                          value={locationOptions.find(
+                            (option) => option.value === field.value
+                          )}
+                          onChange={(selectedOption) =>
+                            form.setFieldValue(
+                              "location",
+                              selectedOption ? selectedOption.value : ""
+                            )
+                          }
+                        />
+                      )}
                     </Field>
                     <ErrorMessage
                       name="location"
@@ -352,14 +369,24 @@ const Register = () => {
 
                   <div className="form-group">
                     <label htmlFor="location">Location:</label>
-                    <Field name="location" as="select" className="form-control">
-                      <option value="" label="Select a location" />
-                      {locations.map((location) => (
-                        <option key={location} value={location}>
-                          {location.charAt(0).toUpperCase() +
-                            location.slice(1).toLowerCase()}
-                        </option>
-                      ))}
+                    <Field name="location">
+                      {({ field, form }) => (
+                        <Select
+                          {...field}
+                          options={locationOptions}
+                          isSearchable
+                          placeholder="Search or select a location"
+                          value={locationOptions.find(
+                            (option) => option.value === field.value
+                          )}
+                          onChange={(selectedOption) =>
+                            form.setFieldValue(
+                              "location",
+                              selectedOption ? selectedOption.value : ""
+                            )
+                          }
+                        />
+                      )}
                     </Field>
                     <ErrorMessage
                       name="location"

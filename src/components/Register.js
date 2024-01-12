@@ -117,6 +117,12 @@ const Register = () => {
     setFieldValue("role", role);
   };
 
+  function formatLocationName(location) {
+    const words = location.split('_');
+    const formattedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+    return formattedWords.join(' ');
+  }
+
   return (
     <div className="col-md-12 signup-form">
       <div className="card card-container">
@@ -223,7 +229,8 @@ const Register = () => {
                       <option value="" label="Select a location" />
                       {locations.map((location) => (
                         <option key={location} value={location}>
-                          {location}
+                          {location.charAt(0).toUpperCase() +
+                            location.slice(1).toLowerCase()}
                         </option>
                       ))}
                     </Field>
@@ -349,7 +356,8 @@ const Register = () => {
                       <option value="" label="Select a location" />
                       {locations.map((location) => (
                         <option key={location} value={location}>
-                          {location}
+                          {location.charAt(0).toUpperCase() +
+                            location.slice(1).toLowerCase()}
                         </option>
                       ))}
                     </Field>

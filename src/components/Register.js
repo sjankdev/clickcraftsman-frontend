@@ -10,6 +10,7 @@ const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [skills, setSkills] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
@@ -32,6 +33,24 @@ const Register = () => {
 
     fetchSkills();
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/locations/getAllLocations"
+        );
+        const data = await response.json();
+        console.log("Data from API:", data);
+        setLocations(data || []);
+        console.log("Locations after setting state:", locations);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   const initialValues = {
     email: "",
@@ -199,12 +218,15 @@ const Register = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="location">Location</label>
-                    <Field
-                      name="location"
-                      type="text"
-                      className="form-control"
-                    />
+                    <label htmlFor="location">Location:</label>
+                    <Field name="location" as="select" className="form-control">
+                      <option value="" label="Select a location" />
+                      {locations.map((location) => (
+                        <option key={location} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </Field>
                     <ErrorMessage
                       name="location"
                       component="div"
@@ -322,12 +344,15 @@ const Register = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="location">Location</label>
-                    <Field
-                      name="location"
-                      type="text"
-                      className="form-control"
-                    />
+                    <label htmlFor="location">Location:</label>
+                    <Field name="location" as="select" className="form-control">
+                      <option value="" label="Select a location" />
+                      {locations.map((location) => (
+                        <option key={location} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </Field>
                     <ErrorMessage
                       name="location"
                       component="div"

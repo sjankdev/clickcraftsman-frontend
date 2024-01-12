@@ -122,15 +122,15 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={(e) => handleRoleChange(e, setFieldValue)}
-                    value="worker"
+                    value="freelancer"
                     className="btn btn-secondary ml-2"
                   >
-                    Worker
+                    Freelancer
                   </button>
                 </div>
               </div>
 
-              {selectedRole === "worker" && (
+              {selectedRole === "freelancer" && (
                 <>
                   <div className="form-group">
                     <label htmlFor="email">Email</label>

@@ -33,8 +33,13 @@ const BoardUser = () => {
       <header className="jumbotron">
         <h3>{content}</h3>
       </header>
+      {content === "User Content." && (
+        <div>
+          <p>This is additional content added.</p>
+        </div>
+      )}
     </div>
   );
-};
+      }  
 
 export default BoardUser;

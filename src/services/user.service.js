@@ -8,7 +8,11 @@ const getPublicContent = () => {
 };
 
 const getUserBoard = () => {
-  return axios.get(API_URL + "user", { headers: authHeader() });
+  return axios.get(API_URL + "client", { headers: authHeader() });
+};
+
+const getFreelancerBoard = () => {
+  return axios.get(API_URL + "freelancer", { headers: authHeader() });
 };
 
 const getModeratorBoard = () => {

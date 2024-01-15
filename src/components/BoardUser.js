@@ -13,6 +13,7 @@ const JobPostForm = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
   const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const [isRemote, setIsRemote] = useState(false);
 
   useEffect(() => {
     UserService.getUserBoard().then(
@@ -50,10 +51,8 @@ const JobPostForm = () => {
       jobName,
       description,
       requiredSkillIds: selectedSkills.map((skill) => skill.value),
+      isRemote, 
     };
-
-    console.log("Selected Skills:", selectedSkills);
-    console.log("Job Posting Data:", jobPostingData);
 
     ClientJobPostingService.postJob(userEmail, jobPostingData)
       .then((response) => {
@@ -67,6 +66,10 @@ const JobPostForm = () => {
             "An error occurred while posting the job."
         );
       });
+  };
+
+  const handleCheckboxChange = (e) => {
+    setIsRemote(e.target.checked);
   };
 
   return (
@@ -114,6 +117,15 @@ const JobPostForm = () => {
                 }))}
                 isMulti
                 onChange={handleSkillsChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="isRemote">Is Remote?</label>
+              <input
+                type="checkbox"
+                id="isRemote"
+                checked={isRemote}
+                onChange={handleCheckboxChange}
               />
             </div>
             <button type="submit" className="btn btn-primary">

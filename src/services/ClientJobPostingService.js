@@ -1,11 +1,11 @@
 import axios from "axios";
-import authHeader from "./auth-header"; // Corrected import path
+import authHeader from "./auth-header"; 
 
 const API_URL = "http://localhost:8080"; 
 
 class ClientJobPostingService {
   postJob(userEmail, jobPostingData) {
-    return axios.post(`${API_URL}/api/jobpostings/post`, { userEmail, ...jobPostingData }, { headers: authHeader() });
+    return axios.post(`${API_URL}/api/job-postings/post`, { userEmail, ...jobPostingData }, { headers: authHeader() });
   }
 
 }

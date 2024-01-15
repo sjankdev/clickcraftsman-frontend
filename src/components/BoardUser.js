@@ -40,23 +40,22 @@ const JobPostForm = () => {
   const handleSkillsChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions || []);
   };
-  
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const user = JSON.parse(localStorage.getItem("user"));
     const userEmail = user.email;
-  
+
     const jobPostingData = {
       jobName,
       description,
       requiredSkillIds: selectedSkills.map((skill) => skill.value),
     };
-  
+
     console.log("Selected Skills:", selectedSkills);
     console.log("Job Posting Data:", jobPostingData);
-  
+
     ClientJobPostingService.postJob(userEmail, jobPostingData)
       .then((response) => {
         setSuccessMessage("Job posted successfully!");
@@ -70,8 +69,6 @@ const JobPostForm = () => {
         );
       });
   };
-  
-  
 
   return (
     <div className="container">

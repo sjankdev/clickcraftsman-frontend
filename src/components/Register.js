@@ -6,11 +6,11 @@ import { register } from "../slices/auth";
 import { clearMessage } from "../slices/message";
 import validationSchema from "../services/validationSchemas";
 import Select from "react-select";
+import useSkills from "../services/useSkills";
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
-  const [skills, setSkills] = useState([]);
   const [locations, setLocations] = useState([]);
 
   const { message } = useSelector((state) => state.message);
@@ -19,23 +19,6 @@ const Register = () => {
   useEffect(() => {
     dispatch(clearMessage());
 
-    const fetchSkills = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/api/skills/getAllSkills"
-        );
-        const data = await response.json();
-        console.log("Raw response:", response);
-        setSkills(data || []);
-      } catch (error) {
-        console.error("Error fetching skills:", error);
-      }
-    };
-
-    fetchSkills();
-  }, [dispatch]);
-
-  useEffect(() => {
     const fetchLocations = async () => {
       try {
         const response = await fetch(
@@ -112,6 +95,8 @@ const Register = () => {
       });
   };
 
+  const skills = useSkills();
+
   const handleRoleChange = (event, setFieldValue) => {
     const role = event.target.value;
     setSelectedRole(role);
@@ -121,7 +106,7 @@ const Register = () => {
   const locationOptions = locations.map((location) => ({
     value: location,
     label: formatLocationName(location),
-  }));  
+  }));
 
   function formatLocationName(location) {
     const words = location.split("_");

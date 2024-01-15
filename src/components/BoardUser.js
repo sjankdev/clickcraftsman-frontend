@@ -13,13 +13,12 @@ const JobPostForm = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
+  const [isRemote, setIsRemote] = useState(false);
 
   const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
   const locations = useApiData(
     "http://localhost:8080/api/locations/getAllLocations"
   );
-
-  const [isRemote, setIsRemote] = useState(false);
 
   useEffect(() => {
     UserService.getUserBoard().then(
@@ -51,6 +50,11 @@ const JobPostForm = () => {
     setLocation(selectedOption.value);
   };
 
+  const handleCheckboxChange = (e) => {
+    setIsRemote(e.target.checked);
+    setLocation("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -77,10 +81,6 @@ const JobPostForm = () => {
             "An error occurred while posting the job."
         );
       });
-  };
-
-  const handleCheckboxChange = (e) => {
-    setIsRemote(e.target.checked);
   };
 
   return (
@@ -131,16 +131,6 @@ const JobPostForm = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="location">Location:</label>
-              <Select
-                options={locations.map((location) => ({
-                  value: location,
-                  label: location,
-                }))}
-                onChange={handleLocationChange}
-              />
-            </div>
-            <div className="form-group">
               <label htmlFor="isRemote">Is Remote?</label>
               <input
                 type="checkbox"
@@ -149,6 +139,18 @@ const JobPostForm = () => {
                 onChange={handleCheckboxChange}
               />
             </div>
+            {isRemote ? null : (
+              <div className="form-group">
+                <label htmlFor="location">Location:</label>
+                <Select
+                  options={locations.map((location) => ({
+                    value: location,
+                    label: location,
+                  }))}
+                  onChange={handleLocationChange}
+                />
+              </div>
+            )}
             <button type="submit" className="btn btn-primary">
               Post Job
             </button>

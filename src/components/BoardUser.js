@@ -12,7 +12,13 @@ const JobPostForm = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
+  const [location, setLocation] = useState("");
+
   const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const locations = useApiData(
+    "http://localhost:8080/api/locations/getAllLocations"
+  );
+
   const [isRemote, setIsRemote] = useState(false);
 
   useEffect(() => {
@@ -41,6 +47,10 @@ const JobPostForm = () => {
     setSelectedSkills(selectedOptions || []);
   };
 
+  const handleLocationChange = (selectedOption) => {
+    setLocation(selectedOption.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -51,7 +61,8 @@ const JobPostForm = () => {
       jobName,
       description,
       requiredSkillIds: selectedSkills.map((skill) => skill.value),
-      isRemote, 
+      isRemote,
+      location,
     };
 
     ClientJobPostingService.postJob(userEmail, jobPostingData)
@@ -117,6 +128,16 @@ const JobPostForm = () => {
                 }))}
                 isMulti
                 onChange={handleSkillsChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="location">Location:</label>
+              <Select
+                options={locations.map((location) => ({
+                  value: location,
+                  label: location,
+                }))}
+                onChange={handleLocationChange}
               />
             </div>
             <div className="form-group">

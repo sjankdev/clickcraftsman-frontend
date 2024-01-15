@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import ClientJobPostingService from "../services/ClientJobPostingService";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
-import useSkills from "../services/useSkills";
+import useApiData from "../services/useApiData";
 import Select from "react-select";
 
 const JobPostForm = () => {
-  const skills = useSkills();
-
   const [jobName, setJobName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
+  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
 
   useEffect(() => {
     UserService.getUserBoard().then(

@@ -1,40 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-
 import { register } from "../slices/auth";
-import { clearMessage } from "../slices/message";
 import validationSchema from "../services/validationSchemas";
 import Select from "react-select";
-import useSkills from "../services/useSkills";
+import useApiData from "../services/useApiData";
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
-  const [locations, setLocations] = useState([]);
+  const locations = useApiData("http://localhost:8080/api/locations/getAllLocations");
+  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(clearMessage());
-
-    const fetchLocations = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/api/locations/getAllLocations"
-        );
-        const data = await response.json();
-        console.log("Data from API:", data);
-        setLocations(data || []);
-        console.log("Locations after setting state:", locations);
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
-    fetchLocations();
-  }, []);
 
   const initialValues = {
     email: "",
@@ -95,7 +74,6 @@ const Register = () => {
       });
   };
 
-  const skills = useSkills();
 
   const handleRoleChange = (event, setFieldValue) => {
     const role = event.target.value;

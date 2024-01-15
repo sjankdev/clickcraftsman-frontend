@@ -12,8 +12,13 @@ const JobPostForm = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
-  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const [location, setLocation] = useState("");
   const [isRemote, setIsRemote] = useState(false);
+
+  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const locations = useApiData(
+    "http://localhost:8080/api/locations/getAllLocations"
+  );
 
   useEffect(() => {
     UserService.getUserBoard().then(
@@ -41,6 +46,15 @@ const JobPostForm = () => {
     setSelectedSkills(selectedOptions || []);
   };
 
+  const handleLocationChange = (selectedOption) => {
+    setLocation(selectedOption.value);
+  };
+
+  const handleCheckboxChange = (e) => {
+    setIsRemote(e.target.checked);
+    setLocation("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -51,7 +65,8 @@ const JobPostForm = () => {
       jobName,
       description,
       requiredSkillIds: selectedSkills.map((skill) => skill.value),
-      isRemote, 
+      isRemote,
+      location,
     };
 
     ClientJobPostingService.postJob(userEmail, jobPostingData)
@@ -66,10 +81,6 @@ const JobPostForm = () => {
             "An error occurred while posting the job."
         );
       });
-  };
-
-  const handleCheckboxChange = (e) => {
-    setIsRemote(e.target.checked);
   };
 
   return (
@@ -128,6 +139,18 @@ const JobPostForm = () => {
                 onChange={handleCheckboxChange}
               />
             </div>
+            {isRemote ? null : (
+              <div className="form-group">
+                <label htmlFor="location">Location:</label>
+                <Select
+                  options={locations.map((location) => ({
+                    value: location,
+                    label: location,
+                  }))}
+                  onChange={handleLocationChange}
+                />
+              </div>
+            )}
             <button type="submit" className="btn btn-primary">
               Post Job
             </button>

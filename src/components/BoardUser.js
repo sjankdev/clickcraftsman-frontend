@@ -85,9 +85,7 @@ const JobPostForm = () => {
 
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
-      </header>
+     
       {content === "User Content." && (
         <div>
           <h2>Post a Job</h2>
@@ -120,7 +118,7 @@ const JobPostForm = () => {
               ></textarea>
             </div>
             <div className="form-group">
-              <label htmlFor="skills">Select Skills:</label>
+              <label htmlFor="skills">Required Skills:</label>
               <Select
                 options={skills.map((skill) => ({
                   value: skill.skillName,

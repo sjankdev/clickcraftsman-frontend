@@ -20,6 +20,7 @@ import EventBus from "./common/EventBus";
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [showUserBoard, setUserBoard] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -32,9 +33,11 @@ const App = () => {
     if (currentUser) {
       setShowModeratorBoard(currentUser.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
+      setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
     } else {
       setShowModeratorBoard(false);
       setShowAdminBoard(false);
+      setUserBoard(false);
     }
 
     EventBus.on("logout", () => {
@@ -78,8 +81,16 @@ const App = () => {
 
             {currentUser && (
               <li className="nav-item">
+                <Link to={"/profile"} className="nav-link">
+                  Profile
+                </Link>
+              </li>
+            )}
+
+            {showUserBoard && (
+              <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
-                  User
+                  Post a job
                 </Link>
               </li>
             )}

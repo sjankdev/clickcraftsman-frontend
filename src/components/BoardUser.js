@@ -12,8 +12,13 @@ const JobPostForm = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
-  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const [location, setLocation] = useState("");
   const [isRemote, setIsRemote] = useState(false);
+
+  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const locations = useApiData(
+    "http://localhost:8080/api/locations/getAllLocations"
+  );
 
   useEffect(() => {
     UserService.getUserBoard().then(
@@ -41,6 +46,15 @@ const JobPostForm = () => {
     setSelectedSkills(selectedOptions || []);
   };
 
+  const handleLocationChange = (selectedOption) => {
+    setLocation(selectedOption.value);
+  };
+
+  const handleCheckboxChange = (e) => {
+    setIsRemote(e.target.checked);
+    setLocation("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -51,7 +65,8 @@ const JobPostForm = () => {
       jobName,
       description,
       requiredSkillIds: selectedSkills.map((skill) => skill.value),
-      isRemote, 
+      isRemote,
+      location,
     };
 
     ClientJobPostingService.postJob(userEmail, jobPostingData)
@@ -68,15 +83,9 @@ const JobPostForm = () => {
       });
   };
 
-  const handleCheckboxChange = (e) => {
-    setIsRemote(e.target.checked);
-  };
-
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
-      </header>
+     
       {content === "User Content." && (
         <div>
           <h2>Post a Job</h2>
@@ -109,7 +118,7 @@ const JobPostForm = () => {
               ></textarea>
             </div>
             <div className="form-group">
-              <label htmlFor="skills">Select Skills:</label>
+              <label htmlFor="skills">Required Skills:</label>
               <Select
                 options={skills.map((skill) => ({
                   value: skill.skillName,
@@ -128,6 +137,18 @@ const JobPostForm = () => {
                 onChange={handleCheckboxChange}
               />
             </div>
+            {isRemote ? null : (
+              <div className="form-group">
+                <label htmlFor="location">Location:</label>
+                <Select
+                  options={locations.map((location) => ({
+                    value: location,
+                    label: location,
+                  }))}
+                  onChange={handleLocationChange}
+                />
+              </div>
+            )}
             <button type="submit" className="btn btn-primary">
               Post Job
             </button>

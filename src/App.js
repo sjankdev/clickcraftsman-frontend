@@ -13,6 +13,7 @@ import BoardUser from "./components/BoardUser";
 import BoardAdmin from "./components/BoardAdmin";
 import BoardFreelancer from "./components/BoardFreelancer";
 import AllJobs from "./components/AllJobs";
+import ClientManageJobs from "./components/ClientManageJobs";
 
 import { logout } from "./slices/auth";
 
@@ -23,6 +24,7 @@ const App = () => {
   const [showUserBoard, setUserBoard] = useState(false);
   const [showFreelancerBoard, setShowFreelancerBoard] = useState(false);
   const [showAllJobsBoard, setAllJobsBoard] = useState(false);
+  const [showClientManageJobsBoard, setClientManageJobsBoard] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -37,11 +39,15 @@ const App = () => {
       setAllJobsBoard(currentUser.roles.includes("ROLE_FREELANCER"));
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
       setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
+      setClientManageJobsBoard(
+        currentUser.roles.includes("ROLE_CLIENT")
+      );
     } else {
       setShowAdminBoard(false);
       setUserBoard(false);
       setShowFreelancerBoard(false);
       setAllJobsBoard(false);
+      setClientManageJobsBoard(false);
     }
 
     EventBus.on("logout", () => {
@@ -78,6 +84,14 @@ const App = () => {
             {showAllJobsBoard && (
               <li className="nav-item">
                 <Link to={"/all-jobs"} className="nav-link">
+                  All jobs
+                </Link>
+              </li>
+            )}
+
+            {showClientManageJobsBoard && (
+              <li className="nav-item">
+                <Link to={"/client-jobs"} className="nav-link">
                   All jobs
                 </Link>
               </li>
@@ -148,6 +162,7 @@ const App = () => {
             <Route path="/user" element={<BoardUser />} />
             <Route path="/freelancer" element={<BoardFreelancer />} />
             <Route path="/all-jobs" element={<AllJobs />} />
+            <Route path="/client-jobs" element={<ClientManageJobs />} />
             <Route path="/admin" element={<BoardAdmin />} />
           </Routes>
         </div>

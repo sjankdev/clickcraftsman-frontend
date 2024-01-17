@@ -12,8 +12,9 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardAdmin from "./components/BoardAdmin";
 import BoardFreelancer from "./components/BoardFreelancer";
-import AllJobs from "./components/AllJobs";
-import ClientManageJobs from "./components/ClientManageJobs";
+import OpenProjectsForFreelancers from "./components/OpenProjectsForFreelancers";
+import ClientReceivedApplications from "./components/ClientReceivedApplications.js";
+import ClientPostedJobs from "./components/ClientPostedJobs";
 
 import { logout } from "./slices/auth";
 
@@ -23,8 +24,12 @@ const App = () => {
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [showUserBoard, setUserBoard] = useState(false);
   const [showFreelancerBoard, setShowFreelancerBoard] = useState(false);
-  const [showAllJobsBoard, setAllJobsBoard] = useState(false);
-  const [showClientManageJobsBoard, setClientManageJobsBoard] = useState(false);
+  const [
+    showOpenProjectsForFreelancersBoard,
+    setOpenProjectsForFreelancersBoard,
+  ] = useState(false);
+  const [showClientReceivedApplicationsBoard, setClientReceivedApplications] = useState(false);
+  const [showClientPostedJobsBoard, setClientPostedJobsBoard] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -36,18 +41,19 @@ const App = () => {
   useEffect(() => {
     if (currentUser) {
       setShowFreelancerBoard(currentUser.roles.includes("ROLE_FREELANCER"));
-      setAllJobsBoard(currentUser.roles.includes("ROLE_FREELANCER"));
+      setOpenProjectsForFreelancersBoard(
+        currentUser.roles.includes("ROLE_FREELANCER")
+      );
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
       setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
-      setClientManageJobsBoard(
-        currentUser.roles.includes("ROLE_CLIENT")
-      );
+      setClientPostedJobsBoard(currentUser.roles.includes("ROLE_CLIENT"));
+      setClientReceivedApplications(currentUser.roles.includes("ROLE_CLIENT"));
     } else {
       setShowAdminBoard(false);
       setUserBoard(false);
       setShowFreelancerBoard(false);
-      setAllJobsBoard(false);
-      setClientManageJobsBoard(false);
+      setOpenProjectsForFreelancersBoard(false);
+      setClientReceivedApplications(false);
     }
 
     EventBus.on("logout", () => {
@@ -81,18 +87,26 @@ const App = () => {
               </li>
             )}
 
-            {showAllJobsBoard && (
+            {showOpenProjectsForFreelancersBoard && (
               <li className="nav-item">
-                <Link to={"/all-jobs"} className="nav-link">
-                  All jobs
+                <Link to={"/projects"} className="nav-link">
+                  Projects
                 </Link>
               </li>
             )}
 
-            {showClientManageJobsBoard && (
+            {showClientPostedJobsBoard && (
               <li className="nav-item">
-                <Link to={"/client-jobs"} className="nav-link">
-                  All jobs
+                <Link to={"/client-projects"} className="nav-link">
+                  Projects
+                </Link>
+              </li>
+            )}
+
+            {showClientReceivedApplicationsBoard && (
+              <li className="nav-item">
+                <Link to={"/client-received-applications"} className="nav-link">
+                  Received applications
                 </Link>
               </li>
             )}
@@ -161,9 +175,10 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
             <Route path="/freelancer" element={<BoardFreelancer />} />
-            <Route path="/all-jobs" element={<AllJobs />} />
-            <Route path="/client-jobs" element={<ClientManageJobs />} />
+            <Route path="/projects" element={<OpenProjectsForFreelancers />} />
+            <Route path="/client-received-applications" element={<ClientReceivedApplications />} />
             <Route path="/admin" element={<BoardAdmin />} />
+            <Route path="/client-projects" element={<ClientPostedJobs />} />
           </Routes>
         </div>
       </div>

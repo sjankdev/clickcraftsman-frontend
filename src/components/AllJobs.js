@@ -6,6 +6,8 @@ import "../assets/css/allJobs.css";
 
 const AllJobs = () => {
   const [content, setContent] = useState("");
+  const [applicationMessages, setApplicationMessages] = useState([]);
+
   const jobs = useApiData("http://localhost:8080/api/job-postings/getAllJobs");
 
   useEffect(() => {
@@ -35,14 +37,32 @@ const AllJobs = () => {
     const applicationData = {
       coverLetter: "Sample cover letter",
     };
+
     UserService.applyForJob(jobId, applicationData)
       .then((response) => {
         console.log("Job application submitted successfully");
+        setApplicationMessages((prevMessages) => [
+          ...prevMessages,
+          { jobId, message: "Job application submitted successfully" },
+        ]);
       })
       .catch((error) => {
         console.error("Error submitting job application", error);
+
+        if (error.response && error.response.status === 400) {
+          setApplicationMessages((prevMessages) => [
+            ...prevMessages,
+            { jobId, message: "You have already applied for this job." },
+          ]);
+        } else {
+          setApplicationMessages((prevMessages) => [
+            ...prevMessages,
+            { jobId, message: "An error occurred while submitting the job application." },
+          ]);
+        }
       });
   };
+  
 
   return (
     <div className="container">
@@ -63,6 +83,8 @@ const AllJobs = () => {
               </div>
               <button onClick={() => handleApply(job.id)}>Apply</button>
               <hr />
+              {applicationMessages.map((msg) => msg.jobId === job.id && <p key={msg.jobId}>{msg.message}</p>)}
+
             </div>
           ))}
         </div>

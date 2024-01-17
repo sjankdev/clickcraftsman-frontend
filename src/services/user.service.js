@@ -4,6 +4,8 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:8080/api/test/";
 const API_URL_JOB_APPLY = "http://localhost:8080/api/job-applications";
 
+const API_URL_JOB_POST = "http://localhost:8080/api/job-postings";
+
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
 };
@@ -55,6 +57,32 @@ const getAppliedJobs = () => {
     });
 };
 
+const getClientJobApplications = () => {
+  const url = `${API_URL_JOB_APPLY}/client-job-applications`;
+
+  return axios.get(url, { headers: authHeader() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching client job applications", error);
+      throw error;
+    });
+};
+
+const getClientJobPostings = () => {
+  const url = `${API_URL_JOB_POST}/client-job-postings`;
+
+  return axios.get(url, { headers: authHeader() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching client job postings", error);
+      throw error;
+    });
+};
+
 const userService = {
   getPublicContent,
   getUserBoard,
@@ -64,6 +92,8 @@ const userService = {
   applyForJob,
   getAppliedJobs,
   getClientManageJobsBoard,
+  getClientJobPostings,
+  getClientJobApplications
 };
 
 export default userService;

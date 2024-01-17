@@ -2,7 +2,6 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8080/api/test/";
-
 const API_URL_JOB_APPLY = "http://localhost:8080/api/job-applications";
 
 const getPublicContent = () => {
@@ -21,7 +20,6 @@ const getAllJobsBoard = () => {
   return axios.get(API_URL + "all-jobs", { headers: authHeader() });
 };
 
-
 const getAdminBoard = () => {
   return axios.get(API_URL + "admin", { headers: authHeader() });
 };
@@ -36,9 +34,23 @@ const applyForJob = (jobId, applicationData) => {
     })
     .catch((error) => {
       console.error("Error submitting job application", error);
-      throw error; 
+      throw error;
     });
 };
+
+const getAppliedJobs = () => {
+  const url = `${API_URL_JOB_APPLY}/applied-jobs`;
+
+  return axios.get(url, { headers: authHeader() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching applied jobs", error);
+      throw error;
+    });
+};
+
 
 const userService = {
   getPublicContent,
@@ -46,7 +58,8 @@ const userService = {
   getAdminBoard,
   getFreelancerBoard,
   getAllJobsBoard,
-  applyForJob
+  applyForJob,
+  getAppliedJobs,
 };
 
-export default userService
+export default userService;

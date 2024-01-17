@@ -16,6 +16,9 @@ const JobPostForm = () => {
   const [isRemote, setIsRemote] = useState(false);
 
   const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const jobs = useApiData(
+    "http://localhost:8080/api/job-postings/getAllJobs"
+  );
   const locations = useApiData(
     "http://localhost:8080/api/locations/getAllLocations"
   );
@@ -149,6 +152,18 @@ const JobPostForm = () => {
                 />
               </div>
             )}
+              <div>
+            {jobs.map((job) => (
+              <div key={job.id}>
+                <h3>{job.jobName}</h3>
+                <p>{job.description}</p>
+                <p>Date Posted: {job.datePosted}</p>
+                <p>Location: {job.location}</p>
+                <p>Is Remote: {job.isRemote ? "Yes" : "No"}</p>
+                <hr />
+              </div>
+            ))}
+          </div>
             <button type="submit" className="btn btn-primary">
               Post Job
             </button>

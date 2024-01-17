@@ -1,0 +1,36 @@
+/* AllJobs.css */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .jumbotron {
+    background-color: #3498db;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .job-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 15px 0;
+  }
+  
+  .job-card h3 {
+    color: #333;
+  }
+  
+  .job-description {
+    color: #555;
+  }
+  
+  .job-details {
+    display: flex;
+    justify-content: space-between;
+    color: #777;
+  }
+  
+  /* Add more styles as needed */
+  

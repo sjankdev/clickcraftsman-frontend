@@ -10,17 +10,19 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import BoardFreelancer from "./components/BoardFreelancer";
+import AllJobs from "./components/AllJobs";
 
 import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
 
 const App = () => {
-  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [showUserBoard, setUserBoard] = useState(false);
+  const [showFreelancerBoard, setShowFreelancerBoard] = useState(false);
+  const [showAllJobsBoard, setAllJobsBoard] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -31,13 +33,15 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
-      setShowModeratorBoard(currentUser.roles.includes("ROLE_MODERATOR"));
+      setShowFreelancerBoard(currentUser.roles.includes("ROLE_FREELANCER"));
+      setAllJobsBoard(currentUser.roles.includes("ROLE_FREELANCER"));
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
       setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
     } else {
-      setShowModeratorBoard(false);
       setShowAdminBoard(false);
       setUserBoard(false);
+      setShowFreelancerBoard(false);
+      setAllJobsBoard(false);
     }
 
     EventBus.on("logout", () => {
@@ -63,10 +67,18 @@ const App = () => {
               </Link>
             </li>
 
-            {showModeratorBoard && (
+            {showFreelancerBoard && (
               <li className="nav-item">
-                <Link to={"/mod"} className="nav-link">
-                  Moderator Board
+                <Link to={"/freelancer"} className="nav-link">
+                  Freelancer
+                </Link>
+              </li>
+            )}
+
+            {showAllJobsBoard && (
+              <li className="nav-item">
+                <Link to={"/all-jobs"} className="nav-link">
+                  All jobs
                 </Link>
               </li>
             )}
@@ -134,7 +146,8 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
-            <Route path="/mod" element={<BoardModerator />} />
+            <Route path="/freelancer" element={<BoardFreelancer />} />
+            <Route path="/all-jobs" element={<AllJobs />} />
             <Route path="/admin" element={<BoardAdmin />} />
           </Routes>
         </div>

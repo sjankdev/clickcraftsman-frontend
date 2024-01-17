@@ -7,7 +7,7 @@ import "../assets/css/allJobs.css";
 
 Modal.setAppElement("#root");
 
-const AllJobs = () => {
+const OpenProjectsForFreelancers = () => {
   const [content, setContent] = useState("");
   const [applicationMessages, setApplicationMessages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +18,7 @@ const AllJobs = () => {
   const jobs = useApiData("http://localhost:8080/api/job-postings/getAllJobs");
 
   useEffect(() => {
-    UserService.getAllJobsBoard()
+    UserService.getOpenProjectsForFreelancersBoard()
       .then(
         (response) => {
           setContent(response.data);
@@ -171,4 +171,4 @@ const AllJobs = () => {
   );
 };
 
-export default AllJobs;
+export default OpenProjectsForFreelancers;

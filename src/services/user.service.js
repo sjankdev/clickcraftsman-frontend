@@ -18,12 +18,16 @@ const getFreelancerBoard = () => {
   return axios.get(API_URL + "freelancer", { headers: authHeader() });
 };
 
-const getAllJobsBoard = () => {
-  return axios.get(API_URL + "all-jobs", { headers: authHeader() });
+const getOpenProjectsForFreelancersBoard = () => {
+  return axios.get(API_URL + "projects", { headers: authHeader() });
 };
 
-const getClientManageJobsBoard = () => {
-  return axios.get(API_URL + "client-jobs", { headers: authHeader() });
+const getClientReceivedApplicationsBoard = () => {
+  return axios.get(API_URL + "client-received-applications", { headers: authHeader() });
+};
+
+const getClientPostedJobsBoard = () => {
+  return axios.get(API_URL + "client-projects", { headers: authHeader() });
 };
 
 const getAdminBoard = () => {
@@ -33,7 +37,8 @@ const getAdminBoard = () => {
 const applyForJob = (jobId, applicationData) => {
   const url = `${API_URL_JOB_APPLY}/apply/${jobId}`;
 
-  return axios.post(url, applicationData, { headers: authHeader() })
+  return axios
+    .post(url, applicationData, { headers: authHeader() })
     .then((response) => {
       console.log("Job application submitted successfully");
       return response.data;
@@ -47,7 +52,8 @@ const applyForJob = (jobId, applicationData) => {
 const getAppliedJobs = () => {
   const url = `${API_URL_JOB_APPLY}/applied-jobs`;
 
-  return axios.get(url, { headers: authHeader() })
+  return axios
+    .get(url, { headers: authHeader() })
     .then((response) => {
       return response.data;
     })
@@ -60,7 +66,8 @@ const getAppliedJobs = () => {
 const getClientJobApplications = () => {
   const url = `${API_URL_JOB_APPLY}/client-job-applications`;
 
-  return axios.get(url, { headers: authHeader() })
+  return axios
+    .get(url, { headers: authHeader() })
     .then((response) => {
       return response.data;
     })
@@ -73,7 +80,8 @@ const getClientJobApplications = () => {
 const getClientJobPostings = () => {
   const url = `${API_URL_JOB_POST}/client-job-postings`;
 
-  return axios.get(url, { headers: authHeader() })
+  return axios
+    .get(url, { headers: authHeader() })
     .then((response) => {
       return response.data;
     })
@@ -88,12 +96,13 @@ const userService = {
   getUserBoard,
   getAdminBoard,
   getFreelancerBoard,
-  getAllJobsBoard,
+  getOpenProjectsForFreelancersBoard,
   applyForJob,
   getAppliedJobs,
-  getClientManageJobsBoard,
+  getClientReceivedApplicationsBoard,
   getClientJobPostings,
-  getClientJobApplications
+  getClientJobApplications,
+  getClientPostedJobsBoard,
 };
 
 export default userService;

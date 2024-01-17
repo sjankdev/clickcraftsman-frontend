@@ -7,8 +7,6 @@ import "../assets/css/allJobs.css";
 
 Modal.setAppElement("#root");
 
-// ... (previous code)
-
 const AllJobs = () => {
   const [content, setContent] = useState("");
   const [applicationMessages, setApplicationMessages] = useState([]);
@@ -41,7 +39,6 @@ const AllJobs = () => {
         }
       );
 
-    // Fetch the user's applied jobs and update the appliedJobIds state
     UserService.getAppliedJobs().then((appliedIds) => {
       setAppliedJobIds(appliedIds);
     });
@@ -54,7 +51,6 @@ const AllJobs = () => {
       setIsModalOpen(true);
       setSelectedJobId(jobId);
     } else {
-      // Display an error message
       setApplicationMessages((prevMessages) => [
         ...prevMessages,
         { jobId, message: "You have already applied for this job." },

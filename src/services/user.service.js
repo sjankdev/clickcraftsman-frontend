@@ -20,6 +20,10 @@ const getAllJobsBoard = () => {
   return axios.get(API_URL + "all-jobs", { headers: authHeader() });
 };
 
+const getClientManageJobsBoard = () => {
+  return axios.get(API_URL + "client-jobs", { headers: authHeader() });
+};
+
 const getAdminBoard = () => {
   return axios.get(API_URL + "admin", { headers: authHeader() });
 };
@@ -51,7 +55,6 @@ const getAppliedJobs = () => {
     });
 };
 
-
 const userService = {
   getPublicContent,
   getUserBoard,
@@ -60,6 +63,7 @@ const userService = {
   getAllJobsBoard,
   applyForJob,
   getAppliedJobs,
+  getClientManageJobsBoard,
 };
 
 export default userService;

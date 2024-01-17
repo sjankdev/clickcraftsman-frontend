@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardAdmin from "./components/BoardAdmin";
 import BoardFreelancer from "./components/BoardFreelancer";
+import AllJobs from "./components/AllJobs";
 
 import { logout } from "./slices/auth";
 
@@ -21,6 +22,7 @@ const App = () => {
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [showUserBoard, setUserBoard] = useState(false);
   const [showFreelancerBoard, setShowFreelancerBoard] = useState(false);
+  const [showAllJobsBoard, setAllJobsBoard] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -32,14 +34,14 @@ const App = () => {
   useEffect(() => {
     if (currentUser) {
       setShowFreelancerBoard(currentUser.roles.includes("ROLE_FREELANCER"));
-
+      setAllJobsBoard(currentUser.roles.includes("ROLE_FREELANCER"));
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
       setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
     } else {
       setShowAdminBoard(false);
       setUserBoard(false);
       setShowFreelancerBoard(false);
-
+      setAllJobsBoard(false);
     }
 
     EventBus.on("logout", () => {
@@ -66,6 +68,14 @@ const App = () => {
             </li>
 
             {showFreelancerBoard && (
+              <li className="nav-item">
+                <Link to={"/freelancer"} className="nav-link">
+                  Freelancer
+                </Link>
+              </li>
+            )}
+
+            {showAllJobsBoard && (
               <li className="nav-item">
                 <Link to={"/all-jobs"} className="nav-link">
                   All jobs
@@ -136,7 +146,8 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
-            <Route path="/all-jobs" element={<BoardFreelancer />} />
+            <Route path="/freelancer" element={<BoardFreelancer />} />
+            <Route path="/all-jobs" element={<AllJobs />} />
             <Route path="/admin" element={<BoardAdmin />} />
           </Routes>
         </div>

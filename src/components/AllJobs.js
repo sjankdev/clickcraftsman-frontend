@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import useApiData from "../services/useApiData";
-import "../assets/css/allJobs.css"; // Update the import path
+import "../assets/css/allJobs.css";
 
 const AllJobs = () => {
   const [content, setContent] = useState("");
@@ -31,6 +31,19 @@ const AllJobs = () => {
       );
   }, []);
 
+  const handleApply = (jobId) => {
+    const applicationData = {
+      coverLetter: "Sample cover letter",
+    };
+    UserService.applyForJob(jobId, applicationData)
+      .then((response) => {
+        console.log("Job application submitted successfully");
+      })
+      .catch((error) => {
+        console.error("Error submitting job application", error);
+      });
+  };
+
   return (
     <div className="container">
       <header className="jumbotron">
@@ -48,6 +61,7 @@ const AllJobs = () => {
                 <p>Location: {job.location}</p>
                 <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
               </div>
+              <button onClick={() => handleApply(job.id)}>Apply</button>
               <hr />
             </div>
           ))}

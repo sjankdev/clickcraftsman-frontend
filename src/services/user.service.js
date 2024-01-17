@@ -3,6 +3,8 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8080/api/test/";
 
+const API_URL_JOB_APPLY = "http://localhost:8080/api/job-applications";
+
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
 };
@@ -24,12 +26,27 @@ const getAdminBoard = () => {
   return axios.get(API_URL + "admin", { headers: authHeader() });
 };
 
+const applyForJob = (jobId, applicationData) => {
+  const url = `${API_URL_JOB_APPLY}/apply/${jobId}`;
+
+  return axios.post(url, applicationData, { headers: authHeader() })
+    .then((response) => {
+      console.log("Job application submitted successfully");
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error submitting job application", error);
+      throw error; 
+    });
+};
+
 const userService = {
   getPublicContent,
   getUserBoard,
   getAdminBoard,
   getFreelancerBoard,
   getAllJobsBoard,
+  applyForJob
 };
 
 export default userService

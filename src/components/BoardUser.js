@@ -40,19 +40,12 @@ const JobPostForm = () => {
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
         } else {
-          // If the user doesn't have access to /api/test/client, handle it accordingly
           console.error("User does not have ROLE_CLIENT:", error.response);
           setErrorMessage("Error: You are not authorized to access this resource.");
         }
       });
   }, []);
   
-  
-  
-  
-  
-  
-
   const handleSkillsChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions || []);
   };

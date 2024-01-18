@@ -14,6 +14,7 @@ const JobPostForm = () => {
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [isRemote, setIsRemote] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
   const locations = useApiData(
@@ -21,26 +22,36 @@ const JobPostForm = () => {
   );
 
   useEffect(() => {
-    UserService.getUserBoard().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
+    UserService.getUserBoard()
+      .then(() => {
+        setUserRole("CLIENT");
+        console.log("User has ROLE_CLIENT");
+      })
+      .catch((error) => {
         const _content =
           (error.response &&
             error.response.data &&
             error.response.data.message) ||
           error.message ||
           error.toString();
-
+  
         setContent(_content);
-
+  
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
+        } else {
+          // If the user doesn't have access to /api/test/client, handle it accordingly
+          console.error("User does not have ROLE_CLIENT:", error.response);
+          setErrorMessage("Error: You are not authorized to access this resource.");
         }
-      }
-    );
+      });
   }, []);
+  
+  
+  
+  
+  
+  
 
   const handleSkillsChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions || []);
@@ -85,8 +96,7 @@ const JobPostForm = () => {
 
   return (
     <div className="container">
-     
-      {content === "User Content." && (
+      {userRole === "CLIENT" ? (
         <div>
           <h2>Post a Job</h2>
           {successMessage && (
@@ -152,7 +162,11 @@ const JobPostForm = () => {
             <button type="submit" className="btn btn-primary">
               Post Job
             </button>
-          </form>
+            </form>
+        </div>
+      ) : (
+        <div className="alert alert-danger">
+          You are not authorized to access this resource.
         </div>
       )}
     </div>

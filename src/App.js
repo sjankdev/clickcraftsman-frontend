@@ -129,7 +129,7 @@ const App = () => {
 
             {showUserBoard && (
               <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
+                <Link to={"/client"} className="nav-link">
                   Post a job
                 </Link>
               </li>
@@ -173,7 +173,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/user" element={<BoardUser />} />
+            <Route path="/client" element={<BoardUser />} />
             <Route path="/freelancer" element={<BoardFreelancer />} />
             <Route path="/projects" element={<OpenProjectsForFreelancers />} />
             <Route path="/client-received-applications" element={<ClientReceivedApplications />} />

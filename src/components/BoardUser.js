@@ -20,32 +20,35 @@ const JobPostForm = () => {
   const locations = useApiData(
     "http://localhost:8080/api/locations/getAllLocations"
   );
-
   useEffect(() => {
-    UserService.getUserBoard()
-      .then(() => {
-        setUserRole("CLIENT");
-        console.log("User has ROLE_CLIENT");
-      })
-      .catch((error) => {
+    UserService.getUserBoard().then(
+      (response) => {
+        if (response.data) {
+          if (response.status === 200) {
+            setContent(response.data);
+          } else {
+            setErrorMessage("You are not authorized to access this resource.");
+          }
+        } else {
+          setErrorMessage("You are not authorized to access this resource.");
+        }
+      },
+      (error) => {
         const _content =
           (error.response &&
             error.response.data &&
             error.response.data.message) ||
           error.message ||
           error.toString();
-  
+
         setContent(_content);
-  
+
         if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
-        } else {
-          console.error("User does not have ROLE_CLIENT:", error.response);
-          setErrorMessage("Error: You are not authorized to access this resource.");
+          setErrorMessage("You are not authorized to access this resource.");
         }
-      });
+      }
+    );
   }, []);
-  
   const handleSkillsChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions || []);
   };
@@ -89,15 +92,15 @@ const JobPostForm = () => {
 
   return (
     <div className="container">
-      {userRole === "CLIENT" ? (
-        <div>
-          <h2>Post a Job</h2>
-          {successMessage && (
-            <div className="alert alert-success">{successMessage}</div>
-          )}
-          {errorMessage && (
-            <div className="alert alert-danger">{errorMessage}</div>
-          )}
+      <div>
+        <h2>Post a Job</h2>
+        {successMessage && (
+          <div className="alert alert-success">{successMessage}</div>
+        )}
+        {errorMessage && (
+          <div className="alert alert-danger">{errorMessage}</div>
+        )}
+        {content && !errorMessage && (
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="jobName">Job Name</label>
@@ -152,16 +155,12 @@ const JobPostForm = () => {
                 />
               </div>
             )}
-            <button type="submit" className="btn btn-primary">
+           <button type="submit" className="btn btn-primary">
               Post Job
             </button>
-            </form>
-        </div>
-      ) : (
-        <div className="alert alert-danger">
-          You are not authorized to access this resource.
-        </div>
-      )}
+          </form>
+        )}
+      </div>
     </div>
   );
 };

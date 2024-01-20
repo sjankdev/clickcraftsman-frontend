@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ClientJobPostingService from "../services/ClientJobPostingService";
 import UserService from "../services/user.service";
-import EventBus from "../common/EventBus";
 import useApiData from "../services/useApiData";
 import Select from "react-select";
+import authHeader from "../services/auth-header";
 
 const JobPostForm = () => {
   const [jobName, setJobName] = useState("");
@@ -14,18 +14,23 @@ const JobPostForm = () => {
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [isRemote, setIsRemote] = useState(false);
-  const [userRole, setUserRole] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
+  const [error, setError] = useState(null);
 
   const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
   const locations = useApiData(
     "http://localhost:8080/api/locations/getAllLocations"
   );
+
   useEffect(() => {
-    UserService.getUserBoard().then(
+    UserService.getUserBoard({ headers: authHeader() }).then(
       (response) => {
         if (response.data) {
           if (response.status === 200) {
             setContent(response.data);
+            setAuthorized(true);
+
           } else {
             setErrorMessage("You are not authorized to access this resource.");
           }
@@ -34,21 +39,23 @@ const JobPostForm = () => {
         }
       },
       (error) => {
-        const _content =
+        const errorMessage =
           (error.response &&
             error.response.data &&
             error.response.data.message) ||
           error.message ||
           error.toString();
 
-        setContent(_content);
-
+          setError(errorMessage);
         if (error.response && error.response.status === 401) {
           setErrorMessage("You are not authorized to access this resource.");
         }
       }
-    );
+    ).finally(() => {
+      setLoading(false);
+    });
   }, []);
+
   const handleSkillsChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions || []);
   };
@@ -90,17 +97,24 @@ const JobPostForm = () => {
       });
   };
 
-  return (
-    <div className="container">
-      <div>
-        <h2>Post a Job</h2>
-        {successMessage && (
-          <div className="alert alert-success">{successMessage}</div>
-        )}
-        {errorMessage && (
-          <div className="alert alert-danger">{errorMessage}</div>
-        )}
-        {content && !errorMessage && (
+  if (!authorized) {
+    return (
+      <div className="container">
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      </div>
+    );
+  }
+
+  if (content) {
+    return (
+      <div className="container">
+        <div>
+          <h2>Post a Job</h2>
+          {successMessage && (
+            <div className="alert alert-success">{successMessage}</div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="jobName">Job Name</label>
@@ -159,10 +173,10 @@ const JobPostForm = () => {
               Post Job
             </button>
           </form>
-        )}
       </div>
     </div>
   );
 };
+}
 
 export default JobPostForm;

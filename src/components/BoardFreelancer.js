@@ -1,32 +1,44 @@
 import React, { useState, useEffect } from "react";
-
 import UserService from "../services/user.service";
-import EventBus from "../common/EventBus";
+import authHeader from "../services/auth-header";
 
 const BoardFreelancer = () => {
   const [content, setContent] = useState("");
+  const [authorized, setAuthorized] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    UserService.getFreelancerBoard().then(
+    UserService.getFreelancerBoard({ headers: authHeader() }).then(
       (response) => {
         setContent(response.data);
+        setAuthorized(true);
       },
       (error) => {
-        const _content =
+        const errorMessage =
           (error.response &&
             error.response.data &&
             error.response.data.message) ||
           error.message ||
           error.toString();
 
-        setContent(_content);
+        setError(errorMessage);
 
         if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
+          setError("Unauthorized.");
         }
       }
     );
   }, []);
+
+  if (!authorized) {
+    return (
+      <div className="container">
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">

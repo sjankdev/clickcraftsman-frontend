@@ -33,7 +33,7 @@ const ClientPostedJobs = () => {
       {userRoles.includes("ROLE_CLIENT") ? (
         <div>
           <h2>My Job Postings</h2>
-          {loading && <div>Loading...</div>} {/* Display a loading message */}
+          {loading && <div>Loading...</div>}
           {errorMessage && !loading && (
             <div className="alert alert-danger">{errorMessage}</div>
           )}

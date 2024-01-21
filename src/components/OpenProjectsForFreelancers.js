@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import UserService from "../services/user.service";
-import EventBus from "../common/EventBus";
 import useApiData from "../services/useApiData";
 import "../assets/css/allJobs.css";
+import authHeader from "../services/auth-header";
 
 Modal.setAppElement("#root");
 
@@ -14,38 +14,50 @@ const OpenProjectsForFreelancers = () => {
   const [customMessage, setCustomMessage] = useState("");
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [appliedJobIds, setAppliedJobIds] = useState([]);
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true);
   const jobs = useApiData("http://localhost:8080/api/job-postings/getAllJobs");
 
   useEffect(() => {
     UserService.getOpenProjectsForFreelancersBoard()
-      .then(
-        (response) => {
-          setContent(response.data);
-        },
-        (error) => {
-          const _content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+      .then((response) => {
+        setContent(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        const unauthorizedError =
+          error.response && error.response.status === 401;
 
-          setContent(_content);
-
-          if (error.response && error.response.status === 401) {
-            EventBus.dispatch("logout");
-          }
+        if (unauthorizedError) {
+          setErrorMessage("You are not authorized to view this content.");
+        } else {
+          setErrorMessage("An unexpected error occurred.");
         }
-      );
+        setLoading(false);
+      });
+    UserService.getAppliedJobs()
+      .then((appliedIds) => {
+        setAppliedJobIds(appliedIds);
+      })
+      .catch((error) => {
+        const unauthorizedError =
+          error.response && error.response.status === 401;
 
-    UserService.getAppliedJobs().then((appliedIds) => {
-      setAppliedJobIds(appliedIds);
-    });
+        if (unauthorizedError) {
+          setErrorMessage("You are not authorized to view this content.");
+        } else {
+          setErrorMessage("An unexpected error occurred.");
+        }
+        setLoading(false);
+      });
   }, []);
 
+  const userRoles = authHeader().roles || [];
+
   const openModal = (jobId) => {
-    const hasAlreadyApplied = applicationMessages.some((msg) => msg.jobId === jobId);
+    const hasAlreadyApplied = applicationMessages.some(
+      (msg) => msg.jobId === jobId
+    );
 
     if (!hasAlreadyApplied) {
       setIsModalOpen(true);
@@ -65,7 +77,9 @@ const OpenProjectsForFreelancers = () => {
   };
 
   const handleApply = (jobId) => {
-    const hasAlreadyApplied = applicationMessages.some((msg) => msg.jobId === jobId);
+    const hasAlreadyApplied = applicationMessages.some(
+      (msg) => msg.jobId === jobId
+    );
 
     if (!hasAlreadyApplied) {
       if (!appliedJobIds.includes(jobId)) {
@@ -113,7 +127,11 @@ const OpenProjectsForFreelancers = () => {
           } else {
             setApplicationMessages((prevMessages) => [
               ...prevMessages,
-              { jobId, message: "An error occurred while submitting the job application." },
+              {
+                jobId,
+                message:
+                  "An error occurred while submitting the job application.",
+              },
             ]);
           }
           closeModal();
@@ -123,11 +141,7 @@ const OpenProjectsForFreelancers = () => {
 
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>Explore Exciting Job Opportunities</h3>
-      </header>
-
-      {content === "Freelancer Content. All Jobs" && (
+      {userRoles.includes("ROLE_FREELANCER") ? (
         <div>
           {jobs.map((job) => (
             <div key={job.id} className="job-card">
@@ -138,7 +152,6 @@ const OpenProjectsForFreelancers = () => {
                 <p>Location: {job.location}</p>
                 <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
               </div>
-
               {appliedJobIds.includes(job.id) ? (
                 <p>You have already applied for this job.</p>
               ) : (
@@ -146,7 +159,10 @@ const OpenProjectsForFreelancers = () => {
                   <button onClick={() => handleApply(job.id)}>Apply</button>
                   <hr />
                   {applicationMessages.map(
-                    (msg) => msg.jobId === job.id && <p key={msg.jobId}>{msg.message}</p>
+                    (msg) =>
+                      msg.jobId === job.id && (
+                        <p key={msg.jobId}>{msg.message}</p>
+                      )
                   )}
                   <Modal
                     isOpen={isModalOpen && selectedJobId === job.id}
@@ -158,7 +174,9 @@ const OpenProjectsForFreelancers = () => {
                       value={customMessage}
                       onChange={(e) => setCustomMessage(e.target.value)}
                     />
-                    <button onClick={handleApplyWithCustomMessage}>Apply</button>
+                    <button onClick={handleApplyWithCustomMessage}>
+                      Apply
+                    </button>
                     <button onClick={closeModal}>Cancel</button>
                   </Modal>
                 </div>
@@ -166,9 +184,14 @@ const OpenProjectsForFreelancers = () => {
             </div>
           ))}
         </div>
+      ) : (
+        <div>
+          <div className="alert alert-danger">
+            You are not authorized to view this content.
+          </div>
+        </div>
       )}
     </div>
   );
 };
-
 export default OpenProjectsForFreelancers;

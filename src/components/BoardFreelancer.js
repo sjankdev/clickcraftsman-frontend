@@ -4,47 +4,44 @@ import authHeader from "../services/auth-header";
 
 const BoardFreelancer = () => {
   const [content, setContent] = useState("");
-  const [authorized, setAuthorized] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    UserService.getFreelancerBoard({ headers: authHeader() }).then(
-      (response) => {
+    UserService.getFreelancerBoard()
+      .then((response) => {
         setContent(response.data);
-        setAuthorized(true);
-      },
-      (error) => {
-        const errorMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        setErrorMessage("");
+        setLoading(false);
+      })
+      .catch((error) => {
+        const unauthorizedError =
+          error.response && error.response.status === 401;
 
-        setError(errorMessage);
-
-        if (error.response && error.response.status === 401) {
-          setError("Unauthorized.");
+        if (unauthorizedError) {
+          setErrorMessage("You are not authorized to view this content.");
+        } else {
+          setErrorMessage("An unexpected error occurred.");
         }
-      }
-    );
+        setLoading(false);
+      });
   }, []);
 
-  if (!authorized) {
-    return (
-      <div className="container">
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
-      </div>
-    );
-  }
+  const userRoles = authHeader().roles || [];
 
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
-      </header>
+      {userRoles.includes("ROLE_FREELANCER") ? (
+        <div>
+          <h1>Freelancer verified</h1>
+        </div>
+      ) : (
+        <div>
+          <div className="alert alert-danger">
+            You are not authorized to view this content.
+          </div>
+        </div>
+      )}
     </div>
   );
 };

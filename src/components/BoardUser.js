@@ -14,9 +14,6 @@ const JobPostForm = () => {
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [isRemote, setIsRemote] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
-  const [error, setError] = useState(null);
 
   const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
   const locations = useApiData(
@@ -24,37 +21,24 @@ const JobPostForm = () => {
   );
 
   useEffect(() => {
-    UserService.getUserBoard({ headers: authHeader() }).then(
+    UserService.getUserBoard().then(
       (response) => {
-        if (response.data) {
-          if (response.status === 200) {
-            setContent(response.data);
-            setAuthorized(true);
-
-          } else {
-            setErrorMessage("You are not authorized to access this resource.");
-          }
-        } else {
-          setErrorMessage("You are not authorized to access this resource.");
-        }
+        setContent(response.data);
       },
       (error) => {
-        const errorMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        const unauthorizedError =
+          error.response && error.response.status === 401;
 
-          setError(errorMessage);
-        if (error.response && error.response.status === 401) {
-          setErrorMessage("You are not authorized to access this resource.");
+        if (unauthorizedError) {
+          setErrorMessage("You are not authorized to view this content.");
+        } else {
+          setErrorMessage("An unexpected error occurred.");
         }
       }
-    ).finally(() => {
-      setLoading(false);
-    });
+    );
   }, []);
+
+  const userRoles = authHeader().roles || [];
 
   const handleSkillsChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions || []);
@@ -97,21 +81,14 @@ const JobPostForm = () => {
       });
   };
 
-  if (!authorized) {
-    return (
-      <div className="container">
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
-      </div>
-    );
-  }
-
-  if (content) {
-    return (
-      <div className="container">
+  return (
+    <div className="container">
+      {userRoles.includes("ROLE_CLIENT") ? (
         <div>
           <h2>Post a Job</h2>
+          {errorMessage && (
+            <div className="alert alert-danger">{errorMessage}</div>
+          )}
           {successMessage && (
             <div className="alert alert-success">{successMessage}</div>
           )}
@@ -172,11 +149,17 @@ const JobPostForm = () => {
            <button type="submit" className="btn btn-primary">
               Post Job
             </button>
-          </form>
-      </div>
+            </form>
+        </div>
+      ) : (
+        <div>
+          <div className="alert alert-danger">
+            You are not authorized to view this content.
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-}
 
 export default JobPostForm;

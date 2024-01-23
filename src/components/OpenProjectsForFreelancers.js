@@ -151,6 +151,7 @@ const OpenProjectsForFreelancers = () => {
                 <p>Date Posted: {job.datePosted}</p>
                 <p>Location: {job.location}</p>
                 <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
+                <p>Required Skills: {job.requiredSkills.map(skill => skill.skillName).join(', ')}</p>
               </div>
               {appliedJobIds.includes(job.id) ? (
                 <p>You have already applied for this job.</p>

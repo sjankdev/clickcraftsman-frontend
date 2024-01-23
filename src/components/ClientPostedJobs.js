@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import authHeader from "../services/auth-header";
+import "../assets/css/clientPostedJobs.css";
 
 const ClientPostedJobs = () => {
   const [jobPostings, setJobPostings] = useState([]);
@@ -11,7 +12,7 @@ const ClientPostedJobs = () => {
     UserService.getClientJobPostings()
       .then((response) => {
         setJobPostings(response || []);
-        setLoading(false); 
+        setLoading(false);
       })
       .catch((error) => {
         const unauthorizedError =
@@ -22,7 +23,7 @@ const ClientPostedJobs = () => {
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
-        setLoading(false); 
+        setLoading(false);
       });
   }, []);
 
@@ -32,23 +33,24 @@ const ClientPostedJobs = () => {
     <div className="container">
       {userRoles.includes("ROLE_CLIENT") ? (
         <div>
-          <h2>My Job Postings</h2>
-          {loading && <div>Loading...</div>}
+          <h2 className="my-4">My Job Postings</h2>
+          {loading && <div className="text-muted">Loading...</div>}
           {errorMessage && !loading && (
-            <div className="alert alert-danger">{errorMessage}</div>
+            <div className="alert alert-danger mt-4">{errorMessage}</div>
           )}
           {jobPostings.length > 0 ? (
-            <ul>
+            <ul className="list-group mt-4">
               {jobPostings.map((job) => (
-                <li key={job.id}>
-                  <strong>{job.jobName}</strong>: {job.description}
+                <li key={job.id} className="list-group-item job-item">
+                  <h5 className="mb-1">{job.jobName}</h5>
+                  <p className="mb-1">{job.description}</p>
                 </li>
               ))}
             </ul>
           ) : (
             <div>
               {!loading && (
-                <div className="alert alert-danger">
+                <div className="alert alert-warning mt-4">
                   No job postings available.
                 </div>
               )}
@@ -56,7 +58,7 @@ const ClientPostedJobs = () => {
           )}
         </div>
       ) : (
-        <div>
+        <div className="mt-4">
           <div className="alert alert-danger">
             You are not authorized to view this content.
           </div>

@@ -46,7 +46,8 @@ return (
                   <div key={application.jobPosting.jobName} className="job-application">
                     <div className="job-info">
                       <strong>Job:</strong>{" "}
-                      {application.jobPosting.jobName || "Job Name Not Available"}
+                      {application.jobPosting.jobName || "Job Name Not Available"}{" "}
+                      <span className="app-count">({array.filter(app => app.jobPosting.jobName === application.jobPosting.jobName).length} applications)</span>
                     </div>
                   </div>
                 );
@@ -78,6 +79,7 @@ return (
     )}
   </div>
 );
+
 
 };
 

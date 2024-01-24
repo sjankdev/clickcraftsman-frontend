@@ -15,9 +15,20 @@
   margin-top: 10px;
 }
 
-.applications-list {
-  list-style: none;
-  padding: 0;
+.applications-container {
+  width: 100%;
+}
+
+.job-application {
+  margin-bottom: 20px;
+}
+
+.job-info {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .application-item {
@@ -34,13 +45,11 @@
   transform: scale(1.02);
 }
 
-.job-info,
 .freelancer-info,
 .message-info {
   margin-bottom: 15px;
 }
 
-.job-info strong,
 .freelancer-info strong,
 .message-info strong {
   margin-right: 10px;

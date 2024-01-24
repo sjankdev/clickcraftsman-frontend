@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import UserService from "../services/user.service";
 import authHeader from "../services/auth-header";
 import "../assets/css/clientPostedJobs.css";
@@ -41,10 +42,11 @@ const ClientPostedJobs = () => {
           {jobPostings.length > 0 ? (
             <ul className="list-group mt-4">
               {jobPostings.map((job) => (
-                <li key={job.id} className="list-group-item job-item">
-                  <h5 className="mb-1">{job.jobName}</h5>
-                  <p className="mb-1">{job.description}</p>
-                </li>
+                <div key={job.id}>
+                  <h5>{job.jobName}</h5>
+                  <p>{job.description}</p>
+                  <Link to={`/client/job/${job.id}`}>View Applicants</Link>
+                </div>
               ))}
             </ul>
           ) : (

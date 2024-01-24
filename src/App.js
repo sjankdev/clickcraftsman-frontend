@@ -15,6 +15,7 @@ import BoardFreelancer from "./components/BoardFreelancer";
 import OpenProjectsForFreelancers from "./components/OpenProjectsForFreelancers";
 import ClientReceivedApplications from "./components/ClientReceivedApplications.js";
 import ClientPostedJobs from "./components/ClientPostedJobs";
+import ClientJobApplicants from "./components/ClientJobApplicants";
 
 import { logout } from "./slices/auth";
 
@@ -179,6 +180,7 @@ const App = () => {
             <Route path="/client-received-applications" element={<ClientReceivedApplications />} />
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/client-projects" element={<ClientPostedJobs />} />
+            <Route path="/client/job/:jobId" element={<ClientJobApplicants />} />
           </Routes>
         </div>
       </div>

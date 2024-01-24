@@ -1,0 +1,58 @@
+.client-received-applications {
+  margin: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.page-title {
+  font-size: 28px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.no-applications-msg {
+  color: #7f8c8d;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.applications-list {
+  list-style: none;
+  padding: 0;
+}
+
+.application-item {
+  border: 1px solid #ecf0f1;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #ecf0f1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.application-item:hover {
+  transform: scale(1.02);
+}
+
+.job-info,
+.freelancer-info,
+.message-info {
+  margin-bottom: 15px;
+}
+
+.job-info strong,
+.freelancer-info strong,
+.message-info strong {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #3498db;
+}
+
+.alert-danger {
+  background-color: #e74c3c;
+  border-color: #c0392b;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+}

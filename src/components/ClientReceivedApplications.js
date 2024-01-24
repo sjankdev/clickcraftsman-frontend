@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import authHeader from "../services/auth-header";
+import "../assets/css/clientReceivedApplications.css";
 
 const ClientReceivedApplications = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -29,25 +30,29 @@ const ClientReceivedApplications = () => {
   const userRoles = authHeader().roles || [];
 
   return (
-    <div className="container">
+    <div className="container client-received-applications">
       {userRoles.includes("ROLE_CLIENT") ? (
         <div>
-          <h2>Received applications for projects</h2>
+          <h2 className="page-title">Received Applications for Projects</h2>
           {jobApplications.length === 0 ? (
-            <p>No job applications received.</p>
+            <p className="no-applications-msg">No job applications received.</p>
           ) : (
-            <ul>
+            <ul className="applications-list">
               {jobApplications.map((application, index) => (
-                <li key={application.id || index}>
-                  <strong>Job:</strong>{" "}
-                  {application.jobPosting
-                    ? application.jobPosting.jobName
-                    : "Job Name Not Available"}
-                  <br />
-                  <strong>Freelancer:</strong> {application.freelancerFirstName}{" "}
-                  {application.freelancerLastName}
-                  <br />
-                  <strong>Message:</strong> {application.messageToClient}
+                <li key={application.id || index} className="application-item">
+                  <div className="job-info">
+                    <strong>Job:</strong>{" "}
+                    {application.jobPosting
+                      ? application.jobPosting.jobName
+                      : "Job Name Not Available"}
+                  </div>
+                  <div className="freelancer-info">
+                    <strong>Freelancer:</strong>{" "}
+                    {application.freelancerFirstName} {application.freelancerLastName}
+                  </div>
+                  <div className="message-info">
+                    <strong>Message:</strong> {application.messageToClient}
+                  </div>
                 </li>
               ))}
             </ul>
@@ -63,4 +68,5 @@ const ClientReceivedApplications = () => {
     </div>
   );
 };
+
 export default ClientReceivedApplications;

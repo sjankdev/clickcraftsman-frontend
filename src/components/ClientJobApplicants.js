@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UserService from "../services/user.service";
+import "../assets/css/clientJobApplicants.css";
+import { Container } from "react-bootstrap";
 
 const ClientJobApplicants = () => {
   const { jobId } = useParams();
@@ -19,18 +21,18 @@ const ClientJobApplicants = () => {
   }, [jobId]);
 
   return (
-    <div>
-      <h2>Job Applicants for Job ID: {jobId}</h2>
+    <Container>
+      <h2 className="mt-4">Job Applicants for Job ID: {jobId}</h2>
       {applicants.map((applicant) => (
-        <div key={applicant.id}>
-          <p>
+        <div key={applicant.id} className="applicant-card">
+          <p className="applicant-name">
             Freelancer: {applicant.freelancerFirstName}{" "}
             {applicant.freelancerLastName}
           </p>
-          <p>Message: {applicant.messageToClient}</p>
+          <p className="message">Message: {applicant.messageToClient}</p>
         </div>
       ))}
-    </div>
+    </Container>
   );
 };
 

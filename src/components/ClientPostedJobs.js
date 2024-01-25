@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import UserService from "../services/user.service";
 import authHeader from "../services/auth-header";
 import "../assets/css/clientPostedJobs.css";
+import { Container, Alert, ListGroup, Spinner } from "react-bootstrap";
 
 const ClientPostedJobs = () => {
   const [jobPostings, setJobPostings] = useState([]);
@@ -30,41 +32,44 @@ const ClientPostedJobs = () => {
   const userRoles = authHeader().roles || [];
 
   return (
-    <div className="container">
+    <Container>
       {userRoles.includes("ROLE_CLIENT") ? (
         <div>
           <h2 className="my-4">My Job Postings</h2>
-          {loading && <div className="text-muted">Loading...</div>}
+          {loading && <Spinner animation="border" className="text-muted" />}
           {errorMessage && !loading && (
-            <div className="alert alert-danger mt-4">{errorMessage}</div>
+            <Alert variant="danger" className="mt-4">
+              {errorMessage}
+            </Alert>
           )}
           {jobPostings.length > 0 ? (
-            <ul className="list-group mt-4">
+            <ListGroup className="mt-4">
               {jobPostings.map((job) => (
-                <li key={job.id} className="list-group-item job-item">
-                  <h5 className="mb-1">{job.jobName}</h5>
-                  <p className="mb-1">{job.description}</p>
-                </li>
+                <ListGroup.Item key={job.id}>
+                  <h5>{job.jobName}</h5>
+                  <p>{job.description}</p>
+                  <Link to={`/client/job/${job.id}`}>View Applicants</Link>
+                </ListGroup.Item>
               ))}
-            </ul>
+            </ListGroup>
           ) : (
             <div>
               {!loading && (
-                <div className="alert alert-warning mt-4">
+                <Alert variant="warning" className="mt-4">
                   No job postings available.
-                </div>
+                </Alert>
               )}
             </div>
           )}
         </div>
       ) : (
         <div className="mt-4">
-          <div className="alert alert-danger">
+          <Alert variant="danger">
             You are not authorized to view this content.
-          </div>
+          </Alert>
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 

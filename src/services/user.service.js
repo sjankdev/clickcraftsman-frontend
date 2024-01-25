@@ -49,6 +49,20 @@ const applyForJob = (jobId, applicationData) => {
     });
 };
 
+const getJobApplicationsForJob = (jobId) => {
+  const url = `${API_URL_JOB_APPLY}/job-applications/${jobId}`;
+
+  return axios
+    .get(url, { headers: authHeader() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(`Error fetching job applications for job ${jobId}`, error);
+      throw error;
+    });
+};
+
 const getAppliedJobs = () => {
   const url = `${API_URL_JOB_APPLY}/applied-jobs`;
 
@@ -103,6 +117,7 @@ const userService = {
   getClientJobPostings,
   getClientJobApplications,
   getClientPostedJobsBoard,
+  getJobApplicationsForJob,
 };
 
 export default userService;

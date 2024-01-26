@@ -23,7 +23,9 @@ const getOpenProjectsForFreelancersBoard = () => {
 };
 
 const getClientReceivedApplicationsBoard = () => {
-  return axios.get(API_URL + "client-received-applications", { headers: authHeader() });
+  return axios.get(API_URL + "client-received-applications", {
+    headers: authHeader(),
+  });
 };
 
 const getClientPostedJobsBoard = () => {
@@ -45,6 +47,23 @@ const applyForJob = (jobId, applicationData) => {
     })
     .catch((error) => {
       console.error("Error submitting job application", error);
+      throw error;
+    });
+};
+
+const getPublicProfile = (freelancerId) => {
+  const url = `http://localhost:8080/api/public-freelancers/${freelancerId}`;
+
+  return axios
+    .get(url, { headers: authHeader() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(
+        `Error fetching public profile for freelancer ${freelancerId}`,
+        error
+      );
       throw error;
     });
 };
@@ -118,6 +137,7 @@ const userService = {
   getClientJobApplications,
   getClientPostedJobsBoard,
   getJobApplicationsForJob,
+  getPublicProfile,
 };
 
 export default userService;

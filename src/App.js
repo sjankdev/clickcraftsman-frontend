@@ -194,8 +194,8 @@ const App = () => {
             <Route path="/client-projects" element={<ClientPostedJobs />} />
             <Route path="/client/job/:jobId" element={<ClientJobApplicants />} />
             <Route path="/public-profiles" element={<FreelancerPublicProfiles />} />
-            <Route path="/public-profile/:freelancerId" component={PublicProfileDetail} />
-                      </Routes>
+            <Route path="/public-profile/:freelancerId" element={<PublicProfileDetail />} />
+          </Routes>
         </div>
       </div>
     </Router>

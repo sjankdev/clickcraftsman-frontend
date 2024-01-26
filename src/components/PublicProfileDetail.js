@@ -7,21 +7,19 @@ const PublicProfileDetail = () => {
   const { freelancerId } = useParams();
 
   useEffect(() => {
-    console.log("ID from params:", freelancerId);
+    console.log('ID from params:', freelancerId);
 
     const isValidId = !isNaN(Number(freelancerId));
 
     if (isValidId) {
       UserService.getPublicProfile(freelancerId)
         .then((response) => {
-          console.log("API Response:", response);
+          console.log('Profile details:', response);
           setProfile(response);
         })
-        .catch((error) => {
-          console.error("Error fetching public profile:", error);
-        });
+        .catch((error) => console.error('Error fetching public profile:', error));
     } else {
-      console.error("Invalid freelancerId:", freelancerId);
+      console.error('Invalid freelancerId:', freelancerId);
     }
   }, [freelancerId]);
 
@@ -31,9 +29,7 @@ const PublicProfileDetail = () => {
 
   return (
     <div>
-      <h1>
-        {profile.firstName} {profile.lastName}'s Profile
-      </h1>
+      <h1>{profile.firstName} {profile.lastName}'s Profile</h1>
       <p>Contact: {profile.contactPhone}</p>
       <p>Location: {profile.location}</p>
       <p>Portfolio: {profile.portfolio}</p>

@@ -16,12 +16,15 @@ import OpenProjectsForFreelancers from "./components/OpenProjectsForFreelancers"
 import ClientReceivedApplications from "./components/ClientReceivedApplications.js";
 import ClientPostedJobs from "./components/ClientPostedJobs";
 import ClientJobApplicants from "./components/ClientJobApplicants";
+import FreelancerPublicProfiles from "./components/FreelancerPublicProfiles";
+import PublicProfileDetail from "./components/PublicProfileDetail";
 
 import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
 
 const App = () => {
+  const [showFreelancerPublicProfilesBoard, setFreelancerPublicProfilesBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [showUserBoard, setUserBoard] = useState(false);
   const [showFreelancerBoard, setShowFreelancerBoard] = useState(false);
@@ -45,11 +48,13 @@ const App = () => {
       setOpenProjectsForFreelancersBoard(
         currentUser.roles.includes("ROLE_FREELANCER")
       );
+      setFreelancerPublicProfilesBoard(currentUser.roles.includes("ROLE_CLIENT"));
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
       setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
       setClientPostedJobsBoard(currentUser.roles.includes("ROLE_CLIENT"));
       setClientReceivedApplications(currentUser.roles.includes("ROLE_CLIENT"));
     } else {
+      setFreelancerPublicProfilesBoard(false);
       setShowAdminBoard(false);
       setUserBoard(false);
       setShowFreelancerBoard(false);
@@ -92,6 +97,13 @@ const App = () => {
               <li className="nav-item">
                 <Link to={"/projects"} className="nav-link">
                   Projects
+                </Link>
+              </li>
+            )}
+            {showFreelancerPublicProfilesBoard && (
+              <li className="nav-item">
+                <Link to={"/public-profiles"} className="nav-link">
+                  Freelancers
                 </Link>
               </li>
             )}
@@ -181,7 +193,9 @@ const App = () => {
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/client-projects" element={<ClientPostedJobs />} />
             <Route path="/client/job/:jobId" element={<ClientJobApplicants />} />
-          </Routes>
+            <Route path="/public-profiles" element={<FreelancerPublicProfiles />} />
+            <Route path="/public-profile/:freelancerId" component={PublicProfileDetail} />
+                      </Routes>
         </div>
       </div>
     </Router>

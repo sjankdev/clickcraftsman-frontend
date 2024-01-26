@@ -22,8 +22,7 @@ const FreelancerPublicProfiles = () => {
     <div>
       <h1>Public Freelancer Profiles</h1>
       {publicProfiles.map((profile) => (
-        <div key={profile.firstName + profile.lastName}>
-          {console.log("Profile ID:", profile.id)}
+        <div key={profile.id}>
           <Link to={`/public-profile/${profile.id}`}>
             {profile.firstName} {profile.lastName}
           </Link>

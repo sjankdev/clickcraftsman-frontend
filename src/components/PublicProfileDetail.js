@@ -13,10 +13,13 @@ const PublicProfileDetail = () => {
 
     if (isValidId) {
       UserService.getPublicProfile(freelancerId)
-        .then((response) => setProfile(response))
-        .catch((error) =>
-          console.error("Error fetching public profile:", error)
-        );
+        .then((response) => {
+          console.log("API Response:", response);
+          setProfile(response);
+        })
+        .catch((error) => {
+          console.error("Error fetching public profile:", error);
+        });
     } else {
       console.error("Invalid freelancerId:", freelancerId);
     }

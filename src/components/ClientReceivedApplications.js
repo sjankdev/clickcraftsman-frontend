@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import UserService from "../services/user.service";
 import authHeader from "../services/auth-header";
 import "../assets/css/clientReceivedApplications.css";
@@ -9,12 +10,17 @@ const ClientReceivedApplications = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Fetching job applications...");
+
     UserService.getClientJobApplications()
       .then((response) => {
+        console.log("Received job applications:", response);
         setJobApplications(response || []);
         setLoading(false);
       })
       .catch((error) => {
+        console.error("Error fetching job applications:", error);
+
         const unauthorizedError =
           error.response && error.response.status === 401;
 
@@ -29,6 +35,8 @@ const ClientReceivedApplications = () => {
 
   const userRoles = authHeader().roles || [];
 
+  console.log("Rendering ClientReceivedApplications component...");
+
   return (
     <div className="container client-received-applications">
       {userRoles.includes("ROLE_CLIENT") ? (
@@ -38,55 +46,32 @@ const ClientReceivedApplications = () => {
             <p className="no-applications-msg">No job applications received.</p>
           ) : (
             <div className="applications-container">
-              {jobApplications.reduce((acc, application, index, array) => {
-                if (
-                  index === 0 ||
-                  application.jobPosting.jobName !==
-                    array[index - 1].jobPosting.jobName
-                ) {
-                  acc.push(
-                    <div
-                      key={application.jobPosting.jobName}
-                      className="job-application"
-                    >
-                      <div className="job-info">
-                        <strong>Job:</strong>{" "}
-                        {application.jobPosting.jobName ||
-                          "Job Name Not Available"}{" "}
-                        <span className="app-count">
-                          (
-                          {
-                            array.filter(
-                              (app) =>
-                                app.jobPosting.jobName ===
-                                application.jobPosting.jobName
-                            ).length
-                          }{" "}
-                          applications)
-                        </span>
-                      </div>
-                    </div>
-                  );
-                }
+              {jobApplications.map((application, index) => {
+                console.log("Rendering Application object:", application);
 
-                acc.push(
-                  <div
-                    key={application.id || index}
-                    className="application-item"
-                  >
+                return (
+                  <div key={index} className="application-item">
                     <div className="freelancer-info">
                       <strong>Freelancer:</strong>{" "}
-                      {application.freelancerFirstName}{" "}
-                      {application.freelancerLastName}
+                      {application.freelancerId ? (
+                        <Link
+                          to={`/public-profile/${application.freelancerId}`}
+                        >
+                          {application.freelancerFirstName}{" "}
+                          {application.freelancerLastName}
+                        </Link>
+                      ) : (
+                        <span className="invalid-freelancer-id">
+                          Invalid freelancerId: null
+                        </span>
+                      )}
                     </div>
                     <div className="message-info">
                       <strong>Message:</strong> {application.messageToClient}
                     </div>
                   </div>
                 );
-
-                return acc;
-              }, [])}
+              })}
             </div>
           )}
         </div>

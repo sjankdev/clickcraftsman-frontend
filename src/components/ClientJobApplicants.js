@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import UserService from "../services/user.service";
 import "../assets/css/clientJobApplicants.css";
 import { Container } from "react-bootstrap";
@@ -26,8 +26,19 @@ const ClientJobApplicants = () => {
       {applicants.map((applicant) => (
         <div key={applicant.id} className="applicant-card">
           <p className="applicant-name">
-            Freelancer: {applicant.freelancerFirstName}{" "}
-            {applicant.freelancerLastName}
+            {applicant.freelancerId ? (
+              <>
+                Freelancer:{" "}
+                <Link to={`/public-profile/${applicant.freelancerId}`}>
+                  {applicant.freelancerFirstName} {applicant.freelancerLastName}
+                </Link>
+              </>
+            ) : (
+              <>
+                Freelancer: {applicant.freelancerFirstName}{" "}
+                {applicant.freelancerLastName}
+              </>
+            )}
           </p>
           <p className="message">Message: {applicant.messageToClient}</p>
         </div>

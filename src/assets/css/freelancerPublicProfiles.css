@@ -1,0 +1,79 @@
+:root {
+    --primary-color: #3498db; 
+    --secondary-color: #e67e22; 
+    --background-color: #f8f9fa; 
+    --text-color: #333;
+    --accent-color: #d35400; 
+  }
+  
+  .freelancer-public-profiles-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--background-color);
+  }
+  
+  .profiles-list {
+    display: grid;
+    gap: 20px;
+  }
+  
+  .profile-card {
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    background-color: #fff;
+    overflow: hidden;
+  }
+  
+  .profile-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .profile-details {
+    padding: 15px;
+  }
+  
+  .profile-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+  }
+  
+  .profile-heading {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+  }
+  
+  .profile-info {
+    margin: 5px 0;
+    color: var(--text-color);
+  }
+  
+  .profile-description {
+    margin-top: 15px;
+    color: var(--text-color);
+  }
+  
+  .profile-links {
+    margin-top: 15px;
+  }
+  
+  .profile-link {
+    display: inline-block;
+    margin-right: 10px;
+    color: #fff;
+    background-color: var(--secondary-color);
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+  
+    &:hover {
+      background-color: #d35400;
+    }
+  }
+  

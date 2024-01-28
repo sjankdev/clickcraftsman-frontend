@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserService from "../services/user.service";
+import "../assets/css/freelancerPublicProfileDetail.css";
 
 const PublicProfileDetail = () => {
   const [profile, setProfile] = useState(null);
@@ -24,17 +25,17 @@ const PublicProfileDetail = () => {
   }, [freelancerId]);
 
   if (!profile) {
-    return <div>Loading...</div>;
+    return <div className="public-profile-detail-container"><div className="loading-text">Loading...</div></div>;
   }
 
   return (
-    <div>
-      <h1>{profile.firstName} {profile.lastName}'s Profile</h1>
-      <p>Contact: {profile.contactPhone}</p>
-      <p>Location: {profile.location}</p>
-      <p>Portfolio: {profile.portfolio}</p>
-      <p>Years of Experience: {profile.yearsOfExperience}</p>
-      <p>Skills: {profile.skills.join(", ")}</p>
+    <div className="public-profile-detail-container">
+      <h1 className="profile-header">{profile.firstName} {profile.lastName}'s Profile</h1>
+      <p className="profile-info">Contact: {profile.contactPhone}</p>
+      <p className="profile-info">Location: {profile.location}</p>
+      <p className="profile-info">Portfolio: {profile.portfolio}</p>
+      <p className="profile-info">Years of Experience: {profile.yearsOfExperience}</p>
+      <p className="profile-info">Skills: {profile.skills.join(", ")}</p>
     </div>
   );
 };

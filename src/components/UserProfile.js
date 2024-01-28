@@ -66,49 +66,50 @@ const UserProfile = () => {
 
   const handleInputChange = (e) => {
     const { name, value, options } = e.target;
-
+  
     const isMultiSelect = options && options.length > 1;
-
+    const inputValue = isMultiSelect ? getSelectedOptions(options) : value;
+  
     setUpdateFormData((prevData) => ({
       ...prevData,
-      [name]: isMultiSelect ? getSelectedOptions(options) : value,
+      [name]: name === 'location' ? inputValue[0] : inputValue,
     }));
   };
+  
 
-  const getSelectedOptions = (options) => {
-    return Array.from(options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
-  };
+const getSelectedOptions = (options) => {
+  return Array.from(options)
+    .filter((option) => option.selected)
+    .map((option) => option.value);
+};
 
-  const handleUpdateClick = async () => {
-    try {
-      const updatedData = {
-        ...updateFormData,
-        skills: Array.isArray(updateFormData.skills)
-          ? updateFormData.skills
-          : [updateFormData.skills],
-      };
 
-      await axios.post("http://localhost:8080/api/user/update", updatedData, {
-        headers: authHeader(),
-      });
+const handleUpdateClick = async () => {
+  try {
+    const updatedData = {
+      ...updateFormData,
+      skills: Array.isArray(updateFormData.skills)
+        ? updateFormData.skills
+        : [updateFormData.skills],
+    };
 
-      setIsEditing(false);
+    await axios.post("http://localhost:8080/api/user/update", updatedData, {
+      headers: authHeader(),
+    });
 
-      const response = await axios.get(
-        "http:  localhost:8080/api/user/profile",
-        {
-          headers: authHeader(),
-        }
-      );
+    setIsEditing(false);
 
-      console.log("Received updated user profile data:", response.data);
-      setUserData(response.data);
-    } catch (error) {
-      console.error("Error updating user data:", error);
-    }
-  };
+    const response = await axios.get("http://localhost:8080/api/user/profile", {
+      headers: authHeader(),
+    });
+
+    console.log("Received updated user profile data:", response.data);
+    setUserData(response.data);
+  } catch (error) {
+    console.error("Error updating user data:", error);
+  }
+};
+
 
   const userRoles = authHeader().roles || [];
 

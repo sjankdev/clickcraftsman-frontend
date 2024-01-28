@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import authHeader from "../services/auth-header";
+import useApiData from "../services/useApiData";
 
 const UserProfile = () => {
+  const locations = useApiData("http://localhost:8080/api/locations/getAllLocations");
+  
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -123,12 +126,18 @@ const UserProfile = () => {
               <br />
               <label>
                 Location:
-                <input
-                  type="text"
+                <select
                   name="location"
                   value={updateFormData.location}
                   onChange={handleInputChange}
-                />
+                >
+                  <option value="" disabled>Select Location</option>
+                  {locations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
               </label>
             </>
           )}
@@ -165,12 +174,18 @@ const UserProfile = () => {
               <br />
               <label>
                 Location:
-                <input
-                  type="text"
+                <select
                   name="location"
                   value={updateFormData.location}
                   onChange={handleInputChange}
-                />
+                >
+                  <option value="" disabled>Select Location</option>
+                  {locations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
               </label>
               <br />
             </>
@@ -192,8 +207,7 @@ const UserProfile = () => {
                 <strong>Contact Phone:</strong> {userData.contactPhone}
               </p>
               <p>
-                <strong>Location:</strong> {userData.location}
-              </p>
+              <strong>Location:</strong> {userData.location}              </p>
             </>
           )}
           {userRoles.includes("ROLE_FREELANCER") && (

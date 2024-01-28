@@ -6,11 +6,19 @@ const UserProfile = () => {
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
+    contactPhone: "",
+    location: "",
+    portfolio: "",
+    yearsOfExperience: 0,
   });
 
   const [updateFormData, setUpdateFormData] = useState({
     firstName: "",
     lastName: "",
+    contactPhone: "",
+    location: "",
+    portfolio: "",
+    yearsOfExperience: 0,
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -21,7 +29,7 @@ const UserProfile = () => {
         const response = await axios.get(
           "http://localhost:8080/api/user/profile",
           {
-            headers: authHeader(), 
+            headers: authHeader(),
           }
         );
         console.log("Received user profile data:", response.data);
@@ -36,8 +44,7 @@ const UserProfile = () => {
 
   const handleEditClick = () => {
     setUpdateFormData({
-      firstName: userData.firstName,
-      lastName: userData.lastName,
+      ...userData,
     });
     setIsEditing(true);
   };
@@ -75,7 +82,8 @@ const UserProfile = () => {
     }
   };
 
-  console.log("Current user data:", userData);
+  const userRoles = authHeader().roles || [];
+
   return (
     <div>
       <h2>User Profile</h2>
@@ -101,6 +109,73 @@ const UserProfile = () => {
             />
           </label>
           <br />
+          {userRoles.includes("ROLE_CLIENT") && (
+            <>
+              <label>
+                Contact Phone:
+                <input
+                  type="text"
+                  name="contactPhone"
+                  value={updateFormData.contactPhone}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <br />
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="location"
+                  value={updateFormData.location}
+                  onChange={handleInputChange}
+                />
+              </label>
+            </>
+          )}
+          {userRoles.includes("ROLE_FREELANCER") && (
+            <>
+              <label>
+                Portfolio:
+                <input
+                  type="text"
+                  name="portfolio"
+                  value={updateFormData.portfolio}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <br />
+              <label>
+                Years of Experience:
+                <input
+                  type="number"
+                  name="yearsOfExperience"
+                  value={updateFormData.yearsOfExperience}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Contact Phone:
+                <input
+                  type="text"
+                  name="contactPhone"
+                  value={updateFormData.contactPhone}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <br />
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="location"
+                  value={updateFormData.location}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <br />
+            </>
+          )}
+          <br />
           <button onClick={handleUpdateClick}>Update</button>
         </div>
       ) : (
@@ -111,6 +186,33 @@ const UserProfile = () => {
           <p>
             <strong>Last Name:</strong> {userData.lastName}
           </p>
+          {userRoles.includes("ROLE_CLIENT") && (
+            <>
+              <p>
+                <strong>Contact Phone:</strong> {userData.contactPhone}
+              </p>
+              <p>
+                <strong>Location:</strong> {userData.location}
+              </p>
+            </>
+          )}
+          {userRoles.includes("ROLE_FREELANCER") && (
+            <>
+            <p>
+                <strong>Contact Phone:</strong> {userData.contactPhone}
+              </p>
+              <p>
+                <strong>Location:</strong> {userData.location}
+              </p>
+              <p>
+                <strong>Portfolio:</strong> {userData.portfolio}
+              </p>
+              <p>
+                <strong>Years of Experience:</strong>{" "}
+                {userData.yearsOfExperience}
+              </p>
+            </>
+          )}
           <button onClick={handleEditClick}>Edit</button>
         </div>
       )}

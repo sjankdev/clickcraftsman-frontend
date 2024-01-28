@@ -59,7 +59,7 @@ const App = () => {
       setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
       setClientPostedJobsBoard(currentUser.roles.includes("ROLE_CLIENT"));
       setClientReceivedApplications(currentUser.roles.includes("ROLE_CLIENT"));
-      setUserProfileBoard(currentUser.roles.includes("ROLE_CLIENT"));
+      setUserProfileBoard(currentUser.roles.includes("ROLE_CLIENT") || currentUser.roles.includes("ROLE_FREELANCER"));
     } else {
       setFreelancerPublicProfilesBoard(false);
       setShowAdminBoard(false);
@@ -103,8 +103,8 @@ const App = () => {
 
             {showUserProfileBoard && (
               <li className="nav-item">
-                <Link to={"/public-profiles-board"} className="nav-link">
-                  OVOVOVO
+                <Link to={"/my-profile"} className="nav-link">
+                  My profile
                 </Link>
               </li>
             )}
@@ -144,14 +144,6 @@ const App = () => {
               <li className="nav-item">
                 <Link to={"/admin"} className="nav-link">
                   Admin Board
-                </Link>
-              </li>
-            )}
-
-            {currentUser && (
-              <li className="nav-item">
-                <Link to={"/profile"} className="nav-link">
-                  Profile
                 </Link>
               </li>
             )}
@@ -201,7 +193,6 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/client" element={<BoardUser />} />
             <Route path="/freelancer" element={<BoardFreelancer />} />
             <Route path="/projects" element={<OpenProjectsForFreelancers />} />
@@ -223,7 +214,7 @@ const App = () => {
               path="/public-profile/:freelancerId"
               element={<PublicProfileDetail />}
             />
-            <Route path="/public-profiles-board" element={<UserProfile />} />
+            <Route path="/my-profile" element={<UserProfile />} />
           </Routes>
         </div>
       </div>

@@ -9,7 +9,7 @@ const FreelancerPublicProfiles = () => {
   useEffect(() => {
     console.log("Fetching public profiles...");
     axios
-      .get("http://localhost:8080/api/public-freelancers/getAllFreelancers")
+      .get("http://localhost:8080/api/freelancer/getAllFreelancers")
       .then((response) => {
         console.log("Public profiles fetched successfully:", response.data);
         setPublicProfiles(response.data);

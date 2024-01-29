@@ -5,9 +5,9 @@ import useApiData from "../services/useApiData";
 
 const UserProfile = () => {
   const locations = useApiData(
-    "http://localhost:8080/api/locations/getAllLocations"
+    "http://localhost:8080/api/utils/getAllLocations"
   );
-  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const skillsArray = Array.isArray(skills) ? skills : [skills];
 
   const [userData, setUserData] = useState({

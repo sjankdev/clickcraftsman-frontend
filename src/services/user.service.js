@@ -2,9 +2,7 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8080/api/test/";
-const API_URL_JOB_APPLY = "http://localhost:8080/api/job-applications";
-
-const API_URL_JOB_POST = "http://localhost:8080/api/job-postings";
+const API_URL_JOB = "http://localhost:8080/api/job";
 
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
@@ -37,7 +35,7 @@ const getAdminBoard = () => {
 };
 
 const applyForJob = (jobId, applicationData) => {
-  const url = `${API_URL_JOB_APPLY}/apply/${jobId}`;
+  const url = `${API_URL_JOB}/apply/${jobId}`;
 
   return axios
     .post(url, applicationData, { headers: authHeader() })
@@ -52,7 +50,7 @@ const applyForJob = (jobId, applicationData) => {
 };
 
 const getPublicProfile = (freelancerId) => {
-  const url = `http://localhost:8080/api/public-freelancers/${freelancerId}`;
+  const url = `http://localhost:8080/api/freelancer/${freelancerId}`;
 
   return axios
     .get(url, { headers: authHeader() })
@@ -69,7 +67,7 @@ const getPublicProfile = (freelancerId) => {
 };
 
 const getJobApplicationsForJob = (jobId) => {
-  const url = `${API_URL_JOB_APPLY}/job-applications/${jobId}`;
+  const url = `${API_URL_JOB}/job-applications/${jobId}`;
 
   return axios
     .get(url, { headers: authHeader() })
@@ -83,7 +81,7 @@ const getJobApplicationsForJob = (jobId) => {
 };
 
 const getAppliedJobs = () => {
-  const url = `${API_URL_JOB_APPLY}/applied-jobs`;
+  const url = `${API_URL_JOB}/applied-jobs`;
 
   return axios
     .get(url, { headers: authHeader() })
@@ -97,7 +95,7 @@ const getAppliedJobs = () => {
 };
 
 const getClientJobApplications = () => {
-  const url = `${API_URL_JOB_APPLY}/client-job-applications`;
+  const url = `${API_URL_JOB}/client-received-applications`;
 
   return axios
     .get(url, { headers: authHeader() })
@@ -111,7 +109,7 @@ const getClientJobApplications = () => {
 };
 
 const getClientJobPostings = () => {
-  const url = `${API_URL_JOB_POST}/client-job-postings`;
+  const url = `${API_URL_JOB}/client-job-postings`;
 
   return axios
     .get(url, { headers: authHeader() })

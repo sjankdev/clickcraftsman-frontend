@@ -16,7 +16,7 @@ const OpenProjectsForFreelancers = () => {
   const [appliedJobIds, setAppliedJobIds] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
-  const jobs = useApiData("http://localhost:8080/api/job-postings/getAllJobs");
+  const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
 
   useEffect(() => {
     UserService.getOpenProjectsForFreelancersBoard()

@@ -15,9 +15,9 @@ const JobPostForm = () => {
   const [location, setLocation] = useState("");
   const [isRemote, setIsRemote] = useState(false);
 
-  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const locations = useApiData(
-    "http://localhost:8080/api/locations/getAllLocations"
+    "http://localhost:8080/api/utils/getAllLocations"
   );
 
   useEffect(() => {

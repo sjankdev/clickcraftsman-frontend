@@ -6,7 +6,7 @@ const API_URL = "http://localhost:8080";
 class ClientJobPostingService {
   postJob(userEmail, jobPostingData) {
     return axios.post(
-      `${API_URL}/api/job-postings/post`,
+      `${API_URL}/api/job/post`,
       { userEmail, ...jobPostingData },
       { headers: authHeader() }
     );

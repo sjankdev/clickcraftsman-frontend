@@ -9,8 +9,8 @@ import useApiData from "../services/useApiData";
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
-  const locations = useApiData("http://localhost:8080/api/locations/getAllLocations");
-  const skills = useApiData("http://localhost:8080/api/skills/getAllSkills");
+  const locations = useApiData("http://localhost:8080/api/utils/getAllLocations");
+  const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();

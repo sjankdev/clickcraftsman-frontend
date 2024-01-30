@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import UserService from "../services/user.service";
-import "../assets/css/freelancerPublicProfileDetail.css";
+import UserService from "../../services/user.service";
+import "../../assets/css/freelancerPublicProfileDetail.css";
 
-const PublicProfileDetail = () => {
+const FreelancerProfileDetail = () => {
   const [profile, setProfile] = useState(null);
   const { freelancerId } = useParams();
 
@@ -40,4 +40,4 @@ const PublicProfileDetail = () => {
   );
 };
 
-export default PublicProfileDetail;
+export default FreelancerProfileDetail;

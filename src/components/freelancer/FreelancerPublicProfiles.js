@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "../assets/css/freelancerPublicProfiles.css";
+import "../../assets/css/freelancerPublicProfiles.css";
 
 const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);

@@ -8,24 +8,23 @@ import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
-import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardAdmin from "./components/BoardAdmin";
-import BoardFreelancer from "./components/BoardFreelancer";
-import OpenProjectsForFreelancers from "./components/OpenProjectsForFreelancers";
-import ClientReceivedApplications from "./components/ClientReceivedApplications.js";
-import ClientPostedJobs from "./components/ClientPostedJobs";
-import ClientJobApplicants from "./components/ClientJobApplicants";
-import FreelancerPublicProfiles from "./components/FreelancerPublicProfiles";
-import PublicProfileDetail from "./components/PublicProfileDetail";
+import PostJob from "./components/client/PostJob.js";
+import BoardFreelancer from "./components/freelancer/BoardFreelancer";
+import OpenProjectsForFreelancers from "./components/freelancer/OpenProjectsForFreelancers";
+import ClientReceivedApplications from "./components/client/ClientReceivedApplications.js";
+import ClientPostedJobs from "./components/client/ClientPostedJobs.js";
+import ClientJobApplicants from "./components/client/ClientJobApplicants.js";
+import FreelancerProfileDetail from  "./components/freelancer/FreelancerProfileDetail";
 import UserProfile from "./components/UserProfile";
+import FreelancerPublicProfiles from "./components/freelancer/FreelancerPublicProfiles";
 
 import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
 
 const App = () => {
-  const [showFreelancerPublicProfilesBoard, setFreelancerPublicProfilesBoard] =
+  const [showFreelancerPublicProfilesBoard, setFreelancerPublicProfilesBoard] = useState(false);
+  const [showFreelancerProfileDetail, setFreelancerProfileDetail] =
     useState(false);
   const [showUserProfileBoard, setUserProfileBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
@@ -52,6 +51,9 @@ const App = () => {
       setOpenProjectsForFreelancersBoard(
         currentUser.roles.includes("ROLE_FREELANCER")
       );
+      setFreelancerProfileDetail(
+        currentUser.roles.includes("ROLE_CLIENT")
+      );
       setFreelancerPublicProfilesBoard(
         currentUser.roles.includes("ROLE_CLIENT")
       );
@@ -62,6 +64,7 @@ const App = () => {
       setUserProfileBoard(currentUser.roles.includes("ROLE_CLIENT") || currentUser.roles.includes("ROLE_FREELANCER"));
     } else {
       setFreelancerPublicProfilesBoard(false);
+      setFreelancerProfileDetail(false);
       setShowAdminBoard(false);
       setUserBoard(false);
       setShowFreelancerBoard(false);
@@ -116,9 +119,9 @@ const App = () => {
                 </Link>
               </li>
             )}
-            {showFreelancerPublicProfilesBoard && (
+            {showFreelancerProfileDetail && (
               <li className="nav-item">
-                <Link to={"/public-profiles"} className="nav-link">
+                <Link to={"/client/freelancer-public-profiles"} className="nav-link">
                   Freelancers
                 </Link>
               </li>
@@ -126,7 +129,7 @@ const App = () => {
 
             {showClientPostedJobsBoard && (
               <li className="nav-item">
-                <Link to={"/client-projects"} className="nav-link">
+                <Link to={"/client/projects"} className="nav-link">
                   Projects
                 </Link>
               </li>
@@ -134,7 +137,7 @@ const App = () => {
 
             {showClientReceivedApplicationsBoard && (
               <li className="nav-item">
-                <Link to={"/client-received-applications"} className="nav-link">
+                <Link to={"/client/received-applications"} className="nav-link">
                   Received applications
                 </Link>
               </li>
@@ -150,7 +153,7 @@ const App = () => {
 
             {showUserBoard && (
               <li className="nav-item">
-                <Link to={"/client"} className="nav-link">
+                <Link to={"/client/post-job"} className="nav-link">
                   Post a job
                 </Link>
               </li>
@@ -193,26 +196,25 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/client" element={<BoardUser />} />
+            <Route path="/client/post-job" element={<PostJob />} />
             <Route path="/freelancer" element={<BoardFreelancer />} />
             <Route path="/projects" element={<OpenProjectsForFreelancers />} />
             <Route
-              path="/client-received-applications"
+              path="/client/received-applications"
               element={<ClientReceivedApplications />}
             />
-            <Route path="/admin" element={<BoardAdmin />} />
-            <Route path="/client-projects" element={<ClientPostedJobs />} />
+            <Route path="/client/projects" element={<ClientPostedJobs />} />
             <Route
               path="/client/job/:jobId"
               element={<ClientJobApplicants />}
             />
             <Route
-              path="/public-profiles"
+              path="/client/freelancer-public-profiles"
               element={<FreelancerPublicProfiles />}
             />
             <Route
               path="/public-profile/:freelancerId"
-              element={<PublicProfileDetail />}
+              element={<FreelancerProfileDetail />}
             />
             <Route path="/my-profile" element={<UserProfile />} />
           </Routes>

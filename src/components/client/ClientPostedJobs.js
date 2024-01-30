@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import UserService from "../services/user.service";
-import authHeader from "../services/auth-header";
-import "../assets/css/clientPostedJobs.css";
+import UserService from "../../services/user.service";
+import authHeader from "../../services/auth-header";
+import "../../assets/css/clientPostedJobs.css";
 import { Container, Alert, ListGroup, Spinner } from "react-bootstrap";
 
 const ClientPostedJobs = () => {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import UserService from "../services/user.service";
-import useApiData from "../services/useApiData";
-import "../assets/css/allJobs.css";
-import authHeader from "../services/auth-header";
+import UserService from "../../services/user.service";
+import useApiData from "../../services/useApiData";
+import "../../assets/css/allJobs.css";
+import authHeader from "../../services/auth-header";
 
 Modal.setAppElement("#root");
 

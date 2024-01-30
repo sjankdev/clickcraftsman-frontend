@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ClientJobPostingService from "../services/ClientJobPostingService";
-import UserService from "../services/user.service";
-import useApiData from "../services/useApiData";
+import ClientJobPostingService from "../../services/ClientJobPostingService";
+import UserService from "../../services/user.service";
+import useApiData from "../../services/useApiData";
 import Select from "react-select";
-import authHeader from "../services/auth-header";
+import authHeader from "../../services/auth-header";
 
 const JobPostForm = () => {
   const [jobName, setJobName] = useState("");

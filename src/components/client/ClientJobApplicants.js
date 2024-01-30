@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import UserService from "../services/user.service";
-import "../assets/css/clientJobApplicants.css";
+import UserService from "../../services/user.service";
+import "../../assets/css/clientJobApplicants.css";
 import { Container } from "react-bootstrap";
 
 const ClientJobApplicants = () => {

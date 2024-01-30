@@ -36,7 +36,7 @@ const UserProfile = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/user/profile",
+          "http://localhost:8080/api/freelancer/profile",
           {
             headers: authHeader(),
           }
@@ -85,7 +85,7 @@ const UserProfile = () => {
   const handleUpdateClick = async () => {
     try {
       const { firstName, lastName, contactPhone, location } = updateFormData;
-
+  
       const freelancerFields = {
         portfolio: updateFormData.portfolio,
         yearsOfExperience: updateFormData.yearsOfExperience,
@@ -93,25 +93,38 @@ const UserProfile = () => {
           ? updateFormData.skills
           : [updateFormData.skills],
       };
-
+  
       const userRoles = authHeader().roles || [];
+      let apiEndpoint;
+  
+      if (userRoles.includes("ROLE_FREELANCER")) {
+        apiEndpoint = "http://localhost:8080/api/freelancer/update";
+      } else if (userRoles.includes("ROLE_CLIENT")) {
+        apiEndpoint = "http://localhost:8080/api/client/update";
+      } else {
+        console.error("Unsupported role for updating profile");
+        return;
+      }
+  
       const updatedData = userRoles.includes("ROLE_FREELANCER")
         ? { ...freelancerFields, firstName, lastName, contactPhone, location }
         : { firstName, lastName, contactPhone, location };
-
-      await axios.post("http://localhost:8080/api/user/update", updatedData, {
+  
+      await axios.post(apiEndpoint, updatedData, {
         headers: authHeader(),
       });
-
+  
       setIsEditing(false);
-
+  
       const response = await axios.get(
-        "http://localhost:8080/api/user/profile",
+        userRoles.includes("ROLE_FREELANCER")
+          ? "http://localhost:8080/api/freelancer/profile"
+          : "http://localhost:8080/api/client/profile",
         {
           headers: authHeader(),
         }
       );
-
+  
       console.log("Received updated user profile data:", response.data);
       setUserData(response.data);
     } catch (error) {

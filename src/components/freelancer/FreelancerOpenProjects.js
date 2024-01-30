@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import UserService from "../services/user.service";
-import useApiData from "../services/useApiData";
-import "../assets/css/allJobs.css";
-import authHeader from "../services/auth-header";
+import UserService from "../../services/utils/user.service";
+import FreelancerService from "../../services/freelancer/freelancer-service";
+import useApiData from "../../services/utils/useApiData";
+import "../../assets/css/allJobs.css";
+import authHeader from "../../services/security/auth-header";
+import freelancerService from "../../services/freelancer/freelancer-service";
 
 Modal.setAppElement("#root");
 
-const OpenProjectsForFreelancers = () => {
+const FreelancerOpenProjects = () => {
   const [content, setContent] = useState("");
   const [applicationMessages, setApplicationMessages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +21,7 @@ const OpenProjectsForFreelancers = () => {
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
 
   useEffect(() => {
-    UserService.getOpenProjectsForFreelancersBoard()
+    UserService.getFreelancerOpenProjects()
       .then((response) => {
         setContent(response.data);
         setLoading(false);
@@ -35,7 +37,7 @@ const OpenProjectsForFreelancers = () => {
         }
         setLoading(false);
       });
-    UserService.getAppliedJobs()
+    freelancerService.getAppliedJobs()
       .then((appliedIds) => {
         setAppliedJobIds(appliedIds);
       })
@@ -107,7 +109,7 @@ const OpenProjectsForFreelancers = () => {
         messageToClient: customMessage,
       };
 
-      UserService.applyForJob(jobId, applicationData)
+      FreelancerService.applyForJob(jobId, applicationData)
         .then((response) => {
           console.log("Job application submitted successfully");
           setApplicationMessages((prevMessages) => [
@@ -195,4 +197,4 @@ const OpenProjectsForFreelancers = () => {
     </div>
   );
 };
-export default OpenProjectsForFreelancers;
+export default FreelancerOpenProjects;

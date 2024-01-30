@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ClientJobPostingService from "../services/ClientJobPostingService";
-import UserService from "../services/user.service";
-import useApiData from "../services/useApiData";
+import ClientService from "../../services/client/client-service";
+import UserService from "../../services/utils/user.service";
+import useApiData from "../../services/utils/useApiData";
 import Select from "react-select";
-import authHeader from "../services/auth-header";
+import authHeader from "../../services/security/auth-header";
 
 const JobPostForm = () => {
   const [jobName, setJobName] = useState("");
@@ -67,7 +67,7 @@ const JobPostForm = () => {
       location,
     };
 
-    ClientJobPostingService.postJob(userEmail, jobPostingData)
+    ClientService.postJob(userEmail, jobPostingData)
       .then((response) => {
         setSuccessMessage("Job posted successfully!");
       })

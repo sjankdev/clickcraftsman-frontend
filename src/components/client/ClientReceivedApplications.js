@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import UserService from "../services/user.service";
-import authHeader from "../services/auth-header";
-import "../assets/css/clientReceivedApplications.css";
+import ClientService from "../../services/client/client-service";
+import authHeader from "../../services/security/auth-header";
+import "../../assets/css/clientReceivedApplications.css";
 
 const ClientReceivedApplications = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -12,7 +12,7 @@ const ClientReceivedApplications = () => {
   useEffect(() => {
     console.log("Fetching job applications...");
 
-    UserService.getClientJobApplications()
+    ClientService.getClientJobApplications()
       .then((response) => {
         console.log("Received job applications:", response);
         setJobApplications(response || []);

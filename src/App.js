@@ -21,6 +21,8 @@ import FreelancerProfileDetail from "./components/freelancer/FreelancerProfileDe
 
 import UserProfile from "./components/UserProfile";
 
+import FreelancerProfile from "./components/freelancer/FreelancerProfile.js";
+
 import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
@@ -28,6 +30,7 @@ import EventBus from "./common/EventBus";
 const App = () => {
   const [showFreelancerPublicProfilesBoard, setFreelancerPublicProfilesBoard] =
     useState(false);
+  const [showFreelancerProfile, setFreelancerProfile] = useState(false);
   const [showFreelancerProfileDetail, setFreelancerProfileDetail] =
     useState(false);
   const [showUserProfileBoard, setUserProfileBoard] = useState(false);
@@ -50,6 +53,7 @@ const App = () => {
   useEffect(() => {
     if (currentUser) {
       setShowFreelancerBoard(currentUser.roles.includes("ROLE_FREELANCER"));
+      setFreelancerProfile(currentUser.roles.includes("ROLE_FREELANCER"));
       setFreelancerOpenProjectsBoard(
         currentUser.roles.includes("ROLE_FREELANCER")
       );
@@ -74,6 +78,7 @@ const App = () => {
       setFreelancerOpenProjectsBoard(false);
       setClientReceivedApplications(false);
       setUserProfileBoard(false);
+      setFreelancerProfile(false);
     }
 
     EventBus.on("logout", () => {
@@ -103,6 +108,14 @@ const App = () => {
               <li className="nav-item">
                 <Link to={"/freelancer"} className="nav-link">
                   Freelancer
+                </Link>
+              </li>
+            )}
+
+            {showFreelancerProfile && (
+              <li className="nav-item">
+                <Link to={"/freelancer/my-profile"} className="nav-link">
+                  FreelancerProfile
                 </Link>
               </li>
             )}
@@ -225,7 +238,8 @@ const App = () => {
               path="/public-profile/:freelancerId"
               element={<FreelancerProfileDetail />}
             />
-            
+
+            <Route path="/freelancer/my-profile" element={<FreelancerProfile />} />
             <Route path="/my-profile" element={<UserProfile />} />
           </Routes>
         </div>

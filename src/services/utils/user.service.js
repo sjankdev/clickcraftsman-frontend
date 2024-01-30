@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "./security/auth-header";
+import authHeader from "../security/auth-header";
 
 const API_URL = "http://localhost:8080/api/test/";
 const API_URL_JOB = "http://localhost:8080/api/job";
@@ -16,7 +16,7 @@ const getFreelancerBoard = () => {
   return axios.get(API_URL + "freelancer", { headers: authHeader() });
 };
 
-const getOpenProjectsForFreelancersBoard = () => {
+const getFreelancerOpenProjects = () => {
   return axios.get(API_URL + "projects", { headers: authHeader() });
 };
 
@@ -35,14 +35,12 @@ const getAdminBoard = () => {
 };
 
 
-
-
 const userService = {
   getPublicContent,
   getUserBoard,
   getAdminBoard,
   getFreelancerBoard,
-  getOpenProjectsForFreelancersBoard,
+  getFreelancerOpenProjects,
   getClientReceivedApplicationsBoard,
   getClientPostedJobsBoard,
 };

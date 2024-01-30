@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import UserService from "../../services/user.service";
+import UserService from "../../services/utils/user.service";
 import FreelancerService from "../../services/freelancer/freelancer-service";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/allJobs.css";
@@ -9,7 +9,7 @@ import freelancerService from "../../services/freelancer/freelancer-service";
 
 Modal.setAppElement("#root");
 
-const OpenProjectsForFreelancers = () => {
+const FreelancerOpenProjects = () => {
   const [content, setContent] = useState("");
   const [applicationMessages, setApplicationMessages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +21,7 @@ const OpenProjectsForFreelancers = () => {
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
 
   useEffect(() => {
-    UserService.getOpenProjectsForFreelancersBoard()
+    UserService.getFreelancerOpenProjects()
       .then((response) => {
         setContent(response.data);
         setLoading(false);
@@ -197,4 +197,4 @@ const OpenProjectsForFreelancers = () => {
     </div>
   );
 };
-export default OpenProjectsForFreelancers;
+export default FreelancerOpenProjects;

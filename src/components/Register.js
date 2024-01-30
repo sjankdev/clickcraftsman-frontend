@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { register } from "../slices/auth";
-import validationSchema from "../services/validationSchemas";
+import validationSchema from "../services/utils/validationSchemas";
 import Select from "react-select";
 import useApiData from "../services/utils/useApiData";
 

@@ -58,11 +58,26 @@ const getPublicProfiles = async (freelancerId) => {
   }
 };
 
+const postJob = async (userEmail, jobPostingData) => {
+  const url = `${API_URL_JOB}/post`;
+
+  try {
+    const response = await axios.post(url, { userEmail, ...jobPostingData }, { headers: authHeader() });
+    console.log("postJob method, client");
+    return response.data;
+  } catch (error) {
+    console.error("Error posting job", error);
+    throw error;
+  }
+};
+
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
   getJobApplicationsForJob,
   getPublicProfiles,
+  postJob,
 };
 
 export default clientService;

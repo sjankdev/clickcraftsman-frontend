@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import UserService from "../../services/user.service";
+import UserService from "../../services/utils/user.service";
 import authHeader from "../../services/security/auth-header";
 
-const BoardFreelancer = () => {
+const FreelancerBoard = () => {
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -46,4 +46,4 @@ const BoardFreelancer = () => {
   );
 };
 
-export default BoardFreelancer;
+export default FreelancerBoard;

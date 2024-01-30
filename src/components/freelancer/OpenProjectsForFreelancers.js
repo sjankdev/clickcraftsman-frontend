@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import UserService from "../../services/user.service";
-import useApiData from "../../services/useApiData";
+import FreelancerService from "../../services/freelancer/freelancer-service";
+import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/allJobs.css";
-import authHeader from "../../services/auth-header";
+import authHeader from "../../services/security/auth-header";
+import freelancerService from "../../services/freelancer/freelancer-service";
 
 Modal.setAppElement("#root");
 
@@ -35,7 +37,7 @@ const OpenProjectsForFreelancers = () => {
         }
         setLoading(false);
       });
-    UserService.getAppliedJobs()
+    freelancerService.getAppliedJobs()
       .then((appliedIds) => {
         setAppliedJobIds(appliedIds);
       })
@@ -107,7 +109,7 @@ const OpenProjectsForFreelancers = () => {
         messageToClient: customMessage,
       };
 
-      UserService.applyForJob(jobId, applicationData)
+      FreelancerService.applyForJob(jobId, applicationData)
         .then((response) => {
           console.log("Job application submitted successfully");
           setApplicationMessages((prevMessages) => [

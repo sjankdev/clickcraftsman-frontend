@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import authHeader from "../services/auth-header";
-import useApiData from "../services/useApiData";
+import authHeader from "../services/security/auth-header";
+import useApiData from "../services/utils/useApiData";
 
 const UserProfile = () => {
   const locations = useApiData(

@@ -4,7 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { register } from "../slices/auth";
 import validationSchema from "../services/validationSchemas";
 import Select from "react-select";
-import useApiData from "../services/useApiData";
+import useApiData from "../services/utils/useApiData";
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);

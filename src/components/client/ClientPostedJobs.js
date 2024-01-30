@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import UserService from "../../services/user.service";
-import authHeader from "../../services/auth-header";
+import ClientService from "../../services/client/client-service";
+import authHeader from "../../services/security/auth-header";
 import "../../assets/css/clientPostedJobs.css";
 import { Container, Alert, ListGroup, Spinner } from "react-bootstrap";
 
@@ -11,7 +11,7 @@ const ClientPostedJobs = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    UserService.getClientJobPostings()
+    ClientService.getClientJobPostings()
       .then((response) => {
         setJobPostings(response || []);
         setLoading(false);

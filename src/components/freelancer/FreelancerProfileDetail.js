@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import UserService from "../../services/user.service";
+import ClientService from "../../services/client/client-service";
 import "../../assets/css/freelancerPublicProfileDetail.css";
 
 const FreelancerProfileDetail = () => {
@@ -13,7 +13,7 @@ const FreelancerProfileDetail = () => {
     const isValidId = !isNaN(Number(freelancerId));
 
     if (isValidId) {
-      UserService.getPublicProfile(freelancerId)
+      ClientService.getPublicProfiles(freelancerId)
         .then((response) => {
           console.log('Profile details:', response);
           setProfile(response);

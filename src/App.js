@@ -13,13 +13,12 @@ import ClientPostJob from "./components/client/ClientPostJob.js";
 import ClientReceivedApplications from "./components/client/ClientReceivedApplications.js";
 import ClientPostedJobs from "./components/client/ClientPostedJobs.js";
 import ClientJobApplicants from "./components/client/ClientJobApplicants.js";
+import ClientProfile from "./components/client/ClientProfile";
 
 import FreelancerPublicProfiles from "./components/freelancer/FreelancerPublicProfiles";
 import FreelancerBoard from "./components/freelancer/FreelancerBoard";
 import FreelancerOpenProjects from "./components/freelancer/FreelancerOpenProjects";
 import FreelancerProfileDetail from "./components/freelancer/FreelancerProfileDetail";
-
-import UserProfile from "./components/UserProfile";
 
 import FreelancerProfile from "./components/freelancer/FreelancerProfile.js";
 
@@ -42,6 +41,7 @@ const App = () => {
   const [showClientReceivedApplicationsBoard, setClientReceivedApplications] =
     useState(false);
   const [showClientPostedJobsBoard, setClientPostedJobsBoard] = useState(false);
+  const [showClientProfile, setClientProfile] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -62,6 +62,7 @@ const App = () => {
         currentUser.roles.includes("ROLE_CLIENT")
       );
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
+      setClientProfile(currentUser.roles.includes("ROLE_CLIENT"));
       setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
       setClientPostedJobsBoard(currentUser.roles.includes("ROLE_CLIENT"));
       setClientReceivedApplications(currentUser.roles.includes("ROLE_CLIENT"));
@@ -79,6 +80,7 @@ const App = () => {
       setClientReceivedApplications(false);
       setUserProfileBoard(false);
       setFreelancerProfile(false);
+      setClientProfile(false);
     }
 
     EventBus.on("logout", () => {
@@ -103,26 +105,17 @@ const App = () => {
                 Home
               </Link>
             </li>
-
-            {showFreelancerBoard && (
-              <li className="nav-item">
-                <Link to={"/freelancer"} className="nav-link">
-                  Freelancer
-                </Link>
-              </li>
-            )}
-
             {showFreelancerProfile && (
               <li className="nav-item">
                 <Link to={"/freelancer/my-profile"} className="nav-link">
-                  FreelancerProfile
+                  My profile
                 </Link>
               </li>
             )}
 
-            {showUserProfileBoard && (
+            {showClientProfile && (
               <li className="nav-item">
-                <Link to={"/my-profile"} className="nav-link">
+                <Link to={"/client/my-profile"} className="nav-link">
                   My profile
                 </Link>
               </li>
@@ -217,6 +210,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
+            <Route path="/client/my-profile" element={<ClientProfile />} />
             <Route path="/client/post-job" element={<ClientPostJob />} />
             <Route
               path="/client/received-applications"
@@ -239,8 +233,10 @@ const App = () => {
               element={<FreelancerProfileDetail />}
             />
 
-            <Route path="/freelancer/my-profile" element={<FreelancerProfile />} />
-            <Route path="/my-profile" element={<UserProfile />} />
+            <Route
+              path="/freelancer/my-profile"
+              element={<FreelancerProfile />}
+            />
           </Routes>
         </div>
       </div>

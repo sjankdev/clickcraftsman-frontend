@@ -12,9 +12,10 @@ const register = (
   location,
   skills,
   portfolio,
-  yearsOfExperience
+  yearsOfExperience,
+  profilePicture 
 ) => {
-  return axios.post(API_URL + "signup", {
+  const signUpRequestJson = JSON.stringify({
     email,
     password,
     role,
@@ -25,6 +26,30 @@ const register = (
     skills,
     portfolio,
     yearsOfExperience,
+  });
+
+  const signUpRequestBlob = new Blob([signUpRequestJson], {
+    type: 'application/json',
+  });
+
+  const formData = new FormData();
+  formData.append('email', email);
+  formData.append('password', password);
+  formData.append('role', role);
+  formData.append('firstName', firstName);
+  formData.append('lastName', lastName);
+  formData.append('contactPhone', contactPhone);
+  formData.append('location', location);
+  formData.append('skills', JSON.stringify(skills)); 
+  formData.append('portfolio', portfolio);
+  formData.append('yearsOfExperience', yearsOfExperience);
+  formData.append('profilePicture', profilePicture); 
+  formData.append('signUpRequest', signUpRequestBlob); 
+
+  return axios.post(API_URL + "signup", formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data', 
+    },
   });
 };
 

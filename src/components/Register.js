@@ -27,6 +27,7 @@ const Register = () => {
     location: "",
     portfolio: "",
     yearsOfExperience: 0,
+    profilePicture: "",
   };
 
   const handleRegister = (formValue, { resetForm }) => {
@@ -41,6 +42,7 @@ const Register = () => {
       portfolio,
       yearsOfExperience,
       skills,
+      profilePicture,
     } = formValue;
     setSuccessful(false);
 
@@ -55,6 +57,7 @@ const Register = () => {
       location,
       portfolio,
       yearsOfExperience,
+      profilePicture,
     };
 
     dispatch(

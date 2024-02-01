@@ -19,6 +19,7 @@ export const register = createAsyncThunk(
       skills,
       portfolio,
       yearsOfExperience,
+      profilePicture,
     },
     thunkAPI
   ) => {
@@ -33,7 +34,8 @@ export const register = createAsyncThunk(
         location,
         skills,
         portfolio,
-        yearsOfExperience
+        yearsOfExperience,
+        profilePicture
       );
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;

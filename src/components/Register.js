@@ -133,7 +133,7 @@ const Register = () => {
               {selectedRole === "freelancer" && (
                 <>
                   <div className="form-group">
-                    <label htmlFor="profilePicture">Profile Picture</label>
+                    <label htmlFor="profilePicture">Upload Profile Picture</label>
                     <input
                       type="file"
                       id="profilePicture"
@@ -284,7 +284,7 @@ const Register = () => {
               {selectedRole === "client" && (
                 <>
                   <div className="form-group">
-                    <label htmlFor="profilePicture">Profile Picture</label>
+                    <label htmlFor="profilePicture">Upload Profile Picture</label>
                     <input
                       type="file"
                       id="profilePicture"

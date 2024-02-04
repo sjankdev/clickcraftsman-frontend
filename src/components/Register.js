@@ -9,7 +9,9 @@ import useApiData from "../services/utils/useApiData";
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
-  const locations = useApiData("http://localhost:8080/api/utils/getAllLocations");
+  const locations = useApiData(
+    "http://localhost:8080/api/utils/getAllLocations"
+  );
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
 
   const { message } = useSelector((state) => state.message);
@@ -25,6 +27,7 @@ const Register = () => {
     location: "",
     portfolio: "",
     yearsOfExperience: 0,
+    profilePicture: "",
   };
 
   const handleRegister = (formValue, { resetForm }) => {
@@ -39,6 +42,7 @@ const Register = () => {
       portfolio,
       yearsOfExperience,
       skills,
+      profilePicture,
     } = formValue;
     setSuccessful(false);
 
@@ -53,6 +57,7 @@ const Register = () => {
       location,
       portfolio,
       yearsOfExperience,
+      profilePicture,
     };
 
     dispatch(
@@ -73,7 +78,6 @@ const Register = () => {
         setSuccessful(false);
       });
   };
-
 
   const handleRoleChange = (event, setFieldValue) => {
     const role = event.target.value;
@@ -128,6 +132,21 @@ const Register = () => {
 
               {selectedRole === "freelancer" && (
                 <>
+                  <div className="form-group">
+                    <label htmlFor="profilePicture">Upload Profile Picture</label>
+                    <input
+                      type="file"
+                      id="profilePicture"
+                      name="profilePicture"
+                      onChange={(event) => {
+                        setFieldValue(
+                          "profilePicture",
+                          event.currentTarget.files[0]
+                        );
+                      }}
+                      className="form-control"
+                    />
+                  </div>
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <Field name="email" type="email" className="form-control" />
@@ -264,6 +283,22 @@ const Register = () => {
 
               {selectedRole === "client" && (
                 <>
+                  <div className="form-group">
+                    <label htmlFor="profilePicture">Upload Profile Picture</label>
+                    <input
+                      type="file"
+                      id="profilePicture"
+                      name="profilePicture"
+                      onChange={(event) => {
+                        setFieldValue(
+                          "profilePicture",
+                          event.currentTarget.files[0]
+                        );
+                      }}
+                      className="form-control"
+                    />
+                  </div>
+
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <Field name="email" type="email" className="form-control" />

@@ -8,7 +8,7 @@ const ClientProfile = () => {
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
   );
-
+  const [profilePictureData, setProfilePictureData] = useState(null);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -36,10 +36,25 @@ const ClientProfile = () => {
             headers: authHeader(),
           }
         );
+
+        console.log("Response from server:", response.data);
+
+        if (response.data.profilePictureData) {
+          console.log(
+            "Profile picture data found:",
+            response.data.profilePictureData
+          );
+          setProfilePictureData(response.data.profilePictureData);
+        } else {
+          console.log("Profile picture data not found in the response.");
+        }
+
         setUserData(response.data);
         setUpdateFormData(response.data);
+
         setIsLoading(false);
       } catch (error) {
+        console.error("Error fetching client data:", error);
         setError(error);
         setIsLoading(false);
       }
@@ -96,25 +111,44 @@ const ClientProfile = () => {
           <div className="form-field">
             <label>
               First Name:
-              <input type="text" name="firstName" value={updateFormData.firstName} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="firstName"
+                value={updateFormData.firstName}
+                onChange={handleInputChange}
+              />
             </label>
           </div>
           <div className="form-field">
             <label>
               Last Name:
-              <input type="text" name="lastName" value={updateFormData.lastName} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="lastName"
+                value={updateFormData.lastName}
+                onChange={handleInputChange}
+              />
             </label>
           </div>
           <div className="form-field">
             <label>
               Contact Phone:
-              <input type="text" name="contactPhone" value={updateFormData.contactPhone} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="contactPhone"
+                value={updateFormData.contactPhone}
+                onChange={handleInputChange}
+              />
             </label>
           </div>
           <div className="form-field">
             <label>
               Location:
-              <select name="location" value={updateFormData.location} onChange={handleInputChange}>
+              <select
+                name="location"
+                value={updateFormData.location}
+                onChange={handleInputChange}
+              >
                 <option value="" disabled>
                   Select Location
                 </option>
@@ -131,6 +165,14 @@ const ClientProfile = () => {
       ) : (
         <div className="profile-card">
           <div className="profile-info">
+            {profilePictureData && (
+              <div className="profile-picture">
+                <img
+                  src={`data:image/png;base64,${profilePictureData}`}
+                  alt="Profile"
+                />
+              </div>
+            )}
             <div className="data-field">
               <div className="field-label">First Name:</div>
               <div className="field-value">{userData.firstName}</div>
@@ -148,13 +190,13 @@ const ClientProfile = () => {
               <div className="field-value">{userData.location}</div>
             </div>
           </div>
-          <button className="edit-btn" onClick={handleEditClick}>Edit</button>
+          <button className="edit-btn" onClick={handleEditClick}>
+            Edit
+          </button>
         </div>
       )}
     </div>
   );
-  
-  
-}  
+};
 
 export default ClientProfile;

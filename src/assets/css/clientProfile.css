@@ -50,3 +50,17 @@
 .edit-btn:hover {
   background-color: #2980b9; 
 }
+.profile-picture {
+  width: 100px; 
+  height: 100px; 
+  overflow: hidden;
+  border-radius: 50%; 
+  margin-bottom: 20px;
+}
+
+.profile-picture img {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 50%;
+}

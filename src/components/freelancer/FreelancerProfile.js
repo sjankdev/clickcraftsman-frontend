@@ -10,6 +10,7 @@ const FreelancerProfile = () => {
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const skillsArray = Array.isArray(skills) ? skills : [skills];
 
+  const [profilePictureData, setProfilePictureData] = useState(null); 
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -41,7 +42,18 @@ const FreelancerProfile = () => {
             headers: authHeader(),
           }
         );
+
         console.log("Received freelancer profile data:", response.data);
+
+        if (response.data.profilePictureData) {
+          console.log(
+            "Profile picture data found:",
+            response.data.profilePictureData
+          );
+          setProfilePictureData(response.data.profilePictureData);
+        } else {
+          console.log("Profile picture data not found in the response.");
+        }
 
         const freelancerDataWithLocation = {
           ...response.data,
@@ -57,7 +69,6 @@ const FreelancerProfile = () => {
 
     fetchFreelancerData();
   }, [skillsArray]);
-
   const handleInputChange = (e) => {
     const { name, value, options } = e.target;
 
@@ -216,6 +227,14 @@ const FreelancerProfile = () => {
         </div>
       ) : (
         <div>
+          {profilePictureData && (
+            <div className="profile-picture">
+              <img
+                src={`data:image/png;base64,${profilePictureData}`}
+                alt="Profile"
+              />
+            </div>
+          )}
           <p>
             <strong>First Name:</strong> {userData.firstName}
           </p>

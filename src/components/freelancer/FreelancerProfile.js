@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
+import "../../assets/css/freelancerProfile.css";
 
 const FreelancerProfile = () => {
   const locations = useApiData(
@@ -10,7 +11,7 @@ const FreelancerProfile = () => {
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const skillsArray = Array.isArray(skills) ? skills : [skills];
 
-  const [profilePictureData, setProfilePictureData] = useState(null); 
+  const [profilePictureData, setProfilePictureData] = useState(null);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -136,97 +137,109 @@ const FreelancerProfile = () => {
   };
 
   return (
-    <div>
-      <h2>Freelancer Profile</h2>
+    <div className="freelancer-profile">
+      <div className="profile-header">
+        <h2>Freelancer Profile</h2>
+      </div>
       {isEditing ? (
         <div>
-          <label>
-            First Name:
-            <input
-              type="text"
-              name="firstName"
-              value={updateFormData.firstName}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            Last Name:
-            <input
-              type="text"
-              name="lastName"
-              value={updateFormData.lastName}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            Contact Phone:
-            <input
-              type="text"
-              name="contactPhone"
-              value={updateFormData.contactPhone}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            Location:
+          <div className="form-field">
+            <label>
+              First Name:
+              <input
+                type="text"
+                name="firstName"
+                value={updateFormData.firstName}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div className="form-field">
+            <label>
+              Last Name:
+              <input
+                type="text"
+                name="lastName"
+                value={updateFormData.lastName}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div className="form-field">
+            <label>
+              Contact Phone:
+              <input
+                type="text"
+                name="contactPhone"
+                value={updateFormData.contactPhone}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div className="form-field">
+            <label>
+              Location:
+              <select
+                name="location"
+                value={updateFormData.location}
+                onChange={handleInputChange}
+              >
+                <option value="" disabled>
+                  Select Location
+                </option>
+                {locations.map((location) => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="form-field">
+            <label>
+              Portfolio:
+              <input
+                type="text"
+                name="portfolio"
+                value={updateFormData.portfolio}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div className="form-field">
+            <label>
+              Years of Experience:
+              <input
+                type="number"
+                name="yearsOfExperience"
+                value={updateFormData.yearsOfExperience}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div className="form-field">
+            <label htmlFor="skills">Select Skills:</label>
             <select
-              name="location"
-              value={updateFormData.location}
+              name="skills"
+              multiple
+              className="form-control"
+              value={updateFormData.skills}
               onChange={handleInputChange}
             >
-              <option value="" disabled>
-                Select Location
-              </option>
-              {locations.map((location) => (
-                <option key={location} value={location}>
-                  {location}
+              {skills.map((skill) => (
+                <option
+                  key={skill.id || skill.skillName}
+                  value={skill.skillName}
+                >
+                  {skill.skillName}
                 </option>
               ))}
             </select>
-          </label>
-          <br />
-          <label>
-            Portfolio:
-            <input
-              type="text"
-              name="portfolio"
-              value={updateFormData.portfolio}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            Years of Experience:
-            <input
-              type="number"
-              name="yearsOfExperience"
-              value={updateFormData.yearsOfExperience}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label htmlFor="skills">Select Skills:</label>
-          <select
-            name="skills"
-            multiple
-            className="form-control"
-            value={updateFormData.skills}
-            onChange={handleInputChange}
-          >
-            {skills.map((skill) => (
-              <option key={skill.id || skill.skillName} value={skill.skillName}>
-                {skill.skillName}
-              </option>
-            ))}
-          </select>
-          <br />
+          </div>
           <button onClick={handleUpdateClick}>Update</button>
         </div>
       ) : (
-        <div>
+        <div className="profile-card">
           {profilePictureData && (
             <div className="profile-picture">
               <img
@@ -235,29 +248,39 @@ const FreelancerProfile = () => {
               />
             </div>
           )}
-          <p>
-            <strong>First Name:</strong> {userData.firstName}
-          </p>
-          <p>
-            <strong>Last Name:</strong> {userData.lastName}
-          </p>
-          <p>
-            <strong>Contact Phone:</strong> {userData.contactPhone}
-          </p>
-          <p>
-            <strong>Location:</strong> {userData.location}
-          </p>
-          <p>
-            <strong>Portfolio:</strong> {userData.portfolio}
-          </p>
-          <p>
-            <strong>Years of Experience:</strong> {userData.yearsOfExperience}
-          </p>
-          <p>
-            <strong>Skills:</strong> {userData.skills.join(", ")}
-          </p>
-
-          <button onClick={handleEditClick}>Edit</button>
+          <div className="profile-info">
+            <div className="data-field">
+              <div className="field-label">First Name:</div>
+              <div className="field-value">{userData.firstName}</div>
+            </div>
+            <div className="data-field">
+              <div className="field-label">Last Name:</div>
+              <div className="field-value">{userData.lastName}</div>
+            </div>
+            <div className="data-field">
+              <div className="field-label">Contact Phone:</div>
+              <div className="field-value">{userData.contactPhone}</div>
+            </div>
+            <div className="data-field">
+              <div className="field-label">Location:</div>
+              <div className="field-value">{userData.location}</div>
+            </div>
+            <div className="data-field">
+              <div className="field-label">Portfolio:</div>
+              <div className="field-value">{userData.portfolio}</div>
+            </div>
+            <div className="data-field">
+              <div className="field-label">Years of Experience:</div>
+              <div className="field-value">{userData.yearsOfExperience}</div>
+            </div>
+            <div className="data-field">
+              <div className="field-label">Skills:</div>
+              <div className="field-value">{userData.skills.join(", ")}</div>
+            </div>
+          </div>
+          <button className="edit-btn" onClick={handleEditClick}>
+            Edit
+          </button>
         </div>
       )}
     </div>

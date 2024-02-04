@@ -133,6 +133,21 @@ const Register = () => {
               {selectedRole === "freelancer" && (
                 <>
                   <div className="form-group">
+                    <label htmlFor="profilePicture">Profile Picture</label>
+                    <input
+                      type="file"
+                      id="profilePicture"
+                      name="profilePicture"
+                      onChange={(event) => {
+                        setFieldValue(
+                          "profilePicture",
+                          event.currentTarget.files[0]
+                        );
+                      }}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <Field name="email" type="email" className="form-control" />
                     <ErrorMessage

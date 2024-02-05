@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import ClientService from "../../services/client/client-service";
 import "../../assets/css/clientJobApplicants.css";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 
 const ClientJobApplicants = () => {
   const { jobId } = useParams();
@@ -19,6 +19,17 @@ const ClientJobApplicants = () => {
         console.error(`Error fetching job applicants for job ${jobId}`, error)
       );
   }, [jobId]);
+
+  const sendOffer = (applicationId) => {
+    console.log("Sending offer to applicationId:", applicationId);
+    ClientService.sendOffer(applicationId)
+      .then((response) => {
+        console.log("Offer sent successfully!", response);
+      })
+      .catch((error) =>
+        console.error("Error sending offer to applicationId:", applicationId, error)
+      );
+  };
 
   return (
     <Container>
@@ -41,6 +52,9 @@ const ClientJobApplicants = () => {
             )}
           </p>
           <p className="message">Message: {applicant.messageToClient}</p>
+          <Button variant="success" onClick={() => sendOffer(applicant.id)}>
+            Send Offer
+          </Button>
         </div>
       ))}
     </Container>

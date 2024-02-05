@@ -71,6 +71,19 @@ const postJob = async (userEmail, jobPostingData) => {
   }
 };
 
+const sendOffer = async (applicationId, offerDetails) => {
+  const url = `${API_URL_JOB}/send-offer/${applicationId}`;
+
+  try {
+    const response = await axios.post(url, offerDetails, { headers: authHeader() });
+    console.log("sendOffer method, client");
+    return response.data;
+  } catch (error) {
+    console.error(`Error sending offer for applicationId ${applicationId}`, error);
+    throw error;
+  }
+};
+
 
 const clientService = {
   getClientJobPostings,
@@ -78,6 +91,7 @@ const clientService = {
   getJobApplicationsForJob,
   getPublicProfiles,
   postJob,
+  sendOffer, 
 };
 
 export default clientService;

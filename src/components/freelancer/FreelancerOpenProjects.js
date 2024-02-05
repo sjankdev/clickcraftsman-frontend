@@ -16,6 +16,7 @@ const FreelancerOpenProjects = () => {
   const [customMessage, setCustomMessage] = useState("");
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [appliedJobIds, setAppliedJobIds] = useState([]);
+  const [applicationStatus, setApplicationStatus] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
@@ -37,6 +38,7 @@ const FreelancerOpenProjects = () => {
         }
         setLoading(false);
       });
+
     freelancerService.getAppliedJobs()
       .then((appliedIds) => {
         setAppliedJobIds(appliedIds);
@@ -52,8 +54,16 @@ const FreelancerOpenProjects = () => {
         }
         setLoading(false);
       });
-  }, []);
 
+      FreelancerService.getApplicationStatus()
+    .then((statusData) => {
+      console.log("Application Status Data:", statusData);
+      setApplicationStatus(statusData);
+    })
+    .catch((error) => {
+      console.error("Error fetching application status", error);
+    });
+}, []);
   const userRoles = authHeader().roles || [];
 
   const openModal = (jobId) => {
@@ -154,6 +164,7 @@ const FreelancerOpenProjects = () => {
                 <p>Location: {job.location}</p>
                 <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
                 <p>Required Skills: {job.requiredSkills.map(skill => skill.skillName).join(', ')}</p>
+                <p>Status: {applicationStatus[job.id]}</p>
               </div>
               {appliedJobIds.includes(job.id) ? (
                 <p>You have already applied for this job.</p>

@@ -8,14 +8,11 @@ const FreelancerProfileDetail = () => {
   const { freelancerId } = useParams();
 
   useEffect(() => {
-    console.log('ID from params:', freelancerId);
-
     const isValidId = !isNaN(Number(freelancerId));
 
     if (isValidId) {
       ClientService.getPublicProfiles(freelancerId)
         .then((response) => {
-          console.log('Profile details:', response);
           setProfile(response);
         })
         .catch((error) => console.error('Error fetching public profile:', error));
@@ -31,6 +28,11 @@ const FreelancerProfileDetail = () => {
   return (
     <div className="public-profile-detail-container">
       <h1 className="profile-header">{profile.firstName} {profile.lastName}'s Profile</h1>
+      <img
+        src={`data:image/jpeg;base64,${profile.profilePictureData}`}
+        alt={`${profile.firstName} ${profile.lastName}'s Profile Picture`}
+        className="profile-picture"
+      />
       <p className="profile-info">Contact: {profile.contactPhone}</p>
       <p className="profile-info">Location: {profile.location}</p>
       <p className="profile-info">Portfolio: {profile.portfolio}</p>

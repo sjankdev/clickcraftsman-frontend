@@ -45,7 +45,7 @@ const FreelancerPublicProfiles = () => {
           <div key={profile.id} className="profile-card">
             <div className="profile-details">
               <img
-                src={`data:image/jpeg;base64,${profilePictures[index]}`}
+                src={`data:image/jpeg;base64,${profile.profilePictureData}`}
                 alt="Profile"
                 className="profile-picture"
               />

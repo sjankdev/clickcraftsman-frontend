@@ -2,6 +2,7 @@ import axios from "axios";
 import authHeader from "../security/auth-header";
 
 const API_URL_JOB = "http://localhost:8080/api/job";
+const API_URL_CLIENT = "http://localhost:8080/api/client";
 
 const getClientJobPostings = async () => {
   const url = `${API_URL_JOB}/client-job-postings`;
@@ -71,12 +72,13 @@ const postJob = async (userEmail, jobPostingData) => {
   }
 };
 
-const sendOffer = async (applicationId, offerDetails) => {
-  const url = `${API_URL_JOB}/send-offer/${applicationId}`;
+const sendOffer = async (applicationId, offerMessage) => {
+  const url = `${API_URL_CLIENT}/send-offer/${applicationId}`;
+  const offerDetails = { messageToFreelancer: offerMessage };
 
   try {
     const response = await axios.post(url, offerDetails, { headers: authHeader() });
-    console.log("sendOffer method, client");
+    console.log("Offer sent successfully!", response);
     return response.data;
   } catch (error) {
     console.error(`Error sending offer for applicationId ${applicationId}`, error);

@@ -7,6 +7,7 @@ import { Container, Button } from "react-bootstrap";
 const ClientJobApplicants = () => {
   const { jobId } = useParams();
   const [applicants, setApplicants] = useState([]);
+  const [offerMessage, setOfferMessage] = useState("");
 
   useEffect(() => {
     console.log("Fetching applicants for jobId:", jobId);
@@ -22,12 +23,16 @@ const ClientJobApplicants = () => {
 
   const sendOffer = (applicationId) => {
     console.log("Sending offer to applicationId:", applicationId);
-    ClientService.sendOffer(applicationId)
+    ClientService.sendOffer(applicationId, offerMessage)
       .then((response) => {
         console.log("Offer sent successfully!", response);
       })
       .catch((error) =>
-        console.error("Error sending offer to applicationId:", applicationId, error)
+        console.error(
+          "Error sending offer to applicationId:",
+          applicationId,
+          error
+        )
       );
   };
 
@@ -52,6 +57,12 @@ const ClientJobApplicants = () => {
             )}
           </p>
           <p className="message">Message: {applicant.messageToClient}</p>
+          <input
+            type="text"
+            placeholder="Enter offer message"
+            value={offerMessage}
+            onChange={(e) => setOfferMessage(e.target.value)}
+          />
           <Button variant="success" onClick={() => sendOffer(applicant.id)}>
             Send Offer
           </Button>

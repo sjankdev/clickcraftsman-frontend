@@ -4,7 +4,19 @@ import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/freelancerProfile.css";
 
+const JobOfferItem = ({ jobOffer }) => {
+  return (
+    <div className="job-offer-item">
+      <div>Offer Date: {jobOffer.offerDate}</div>
+      <div>Message: {jobOffer.messageToFreelancer}</div>
+    </div>
+  );
+};
+
 const FreelancerProfile = () => {
+  const [jobOffers, setJobOffers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
   );
@@ -44,16 +56,9 @@ const FreelancerProfile = () => {
           }
         );
 
-        console.log("Received freelancer profile data:", response.data);
-
         if (response.data.profilePictureData) {
-          console.log(
-            "Profile picture data found:",
-            response.data.profilePictureData
-          );
           setProfilePictureData(response.data.profilePictureData);
         } else {
-          console.log("Profile picture data not found in the response.");
         }
 
         const freelancerDataWithLocation = {
@@ -81,6 +86,27 @@ const FreelancerProfile = () => {
       [name]: name === "location" ? inputValue[0] : inputValue,
     }));
   };
+
+  useEffect(() => {
+    const fetchJobOffers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/freelancer/receivedJobOffers",
+          {
+            headers: authHeader(),
+          }
+        );
+        console.log("Received job offers:", response.data);
+        setJobOffers(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError("Error fetching job offers");
+        setLoading(false);
+      }
+    };
+
+    fetchJobOffers();
+  }, []);
 
   const getSelectedOptions = (options) => {
     return Array.from(options)
@@ -140,6 +166,14 @@ const FreelancerProfile = () => {
     <div className="freelancer-profile">
       <div className="profile-header">
         <h2>Freelancer Profile</h2>
+      </div>
+      <div>
+        <h2>Received Job Offers</h2>
+        <div className="job-offers-list">
+          {jobOffers.map((jobOffer) => (
+            <JobOfferItem key={jobOffer.id} jobOffer={jobOffer} />
+          ))}
+        </div>
       </div>
       {isEditing ? (
         <div>

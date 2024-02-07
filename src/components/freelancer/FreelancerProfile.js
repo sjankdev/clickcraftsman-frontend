@@ -167,14 +167,7 @@ const FreelancerProfile = () => {
       <div className="profile-header">
         <h2>Freelancer Profile</h2>
       </div>
-      <div>
-        <h2>Received Job Offers</h2>
-        <div className="job-offers-list">
-          {jobOffers.map((jobOffer) => (
-            <JobOfferItem key={jobOffer.id} jobOffer={jobOffer} />
-          ))}
-        </div>
-      </div>
+      
       {isEditing ? (
         <div>
           <div className="form-field">
@@ -317,6 +310,14 @@ const FreelancerProfile = () => {
           </button>
         </div>
       )}
+      <div>
+        <h2>Received Job Offers</h2>
+        <div className="job-offers-list">
+          {jobOffers.map((jobOffer) => (
+            <JobOfferItem key={jobOffer.id} jobOffer={jobOffer} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

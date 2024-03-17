@@ -63,7 +63,11 @@ const postJob = async (userEmail, jobPostingData) => {
   const url = `${API_URL_JOB}/post`;
 
   try {
-    const response = await axios.post(url, { userEmail, ...jobPostingData }, { headers: authHeader() });
+    const response = await axios.post(
+      url,
+      { userEmail, ...jobPostingData },
+      { headers: authHeader() }
+    );
     console.log("postJob method, client");
     return response.data;
   } catch (error) {
@@ -77,15 +81,32 @@ const sendOffer = async (applicationId, offerMessage) => {
   const offerDetails = { messageToFreelancer: offerMessage };
 
   try {
-    const response = await axios.post(url, offerDetails, { headers: authHeader() });
+    const response = await axios.post(url, offerDetails, {
+      headers: authHeader(),
+    });
     console.log("Offer sent successfully!", response);
     return response.data;
   } catch (error) {
-    console.error(`Error sending offer for applicationId ${applicationId}`, error);
+    console.error(
+      `Error sending offer for applicationId ${applicationId}`,
+      error
+    );
     throw error;
   }
 };
 
+const declineApplication = async (applicationId) => {
+  const url = `${API_URL_JOB}/decline-application/${applicationId}`;
+
+  try {
+    const response = await axios.post(url, null, { headers: authHeader() });
+    console.log("Application declined successfully!", response);
+    return response.data;
+  } catch (error) {
+    console.error(`Error declining application ${applicationId}`, error);
+    throw error;
+  }
+};
 
 const clientService = {
   getClientJobPostings,
@@ -93,7 +114,8 @@ const clientService = {
   getJobApplicationsForJob,
   getPublicProfiles,
   postJob,
-  sendOffer, 
+  sendOffer,
+  declineApplication,
 };
 
 export default clientService;

@@ -36,6 +36,17 @@ const ClientJobApplicants = () => {
       );
   };
 
+  const declineApplication = (applicationId) => {
+    console.log("Declining application:", applicationId);
+    ClientService.declineApplication(applicationId)
+      .then((response) => {
+        console.log("Application declined successfully!", response);
+      })
+      .catch((error) =>
+        console.error("Error declining application:", applicationId, error)
+      );
+  };
+
   return (
     <Container>
       <h2 className="mt-4">Job Applicants for Job ID: {jobId}</h2>
@@ -57,6 +68,7 @@ const ClientJobApplicants = () => {
             )}
           </p>
           <p className="message">Message: {applicant.messageToClient}</p>
+          <p className="status">Status: {applicant.status}</p>
           <input
             type="text"
             placeholder="Enter offer message"
@@ -65,6 +77,12 @@ const ClientJobApplicants = () => {
           />
           <Button variant="success" onClick={() => sendOffer(applicant.id)}>
             Send Offer
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => declineApplication(applicant.id)}
+          >
+            Decline Application
           </Button>
         </div>
       ))}

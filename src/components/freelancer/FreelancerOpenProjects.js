@@ -5,7 +5,6 @@ import FreelancerService from "../../services/freelancer/freelancer-service";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/allJobs.css";
 import authHeader from "../../services/security/auth-header";
-import freelancerService from "../../services/freelancer/freelancer-service";
 
 Modal.setAppElement("#root");
 
@@ -39,7 +38,21 @@ const FreelancerOpenProjects = () => {
         setLoading(false);
       });
 
-    freelancerService.getAppliedJobs()
+    FreelancerService.getReceivedJobOffers()
+      .then((receivedJobOffers) => {
+        console.log("Received job offers:", receivedJobOffers);
+        const processedMessages = receivedJobOffers.map((jobOffer) => ({
+          jobId: jobOffer.id,
+          message: jobOffer.messageToFreelancer,
+        }));
+        console.log("Processed messages:", processedMessages);
+        setApplicationMessages(processedMessages);
+      })
+      .catch((error) => {
+        console.error("Error fetching received job offers", error);
+      });
+
+    FreelancerService.getAppliedJobs()
       .then((appliedIds) => {
         setAppliedJobIds(appliedIds);
       })
@@ -55,15 +68,15 @@ const FreelancerOpenProjects = () => {
         setLoading(false);
       });
 
-      FreelancerService.getApplicationStatus()
-    .then((statusData) => {
-      console.log("Application Status Data:", statusData);
-      setApplicationStatus(statusData);
-    })
-    .catch((error) => {
-      console.error("Error fetching application status", error);
-    });
-}, []);
+    FreelancerService.getApplicationStatus()
+      .then((statusData) => {
+        console.log("Application Status Data:", statusData);
+        setApplicationStatus(statusData);
+      })
+      .catch((error) => {
+        console.error("Error fetching application status", error);
+      });
+  }, []);
   const userRoles = authHeader().roles || [];
 
   const openModal = (jobId) => {
@@ -163,8 +176,23 @@ const FreelancerOpenProjects = () => {
                 <p>Date Posted: {job.datePosted}</p>
                 <p>Location: {job.location}</p>
                 <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
-                <p>Required Skills: {job.requiredSkills.map(skill => skill.skillName).join(', ')}</p>
+                <p>
+                  Required Skills:{" "}
+                  {job.requiredSkills
+                    .map((skill) => skill.skillName)
+                    .join(", ")}
+                </p>
                 <p>Status: {applicationStatus[job.id]}</p>
+                {console.log("All application messages:", applicationMessages)}
+                {applicationMessages
+                  .filter((msg) => msg.jobId === job.id)
+                  .map((msg) => (
+                    <div key={msg.jobId}>
+                      <p>Message: {msg.message}</p>
+                    </div>
+                  ))}
+                {applicationMessages.filter((msg) => msg.jobId === job.id)
+                  .length === 0 && <p>No messages for this job</p>}
               </div>
               {appliedJobIds.includes(job.id) ? (
                 <p>You have already applied for this job.</p>

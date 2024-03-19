@@ -4,6 +4,8 @@ import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/clientProfile.css";
 
+import { FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+
 const ClientProfile = () => {
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
@@ -157,23 +159,27 @@ const ClientProfile = () => {
         </>
       ) : (
         <>
-          {profilePictureData && (
-            <div className="profile-info">
-              <img
-                className="profile-image"
-                src={`data:image/png;base64,${profilePictureData}`}
-                alt="Profile"
-              />
-              <div className="profile-text">
-                <div className="name">
-                  {userData.firstName} {userData.lastName}
-                </div>
-                <div>
-                  {userData.location} {userData.contactPhone}
-                </div>
-              </div>
-            </div>
-          )}
+         {profilePictureData && (
+  <div className="profile-info">
+    <img
+      className="profile-image"
+      src={`data:image/png;base64,${profilePictureData}`}
+      alt="Profile"
+    />
+    <div className="profile-text">
+      <div className="name">
+        {userData.firstName} {userData.lastName}
+      </div>
+      <div>
+        <FaMapMarkerAlt className="icon" /> {/* Location icon */}
+        {userData.location} 
+        <FaPhone className="icon" /> {/* Phone icon */}
+        {userData.contactPhone}
+      </div>
+    </div>
+  </div>
+)}
+
           <div></div>
           <button onClick={handleEditClick}>Edit</button>
         </>

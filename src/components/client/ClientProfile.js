@@ -4,7 +4,7 @@ import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/clientProfile.css";
 
-import { FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 
 const ClientProfile = () => {
   const locations = useApiData(
@@ -106,41 +106,45 @@ const ClientProfile = () => {
   return (
     <div className="client-profile-container">
       {isEditing ? (
-        <>
-          <label>
-            First Name:
+        <form className="edit-form">
+          <div className="form-group">
+            <label htmlFor="firstName">First Name:</label>
             <input
               className="input-field"
               type="text"
+              id="firstName"
               name="firstName"
               value={updateFormData.firstName}
               onChange={handleInputChange}
             />
-          </label>
-          <label>
-            Last Name:
+          </div>
+          <div className="form-group">
+            <label htmlFor="lastName">Last Name:</label>
             <input
               className="input-field"
               type="text"
+              id="lastName"
               name="lastName"
               value={updateFormData.lastName}
               onChange={handleInputChange}
             />
-          </label>
-          <label>
-            Contact Phone:
+          </div>
+          <div className="form-group">
+            <label htmlFor="contactPhone">Contact Phone:</label>
             <input
               className="input-field"
               type="text"
+              id="contactPhone"
               name="contactPhone"
               value={updateFormData.contactPhone}
               onChange={handleInputChange}
             />
-          </label>
-          <label>
-            Location:
+          </div>
+          <div className="form-group">
+            <label htmlFor="location">Location:</label>
             <select
               className="input-field"
+              id="location"
               name="location"
               value={updateFormData.location}
               onChange={handleInputChange}
@@ -154,34 +158,43 @@ const ClientProfile = () => {
                 </option>
               ))}
             </select>
-          </label>
-          <button onClick={handleUpdateClick}>Update</button>
-        </>
+          </div>
+          <button className="update-button" onClick={handleUpdateClick}>
+            Update
+          </button>
+        </form>
       ) : (
         <>
-         {profilePictureData && (
-  <div className="profile-info">
-    <img
-      className="profile-image"
-      src={`data:image/png;base64,${profilePictureData}`}
-      alt="Profile"
-    />
-    <div className="profile-text">
-      <div className="name">
-        {userData.firstName} {userData.lastName}
-      </div>
-      <div>
-        <FaMapMarkerAlt className="icon" /> {/* Location icon */}
-        {userData.location} 
-        <FaPhone className="icon" /> {/* Phone icon */}
-        {userData.contactPhone}
-      </div>
-    </div>
-  </div>
-)}
-
-          <div></div>
-          <button onClick={handleEditClick}>Edit</button>
+          <div className="profile-info">
+            {profilePictureData && (
+              <img
+                className="profile-image"
+                src={`data:image/png;base64,${profilePictureData}`}
+                alt="Profile"
+              />
+            )}
+            <div className="profile-text">
+              <div className="name">
+                {userData.firstName} {userData.lastName}
+              </div>
+              <div className="contact-info">
+                <span className="icon">
+                  <FaMapMarkerAlt />
+                </span>
+                <span>{userData.location}</span>
+                <span className="spacer"></span>
+                <span className="icon">
+                  <FaPhone />
+                </span>
+                <span>{userData.contactPhone}</span>
+              </div>
+            </div>
+          </div>
+          <div className="edit-button-container">
+            <button className="edit-button" onClick={handleEditClick}>
+              Edit
+            </button>
+          </div>
         </>
       )}
     </div>

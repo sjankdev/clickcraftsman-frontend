@@ -2,17 +2,41 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+}
+
+.edit-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.update-button,
+.edit-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .profile-info {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .profile-image {
-  margin-right: 20px;
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -22,19 +46,32 @@
 .profile-text {
   font-family: 'Roboto', sans-serif;
   font-size: 20px;
+  margin-left: 20px;
 }
 
-.profile-text > div {
-  margin-bottom: 10px;
-}
-
-.profile-text .name {
+.name {
   font-size: 24px;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
-.input-field {
-  width: 300px;
-  padding: 10px;
-  margin-bottom: 15px;
+.contact-info {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.contact-info .icon {
+  margin-right: 5px;
+}
+
+.edit-button {
+  margin-left: auto;
+  padding: 8px 16px;
+  background-color: #2196F3;
+}
+.spacer {
+  margin-right: 10px;
+}
+.edit-button-container {
+  margin-top: 10px; 
 }

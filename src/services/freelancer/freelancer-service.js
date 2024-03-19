@@ -33,19 +33,6 @@ const getAppliedJobs = async () => {
   }
 };
 
-const getApplicationStatus = async (jobId) => {
-  const url = `${API_URL_JOB}/application-status/${jobId}`;
-
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    console.log("getApplicationStatus method, freelancer");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching application status", error);
-    throw error;
-  }
-};
-
 const getReceivedJobOffers = async () => {
   const url = `${API_URL_FREELANCER}/receivedJobOffers`;
 
@@ -62,7 +49,6 @@ const getReceivedJobOffers = async () => {
 const freelancerService = {
   applyForJob,
   getAppliedJobs,
-  getApplicationStatus,
   getReceivedJobOffers,
 };
 

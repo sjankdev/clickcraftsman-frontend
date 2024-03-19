@@ -182,17 +182,6 @@ const FreelancerOpenProjects = () => {
                     .map((skill) => skill.skillName)
                     .join(", ")}
                 </p>
-                <p>Status: {applicationStatus[job.id]}</p>
-                {console.log("All application messages:", applicationMessages)}
-                {applicationMessages
-                  .filter((msg) => msg.jobId === job.id)
-                  .map((msg) => (
-                    <div key={msg.jobId}>
-                      <p>Message: {msg.message}</p>
-                    </div>
-                  ))}
-                {applicationMessages.filter((msg) => msg.jobId === job.id)
-                  .length === 0 && <p>No messages for this job</p>}
               </div>
               {appliedJobIds.includes(job.id) ? (
                 <p>You have already applied for this job.</p>

@@ -87,27 +87,6 @@ const FreelancerProfile = () => {
     }));
   };
 
-  useEffect(() => {
-    const fetchJobOffers = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/freelancer/receivedJobOffers",
-          {
-            headers: authHeader(),
-          }
-        );
-        console.log("Received job offers:", response.data);
-        setJobOffers(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError("Error fetching job offers");
-        setLoading(false);
-      }
-    };
-
-    fetchJobOffers();
-  }, []);
-
   const getSelectedOptions = (options) => {
     return Array.from(options)
       .filter((option) => option.selected)
@@ -310,14 +289,6 @@ const FreelancerProfile = () => {
           </button>
         </div>
       )}
-      <div>
-        <h2>Received Job Offers</h2>
-        <div className="job-offers-list">
-          {jobOffers.map((jobOffer) => (
-            <JobOfferItem key={jobOffer.id} jobOffer={jobOffer} />
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

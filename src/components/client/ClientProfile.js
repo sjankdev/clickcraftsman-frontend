@@ -4,6 +4,8 @@ import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/clientProfile.css";
 
+import { FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+
 const ClientProfile = () => {
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
@@ -102,98 +104,98 @@ const ClientProfile = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="client-profile">
-      <div className="profile-header">
-        <h2>Client Profile</h2>
-      </div>
+    <div className="client-profile-container">
       {isEditing ? (
-        <div>
-          <div className="form-field">
-            <label>
-              First Name:
-              <input
-                type="text"
-                name="firstName"
-                value={updateFormData.firstName}
-                onChange={handleInputChange}
-              />
-            </label>
+        <form className="edit-form">
+          <div className="form-group">
+            <label htmlFor="firstName">First Name:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={updateFormData.firstName}
+              onChange={handleInputChange}
+            />
           </div>
-          <div className="form-field">
-            <label>
-              Last Name:
-              <input
-                type="text"
-                name="lastName"
-                value={updateFormData.lastName}
-                onChange={handleInputChange}
-              />
-            </label>
+          <div className="form-group">
+            <label htmlFor="lastName">Last Name:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={updateFormData.lastName}
+              onChange={handleInputChange}
+            />
           </div>
-          <div className="form-field">
-            <label>
-              Contact Phone:
-              <input
-                type="text"
-                name="contactPhone"
-                value={updateFormData.contactPhone}
-                onChange={handleInputChange}
-              />
-            </label>
+          <div className="form-group">
+            <label htmlFor="contactPhone">Contact Phone:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="contactPhone"
+              name="contactPhone"
+              value={updateFormData.contactPhone}
+              onChange={handleInputChange}
+            />
           </div>
-          <div className="form-field">
-            <label>
-              Location:
-              <select
-                name="location"
-                value={updateFormData.location}
-                onChange={handleInputChange}
-              >
-                <option value="" disabled>
-                  Select Location
+          <div className="form-group">
+            <label htmlFor="location">Location:</label>
+            <select
+              className="input-field"
+              id="location"
+              name="location"
+              value={updateFormData.location}
+              onChange={handleInputChange}
+            >
+              <option value="" disabled>
+                Select Location
+              </option>
+              {locations.map((location) => (
+                <option key={location} value={location}>
+                  {location}
                 </option>
-                {locations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </label>
+              ))}
+            </select>
           </div>
-          <button onClick={handleUpdateClick}>Update</button>
-        </div>
+          <button className="update-button" onClick={handleUpdateClick}>
+            Update
+          </button>
+        </form>
       ) : (
-        <div className="profile-card">
+        <>
           <div className="profile-info">
             {profilePictureData && (
-              <div className="profile-picture">
-                <img
-                  src={`data:image/png;base64,${profilePictureData}`}
-                  alt="Profile"
-                />
-              </div>
+              <img
+                className="profile-image"
+                src={`data:image/png;base64,${profilePictureData}`}
+                alt="Profile"
+              />
             )}
-            <div className="data-field">
-              <div className="field-label">First Name:</div>
-              <div className="field-value">{userData.firstName}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Last Name:</div>
-              <div className="field-value">{userData.lastName}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Contact Phone:</div>
-              <div className="field-value">{userData.contactPhone}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Location:</div>
-              <div className="field-value">{userData.location}</div>
+            <div className="profile-text">
+              <div className="name">
+                {userData.firstName} {userData.lastName}
+              </div>
+              <div className="contact-info">
+                <span className="icon">
+                  <FaMapMarkerAlt />
+                </span>
+                <span>{userData.location}</span>
+                <span className="spacer"></span>
+                <span className="icon">
+                  <FaPhone />
+                </span>
+                <span>{userData.contactPhone}</span>
+              </div>
             </div>
           </div>
-          <button className="edit-btn" onClick={handleEditClick}>
-            Edit
-          </button>
-        </div>
+          <div className="edit-button-container">
+            <button className="edit-button" onClick={handleEditClick}>
+              Edit
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

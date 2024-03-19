@@ -37,20 +37,6 @@ const FreelancerOpenProjects = () => {
         setLoading(false);
       });
 
-    FreelancerService.getReceivedJobOffers()
-      .then((receivedJobOffers) => {
-        console.log("Received job offers:", receivedJobOffers);
-        const processedMessages = receivedJobOffers.map((jobOffer) => ({
-          jobId: jobOffer.id,
-          message: jobOffer.messageToFreelancer,
-        }));
-        console.log("Processed messages:", processedMessages);
-        setApplicationMessages(processedMessages);
-      })
-      .catch((error) => {
-        console.error("Error fetching received job offers", error);
-      });
-
     FreelancerService.getAppliedJobs()
       .then((appliedIds) => {
         setAppliedJobIds(appliedIds);
@@ -66,7 +52,6 @@ const FreelancerOpenProjects = () => {
         }
         setLoading(false);
       });
-
   }, []);
   const userRoles = authHeader().roles || [];
 

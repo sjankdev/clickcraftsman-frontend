@@ -33,23 +33,9 @@ const getAppliedJobs = async () => {
   }
 };
 
-const getReceivedJobOffers = async () => {
-  const url = `${API_URL_FREELANCER}/receivedJobOffers`;
-
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    console.log("Received job offers:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching received job offers", error);
-    throw error;
-  }
-};
-
 const freelancerService = {
   applyForJob,
   getAppliedJobs,
-  getReceivedJobOffers,
 };
 
 export default freelancerService;

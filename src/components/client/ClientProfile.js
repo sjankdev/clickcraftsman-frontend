@@ -102,98 +102,81 @@ const ClientProfile = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="client-profile">
-      <div className="profile-header">
-        <h2>Client Profile</h2>
-      </div>
+    <div className="client-profile-container">
       {isEditing ? (
-        <div>
-          <div className="form-field">
-            <label>
-              First Name:
-              <input
-                type="text"
-                name="firstName"
-                value={updateFormData.firstName}
-                onChange={handleInputChange}
-              />
-            </label>
-          </div>
-          <div className="form-field">
-            <label>
-              Last Name:
-              <input
-                type="text"
-                name="lastName"
-                value={updateFormData.lastName}
-                onChange={handleInputChange}
-              />
-            </label>
-          </div>
-          <div className="form-field">
-            <label>
-              Contact Phone:
-              <input
-                type="text"
-                name="contactPhone"
-                value={updateFormData.contactPhone}
-                onChange={handleInputChange}
-              />
-            </label>
-          </div>
-          <div className="form-field">
-            <label>
-              Location:
-              <select
-                name="location"
-                value={updateFormData.location}
-                onChange={handleInputChange}
-              >
-                <option value="" disabled>
-                  Select Location
+        <>
+          <label>
+            First Name:
+            <input
+              className="input-field"
+              type="text"
+              name="firstName"
+              value={updateFormData.firstName}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Last Name:
+            <input
+              className="input-field"
+              type="text"
+              name="lastName"
+              value={updateFormData.lastName}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Contact Phone:
+            <input
+              className="input-field"
+              type="text"
+              name="contactPhone"
+              value={updateFormData.contactPhone}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Location:
+            <select
+              className="input-field"
+              name="location"
+              value={updateFormData.location}
+              onChange={handleInputChange}
+            >
+              <option value="" disabled>
+                Select Location
+              </option>
+              {locations.map((location) => (
+                <option key={location} value={location}>
+                  {location}
                 </option>
-                {locations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+              ))}
+            </select>
+          </label>
           <button onClick={handleUpdateClick}>Update</button>
-        </div>
+        </>
       ) : (
-        <div className="profile-card">
-          <div className="profile-info">
-            {profilePictureData && (
-              <div className="profile-picture">
-                <img
-                  src={`data:image/png;base64,${profilePictureData}`}
-                  alt="Profile"
-                />
+        <>
+          {profilePictureData && (
+            <div className="profile-info">
+              <img
+                className="profile-image"
+                src={`data:image/png;base64,${profilePictureData}`}
+                alt="Profile"
+              />
+              <div className="profile-text">
+                <div className="name">
+                  {userData.firstName} {userData.lastName}
+                </div>
+                <div>
+                  {userData.location} {userData.contactPhone}
+                </div>
               </div>
-            )}
-            <div className="data-field">
-              <div className="field-label">First Name:</div>
-              <div className="field-value">{userData.firstName}</div>
             </div>
-            <div className="data-field">
-              <div className="field-label">Last Name:</div>
-              <div className="field-value">{userData.lastName}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Contact Phone:</div>
-              <div className="field-value">{userData.contactPhone}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Location:</div>
-              <div className="field-value">{userData.location}</div>
-            </div>
-          </div>
-          <button className="edit-btn" onClick={handleEditClick}>
-            Edit
-          </button>
-        </div>
+          )}
+          <div></div>
+          <button onClick={handleEditClick}>Edit</button>
+        </>
       )}
     </div>
   );

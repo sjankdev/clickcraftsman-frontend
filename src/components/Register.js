@@ -28,6 +28,13 @@ const Register = () => {
     portfolio: "",
     yearsOfExperience: 0,
     profilePicture: "",
+    companyName: "",
+    companyLocation: "", 
+    companySize: "",
+    companyIndustry: "",
+    linkedin: "",
+    website: "",
+    instagram: "",
   };
 
   const handleRegister = (formValue, { resetForm }) => {
@@ -43,6 +50,13 @@ const Register = () => {
       yearsOfExperience,
       skills,
       profilePicture,
+      companyName, 
+      companyLocation,
+      companySize,
+      companyIndustry,
+      linkedin,
+      website,
+      instagram,
     } = formValue;
     setSuccessful(false);
 
@@ -58,6 +72,13 @@ const Register = () => {
       portfolio,
       yearsOfExperience,
       profilePicture,
+      companyName, 
+      companyLocation,
+      companySize,
+      companyIndustry,
+      linkedin,
+      website,
+      instagram,
     };
 
     dispatch(
@@ -388,6 +409,97 @@ const Register = () => {
                     </Field>
                     <ErrorMessage
                       name="location"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="companyName">Company Name</label>
+                    <Field
+                      name="companyName"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="companyName"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="companyLocation">Company Location</label>
+                    <Field
+                      name="companyLocation"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="companyLocation"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="companySize">Company Size</label>
+                    <Field
+                      name="companySize"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="companySize"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="companyIndustry">Company Industry</label>
+                    <Field
+                      name="companyIndustry"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="companyIndustry"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="instagram">Instagram</label>
+                    <Field
+                      name="instagram"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="instagram"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="linkedin">Linkedin</label>
+                    <Field
+                      name="linkedin"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="linkedin"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="website">Website</label>
+                    <Field
+                      name="website"
+                      type="text"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="website"
                       component="div"
                       className="alert alert-danger"
                     />

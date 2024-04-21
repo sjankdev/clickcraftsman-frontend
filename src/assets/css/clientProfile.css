@@ -17,6 +17,7 @@
   height: 120px;
   object-fit: cover;
   border-radius: 50%;
+  margin-bottom: 20px; /* Add margin bottom to create space for companyData */
 }
 
 .profile-details {
@@ -45,4 +46,8 @@
 
 .edit-button-container {
   margin-top: 10px;
+}
+
+.companyData {
+  text-align: left;
 }

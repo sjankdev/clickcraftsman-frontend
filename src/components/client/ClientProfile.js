@@ -253,7 +253,7 @@ const ClientProfile = () => {
           <button type="button" className="update-button" onClick={handleUpdateClick}>
             Update
           </button>
-        </form>
+          </form>
       ) : (
         <>
           <div className="profile-info">
@@ -280,6 +280,12 @@ const ClientProfile = () => {
                 <span>{userData.contactPhone}</span>
               </div>
             </div>
+          </div>
+          <div className="companyData">
+            <div>Company Name: {userData.companyName}</div>
+            <div>Company Location: {userData.companyLocation}</div>
+            <div>Company Size: {userData.companySize}</div>
+            <div>Company Industry: {userData.companyIndustry}</div>
           </div>
           <div className="edit-button-container">
             <button className="edit-button" onClick={handleEditClick}>

@@ -19,9 +19,9 @@ const ClientProfile = () => {
     companyName: "",
     companySize: "",
     companyIndustry: "",
-    companyLocation: "", 
+    companyLocation: "",
     website: "",
-    linkedin: "", 
+    linkedin: "",
     instagram: "",
   });
 
@@ -33,9 +33,9 @@ const ClientProfile = () => {
     companyName: "",
     companySize: "",
     companyIndustry: "",
-    companyLocation: "", 
+    companyLocation: "",
     website: "",
-    linkedin: "", 
+    linkedin: "",
     instagram: "",
   });
 
@@ -253,46 +253,58 @@ const ClientProfile = () => {
           <button type="button" className="update-button" onClick={handleUpdateClick}>
             Update
           </button>
-          </form>
+        </form>
       ) : (
-        <>
-          <div className="profile-info">
-            {profilePictureData && (
-              <img
-                className="profile-image"
-                src={`data:image/png;base64,${profilePictureData}`}
-                alt="Profile"
-              />
-            )}
-            <div className="profile-details">
-              <div className="name">
-                {userData.firstName} {userData.lastName}
+        <div className="profile-container">
+        <div className="profile-picture">
+          {profilePictureData && (
+            <img
+              src={`data:image/png;base64,${profilePictureData}`}
+              alt="Profile"
+            />
+          )}
+        </div>
+        <div className="profile-info">
+          <div className="name">
+            {userData.firstName} {userData.lastName}
+          </div>
+          <div className="section-wrapper">
+            <div className="section contact">
+              <div className="section-title">Contact</div>
+              <div className="location">
+                <span className="icon"><FaMapMarkerAlt /></span>
+                {userData.location}
               </div>
               <div className="contact-info">
-                <span className="icon">
-                  <FaMapMarkerAlt />
-                </span>
-                <span>{userData.location}</span>
-                <span className="spacer"></span>
-                <span className="icon">
-                  <FaPhone />
-                </span>
-                <span>{userData.contactPhone}</span>
+                <span className="icon"><FaPhone /></span>
+                {userData.contactPhone}
               </div>
             </div>
           </div>
-          <div className="companyData">
-            <div>Company Name: {userData.companyName}</div>
-            <div>Company Location: {userData.companyLocation}</div>
-            <div>Company Size: {userData.companySize}</div>
-            <div>Company Industry: {userData.companyIndustry}</div>
+          <div className="section-wrapper">
+            <div className="section company-info">
+              <div className="section-title">Company Info</div>
+              <div><strong>Company Name:</strong> {userData.companyName}</div>
+              <div><strong>Company Location:</strong> {userData.companyLocation}</div>
+              <div><strong>Company Size:</strong> {userData.companySize}</div>
+              <div><strong>Company Industry:</strong> {userData.companyIndustry}</div>
+            </div>
           </div>
-          <div className="edit-button-container">
-            <button className="edit-button" onClick={handleEditClick}>
-              Edit
-            </button>
+          <div className="section-wrapper">
+            <div className="section socials">
+              <div className="section-title">Socials</div>
+              <div><strong>Website:</strong> {userData.website}</div>
+              <div><strong>Instagram:</strong> {userData.instagram}</div>
+              <div><strong>Linkedin:</strong> {userData.linkedin}</div>
+            </div>
           </div>
-        </>
+          <button className="edit-button" onClick={handleEditClick}>
+            Edit
+          </button>
+        </div>
+      </div>
+      
+
       )}
     </div>
   );

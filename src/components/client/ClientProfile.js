@@ -16,6 +16,13 @@ const ClientProfile = () => {
     lastName: "",
     contactPhone: "",
     location: "",
+    companyName: "",
+    companySize: "",
+    companyIndustry: "",
+    companyLocation: "",
+    website: "",
+    linkedin: "",
+    instagram: "",
   });
 
   const [updateFormData, setUpdateFormData] = useState({
@@ -23,6 +30,13 @@ const ClientProfile = () => {
     lastName: "",
     contactPhone: "",
     location: "",
+    companyName: "",
+    companySize: "",
+    companyIndustry: "",
+    companyLocation: "",
+    website: "",
+    linkedin: "",
+    instagram: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -79,10 +93,10 @@ const ClientProfile = () => {
 
   const handleUpdateClick = async () => {
     try {
-      const { firstName, lastName, contactPhone, location } = updateFormData;
+      const { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram } = updateFormData;
       await axios.post(
         "http://localhost:8080/api/client/update",
-        { firstName, lastName, contactPhone, location },
+        { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram },
         {
           headers: authHeader(),
         }
@@ -159,43 +173,134 @@ const ClientProfile = () => {
               ))}
             </select>
           </div>
-          <button className="update-button" onClick={handleUpdateClick}>
+          <div className="form-group">
+            <label htmlFor="companyName">Company name</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companyName"
+              name="companyName"
+              value={updateFormData.companyName}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="companyIndustry">Company industry</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companyIndustry"
+              name="companyIndustry"
+              value={updateFormData.companyIndustry}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="companySize">Company size</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companySize"
+              name="companySize"
+              value={updateFormData.companySize}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="companyLocation">Company location</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companyLocation"
+              name="companyLocation"
+              value={updateFormData.companyLocation}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="website">Website</label>
+            <input
+              className="input-field"
+              type="text"
+              id="website"
+              name="website"
+              value={updateFormData.website}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="instagram">Instagram</label>
+            <input
+              className="input-field"
+              type="text"
+              id="instagram"
+              name="instagram"
+              value={updateFormData.instagram}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="linkedin">Linkedin</label>
+            <input
+              className="input-field"
+              type="text"
+              id="linkedin"
+              name="linkedin"
+              value={updateFormData.linkedin}
+              onChange={handleInputChange}
+            />
+          </div>
+          <button type="button" className="update-button" onClick={handleUpdateClick}>
             Update
           </button>
         </form>
       ) : (
-        <>
-          <div className="profile-info">
-            {profilePictureData && (
-              <img
-                className="profile-image"
-                src={`data:image/png;base64,${profilePictureData}`}
-                alt="Profile"
-              />
-            )}
-            <div className="profile-text">
-              <div className="name">
-                {userData.firstName} {userData.lastName}
+        <div className="profile-container">
+        <div className="profile-picture">
+          {profilePictureData && (
+            <img
+              src={`data:image/png;base64,${profilePictureData}`}
+              alt="Profile"
+            />
+          )}
+        </div>
+        <div className="profile-info">
+          <div className="name">
+            {userData.firstName} {userData.lastName}
+          </div>
+          <div className="section-wrapper">
+            <div className="section-row">
+              <div className="section contact">
+                <div className="section-title">Contact</div>
+                <div className="location">
+                  <span className="icon"><FaMapMarkerAlt /></span>
+                  {userData.location}
+                </div>
+                <div className="contact-info">
+                  <span className="icon"><FaPhone /></span>
+                  {userData.contactPhone}
+                </div>
               </div>
-              <div className="contact-info">
-                <span className="icon">
-                  <FaMapMarkerAlt />
-                </span>
-                <span>{userData.location}</span>
-                <span className="spacer"></span>
-                <span className="icon">
-                  <FaPhone />
-                </span>
-                <span>{userData.contactPhone}</span>
+              <div className="section company-info">
+                <div className="section-title">Company Info</div>
+                <div><strong>Company Name:</strong> {userData.companyName}</div>
+                <div><strong>Company Location:</strong> {userData.companyLocation}</div>
+                <div><strong>Company Size:</strong> {userData.companySize}</div>
+                <div><strong>Company Industry:</strong> {userData.companyIndustry}</div>
               </div>
             </div>
+            <div className="section socials">
+              <div className="section-title">Socials</div>
+              <div><strong>Website:</strong> {userData.website}</div>
+              <div><strong>Instagram:</strong> {userData.instagram}</div>
+              <div><strong>Linkedin:</strong> {userData.linkedin}</div>
+            </div>
           </div>
-          <div className="edit-button-container">
-            <button className="edit-button" onClick={handleEditClick}>
-              Edit
-            </button>
-          </div>
-        </>
+          <button className="edit-button" onClick={handleEditClick}>
+            Edit
+          </button>
+        </div>
+      </div>
       )}
     </div>
   );

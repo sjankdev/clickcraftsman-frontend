@@ -108,6 +108,19 @@ const declineApplication = async (applicationId) => {
   }
 };
 
+const getClientJobPostingsCount = async () => {
+  const url = `${API_URL_CLIENT}/client-job-postings/count`;
+
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    console.log("getClientJobPostingsCount method, client");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching client job postings count", error);
+    throw error;
+  }
+};
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
@@ -116,6 +129,7 @@ const clientService = {
   postJob,
   sendOffer,
   declineApplication,
+  getClientJobPostingsCount,
 };
 
 export default clientService;

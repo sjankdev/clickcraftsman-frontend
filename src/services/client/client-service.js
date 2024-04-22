@@ -121,6 +121,19 @@ const getClientJobPostingsCount = async () => {
   }
 };
 
+const deleteJobPosting = async (jobId) => {
+  const url = `${API_URL_JOB}/delete/${jobId}`;
+  
+  try {
+    const response = await axios.delete(url, { headers: authHeader() });
+    console.log("Job posting deleted successfully!", response);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting job posting ${jobId}`, error);
+    throw error;
+  }
+};
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
@@ -130,6 +143,7 @@ const clientService = {
   sendOffer,
   declineApplication,
   getClientJobPostingsCount,
+  deleteJobPosting, 
 };
 
 export default clientService;

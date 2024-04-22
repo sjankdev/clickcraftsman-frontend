@@ -7,13 +7,17 @@ import { Container, Alert, ListGroup, Spinner } from "react-bootstrap";
 
 const ClientPostedJobs = () => {
   const [jobPostings, setJobPostings] = useState([]);
+  const [archivedJobPostings, setArchivedJobPostings] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     ClientService.getClientJobPostings()
       .then((response) => {
-        setJobPostings(response || []);
+        const activeJobs = response.filter(job => !job.archived);
+        const archivedJobs = response.filter(job => job.archived);
+        setJobPostings(activeJobs || []);
+        setArchivedJobPostings(archivedJobs || []);
         setLoading(false);
       })
       .catch((error) => {
@@ -43,6 +47,21 @@ const ClientPostedJobs = () => {
     }
   };
 
+  const handleArchiveJob = (jobId) => {
+    if (window.confirm("Are you sure you want to archive this job posting?")) {
+      ClientService.archiveJobPosting(jobId)
+        .then(() => {
+          const updatedJobPostings = jobPostings.filter(job => job.id !== jobId);
+          const archivedJob = jobPostings.find(job => job.id === jobId);
+          setJobPostings(updatedJobPostings);
+          setArchivedJobPostings([...archivedJobPostings, archivedJob]);
+        })
+        .catch((error) => {
+          console.error('Error archiving job posting:', error);
+        });
+    }
+  };
+
   return (
     <Container>
       {userRoles.includes("ROLE_CLIENT") ? (
@@ -62,6 +81,7 @@ const ClientPostedJobs = () => {
                   <p>{job.description}</p>
                   <Link to={`/client/job/${job.id}`}>View Applicants</Link>
                   <button onClick={() => handleDeleteJob(job.id)} className="btn btn-danger ml-2">Delete</button>
+                  <button onClick={() => handleArchiveJob(job.id)} className="btn btn-warning ml-2">Archive</button>
                 </ListGroup.Item>
               ))}
             </ListGroup>
@@ -69,9 +89,23 @@ const ClientPostedJobs = () => {
             <div>
               {!loading && (
                 <Alert variant="warning" className="mt-4">
-                  No job postings available.
+                  No active job postings available.
                 </Alert>
               )}
+            </div>
+          )}
+          {archivedJobPostings.length > 0 && (
+            <div>
+              <h2 className="my-4">Archived Job Postings</h2>
+              <ListGroup className="mt-4">
+                {archivedJobPostings.map((job) => (
+                  <ListGroup.Item key={job.id}>
+                    <h5>{job.jobName}</h5>
+                    <p>{job.description}</p>
+                    <Link to={`/client/job/${job.id}`}>View Applicants</Link>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
             </div>
           )}
         </div>

@@ -134,6 +134,19 @@ const deleteJobPosting = async (jobId) => {
   }
 };
 
+const archiveJobPosting = async (jobId) => {
+  const url = `${API_URL_JOB}/archive/${jobId}`;
+
+  try {
+    const response = await axios.put(url, null, { headers: authHeader() });
+    console.log("Job posting archived successfully!", response);
+    return response.data;
+  } catch (error) {
+    console.error(`Error archiving job posting ${jobId}`, error);
+    throw error;
+  }
+};
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
@@ -143,7 +156,8 @@ const clientService = {
   sendOffer,
   declineApplication,
   getClientJobPostingsCount,
-  deleteJobPosting, 
+  deleteJobPosting,
+  archiveJobPosting,
 };
 
 export default clientService;

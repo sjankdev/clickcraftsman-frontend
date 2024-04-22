@@ -269,28 +269,26 @@ const ClientProfile = () => {
             {userData.firstName} {userData.lastName}
           </div>
           <div className="section-wrapper">
-            <div className="section contact">
-              <div className="section-title">Contact</div>
-              <div className="location">
-                <span className="icon"><FaMapMarkerAlt /></span>
-                {userData.location}
+            <div className="section-row">
+              <div className="section contact">
+                <div className="section-title">Contact</div>
+                <div className="location">
+                  <span className="icon"><FaMapMarkerAlt /></span>
+                  {userData.location}
+                </div>
+                <div className="contact-info">
+                  <span className="icon"><FaPhone /></span>
+                  {userData.contactPhone}
+                </div>
               </div>
-              <div className="contact-info">
-                <span className="icon"><FaPhone /></span>
-                {userData.contactPhone}
+              <div className="section company-info">
+                <div className="section-title">Company Info</div>
+                <div><strong>Company Name:</strong> {userData.companyName}</div>
+                <div><strong>Company Location:</strong> {userData.companyLocation}</div>
+                <div><strong>Company Size:</strong> {userData.companySize}</div>
+                <div><strong>Company Industry:</strong> {userData.companyIndustry}</div>
               </div>
             </div>
-          </div>
-          <div className="section-wrapper">
-            <div className="section company-info">
-              <div className="section-title">Company Info</div>
-              <div><strong>Company Name:</strong> {userData.companyName}</div>
-              <div><strong>Company Location:</strong> {userData.companyLocation}</div>
-              <div><strong>Company Size:</strong> {userData.companySize}</div>
-              <div><strong>Company Industry:</strong> {userData.companyIndustry}</div>
-            </div>
-          </div>
-          <div className="section-wrapper">
             <div className="section socials">
               <div className="section-title">Socials</div>
               <div><strong>Website:</strong> {userData.website}</div>
@@ -303,8 +301,6 @@ const ClientProfile = () => {
           </button>
         </div>
       </div>
-      
-
       )}
     </div>
   );

@@ -53,6 +53,7 @@ const FreelancerOpenProjects = () => {
         setLoading(false);
       });
   }, []);
+
   const userRoles = authHeader().roles || [];
 
   const openModal = (jobId) => {
@@ -144,52 +145,54 @@ const FreelancerOpenProjects = () => {
     <div className="container">
       {userRoles.includes("ROLE_FREELANCER") ? (
         <div>
-          {jobs.map((job) => (
-            <div key={job.id} className="job-card">
-              <h3>{job.jobName}</h3>
-              <p className="job-description">{job.description}</p>
-              <div className="job-details">
-                <p>Date Posted: {job.datePosted}</p>
-                <p>Location: {job.location}</p>
-                <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
-                <p>
-                  Required Skills:{" "}
-                  {job.requiredSkills
-                    .map((skill) => skill.skillName)
-                    .join(", ")}
-                </p>
-              </div>
-              {appliedJobIds.includes(job.id) ? (
-                <p>You have already applied for this job.</p>
-              ) : (
-                <div>
-                  <button onClick={() => handleApply(job.id)}>Apply</button>
-                  <hr />
-                  {applicationMessages.map(
-                    (msg) =>
-                      msg.jobId === job.id && (
-                        <p key={msg.jobId}>{msg.message}</p>
-                      )
-                  )}
-                  <Modal
-                    isOpen={isModalOpen && selectedJobId === job.id}
-                    onRequestClose={closeModal}
-                    contentLabel="Custom Message Modal"
-                  >
-                    <h2>Enter Your Custom Message</h2>
-                    <textarea
-                      value={customMessage}
-                      onChange={(e) => setCustomMessage(e.target.value)}
-                    />
-                    <button onClick={handleApplyWithCustomMessage}>
-                      Apply
-                    </button>
-                    <button onClick={closeModal}>Cancel</button>
-                  </Modal>
+          {jobs
+            .filter(job => !job.archived) 
+            .map((job) => (
+              <div key={job.id} className="job-card">
+                <h3>{job.jobName}</h3>
+                <p className="job-description">{job.description}</p>
+                <div className="job-details">
+                  <p>Date Posted: {job.datePosted}</p>
+                  <p>Location: {job.location}</p>
+                  <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
+                  <p>
+                    Required Skills:{" "}
+                    {job.requiredSkills
+                      .map((skill) => skill.skillName)
+                      .join(", ")}
+                  </p>
                 </div>
-              )}
-            </div>
-          ))}
+                {appliedJobIds.includes(job.id) ? (
+                  <p>You have already applied for this job.</p>
+                ) : (
+                  <div>
+                    <button onClick={() => handleApply(job.id)}>Apply</button>
+                    <hr />
+                    {applicationMessages.map(
+                      (msg) =>
+                        msg.jobId === job.id && (
+                          <p key={msg.jobId}>{msg.message}</p>
+                        )
+                    )}
+                    <Modal
+                      isOpen={isModalOpen && selectedJobId === job.id}
+                      onRequestClose={closeModal}
+                      contentLabel="Custom Message Modal"
+                    >
+                      <h2>Enter Your Custom Message</h2>
+                      <textarea
+                        value={customMessage}
+                        onChange={(e) => setCustomMessage(e.target.value)}
+                      />
+                      <button onClick={handleApplyWithCustomMessage}>
+                        Apply
+                      </button>
+                      <button onClick={closeModal}>Cancel</button>
+                    </Modal>
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
       ) : (
         <div>
@@ -201,4 +204,5 @@ const FreelancerOpenProjects = () => {
     </div>
   );
 };
+
 export default FreelancerOpenProjects;

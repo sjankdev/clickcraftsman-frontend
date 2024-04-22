@@ -31,6 +31,18 @@ const ClientPostedJobs = () => {
 
   const userRoles = authHeader().roles || [];
 
+  const handleDeleteJob = (jobId) => {
+    if (window.confirm("Are you sure you want to delete this job posting?")) {
+      ClientService.deleteJobPosting(jobId)
+        .then(() => {
+          setJobPostings(jobPostings.filter(job => job.id !== jobId));
+        })
+        .catch((error) => {
+          console.error('Error deleting job posting:', error);
+        });
+    }
+  };
+
   return (
     <Container>
       {userRoles.includes("ROLE_CLIENT") ? (
@@ -49,7 +61,7 @@ const ClientPostedJobs = () => {
                   <h5>{job.jobName}</h5>
                   <p>{job.description}</p>
                   <Link to={`/client/job/${job.id}`}>View Applicants</Link>
-                  <button onClick={() => ClientService.deleteJobPosting(job.id)} className="btn btn-danger ml-2">Delete</button>
+                  <button onClick={() => handleDeleteJob(job.id)} className="btn btn-danger ml-2">Delete</button>
                 </ListGroup.Item>
               ))}
             </ListGroup>

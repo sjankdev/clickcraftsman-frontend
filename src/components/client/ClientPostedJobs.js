@@ -49,6 +49,7 @@ const ClientPostedJobs = () => {
                   <h5>{job.jobName}</h5>
                   <p>{job.description}</p>
                   <Link to={`/client/job/${job.id}`}>View Applicants</Link>
+                  <button onClick={() => ClientService.deleteJobPosting(job.id)} className="btn btn-danger ml-2">Delete</button>
                 </ListGroup.Item>
               ))}
             </ListGroup>

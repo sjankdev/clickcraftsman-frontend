@@ -3,6 +3,7 @@ import axios from "axios";
 import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/clientProfile.css";
+import ClientService from "../../services/client/client-service";
 
 import { FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 
@@ -11,6 +12,21 @@ const ClientProfile = () => {
     "http://localhost:8080/api/utils/getAllLocations"
   );
   const [profilePictureData, setProfilePictureData] = useState(null);
+  const [jobPostingCount, setJobPostingCount] = useState(0);
+
+  useEffect(() => {
+    const fetchJobPostingCount = async () => {
+      try {
+        const response = await ClientService.getClientJobPostingsCount();
+        setJobPostingCount(response);
+      } catch (error) {
+        console.error("Error fetching job posting count:", error);
+      }
+    };
+
+    fetchJobPostingCount();
+  }, []);
+
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -256,51 +272,55 @@ const ClientProfile = () => {
         </form>
       ) : (
         <div className="profile-container">
-        <div className="profile-picture">
-          {profilePictureData && (
-            <img
-              src={`data:image/png;base64,${profilePictureData}`}
-              alt="Profile"
-            />
-          )}
-        </div>
-        <div className="profile-info">
-          <div className="name">
-            {userData.firstName} {userData.lastName}
+          <div className="profile-picture-client">
+            {profilePictureData && (
+              <img
+                src={`data:image/png;base64,${profilePictureData}`}
+                alt="Profile"
+              />
+            )}
           </div>
-          <div className="section-wrapper">
-            <div className="section-row">
-              <div className="section contact">
-                <div className="section-title">Contact</div>
-                <div className="location">
-                  <span className="icon"><FaMapMarkerAlt /></span>
-                  {userData.location}
+          <div className="profile-info">
+            <div className="name">
+              {userData.firstName} {userData.lastName}
+            </div>
+            <div className="section-wrapper">
+              <div className="section-row">
+                <div className="section contact">
+                  <div className="section-title">Contact</div>
+                  <div className="location">
+                    <span className="icon"><FaMapMarkerAlt /></span>
+                    {userData.location}
+                  </div>
+                  <div className="contact-info">
+                    <span className="icon"><FaPhone /></span>
+                    {userData.contactPhone}
+                  </div>
                 </div>
-                <div className="contact-info">
-                  <span className="icon"><FaPhone /></span>
-                  {userData.contactPhone}
+                <div className="section company-info">
+                  <div className="section-title">Company Info</div>
+                  <div><strong>Company Name:</strong> {userData.companyName}</div>
+                  <div><strong>Company Location:</strong> {userData.companyLocation}</div>
+                  <div><strong>Company Size:</strong> {userData.companySize}</div>
+                  <div><strong>Company Industry:</strong> {userData.companyIndustry}</div>
                 </div>
               </div>
-              <div className="section company-info">
-                <div className="section-title">Company Info</div>
-                <div><strong>Company Name:</strong> {userData.companyName}</div>
-                <div><strong>Company Location:</strong> {userData.companyLocation}</div>
-                <div><strong>Company Size:</strong> {userData.companySize}</div>
-                <div><strong>Company Industry:</strong> {userData.companyIndustry}</div>
+              <div className="section socials">
+                <div className="section-title">Socials</div>
+                <div><strong>Website:</strong> {userData.website}</div>
+                <div><strong>Instagram:</strong> {userData.instagram}</div>
+                <div><strong>Linkedin:</strong> {userData.linkedin}</div>
+              </div>
+              <div className="section">
+                <div className="section-title">Job Postings</div>
+                <div>Number of Job Postings: {jobPostingCount}</div>
               </div>
             </div>
-            <div className="section socials">
-              <div className="section-title">Socials</div>
-              <div><strong>Website:</strong> {userData.website}</div>
-              <div><strong>Instagram:</strong> {userData.instagram}</div>
-              <div><strong>Linkedin:</strong> {userData.linkedin}</div>
-            </div>
+            <button className="edit-button" onClick={handleEditClick}>
+              Edit
+            </button>
           </div>
-          <button className="edit-button" onClick={handleEditClick}>
-            Edit
-          </button>
         </div>
-      </div>
       )}
     </div>
   );

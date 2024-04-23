@@ -12,19 +12,23 @@ const ClientProfile = () => {
     "http://localhost:8080/api/utils/getAllLocations"
   );
   const [profilePictureData, setProfilePictureData] = useState(null);
-  const [jobPostingCount, setJobPostingCount] = useState(0);
+  const [liveJobPostingCount, setLiveJobPostingCount] = useState(0);
+  const [archivedJobPostingCount, setArchivedJobPostingCount] = useState(0);
 
   useEffect(() => {
-    const fetchJobPostingCount = async () => {
+    const fetchJobPostingCounts = async () => {
       try {
-        const response = await ClientService.getClientJobPostingsCount();
-        setJobPostingCount(response);
+        const liveResponse = await ClientService.getLiveClientJobPostingsCount();
+        const archivedResponse = await ClientService.getArchivedClientJobPostingsCount();
+
+        setLiveJobPostingCount(liveResponse);
+        setArchivedJobPostingCount(archivedResponse);
       } catch (error) {
-        console.error("Error fetching job posting count:", error);
+        console.error("Error fetching job posting counts:", error);
       }
     };
 
-    fetchJobPostingCount();
+    fetchJobPostingCounts();
   }, []);
 
   const [userData, setUserData] = useState({
@@ -313,7 +317,8 @@ const ClientProfile = () => {
               </div>
               <div className="section">
                 <div className="section-title">Job Postings</div>
-                <div>Number of Job Postings: {jobPostingCount}</div>
+                <div>Live Job Postings: {liveJobPostingCount}</div>
+                <div>Archived Job Postings: {archivedJobPostingCount}</div>
               </div>
             </div>
             <button className="edit-button" onClick={handleEditClick}>

@@ -108,19 +108,6 @@ const declineApplication = async (applicationId) => {
   }
 };
 
-const getClientJobPostingsCount = async () => {
-  const url = `${API_URL_CLIENT}/client-job-postings/count`;
-
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    console.log("getClientJobPostingsCount method, client");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching client job postings count", error);
-    throw error;
-  }
-};
-
 const deleteJobPosting = async (jobId) => {
   const url = `${API_URL_JOB}/delete/${jobId}`;
   
@@ -160,6 +147,32 @@ const unarchiveJobPosting = async (jobId) => {
   }
 };
 
+const getLiveClientJobPostingsCount = async () => {
+  const url = `${API_URL_CLIENT}/client-job-postings/live-count`;
+
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    console.log("getLiveClientJobPostingsCount method, client");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching live client job postings count", error);
+    throw error;
+  }
+};
+
+const getArchivedClientJobPostingsCount = async () => {
+  const url = `${API_URL_CLIENT}/client-job-postings/archived-count`;
+
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    console.log("getArchivedClientJobPostingsCount method, client");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching archived client job postings count", error);
+    throw error;
+  }
+};
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
@@ -168,10 +181,11 @@ const clientService = {
   postJob,
   sendOffer,
   declineApplication,
-  getClientJobPostingsCount,
   deleteJobPosting,
   archiveJobPosting,
   unarchiveJobPosting,
+  getLiveClientJobPostingsCount,
+  getArchivedClientJobPostingsCount,
 };
 
 export default clientService;

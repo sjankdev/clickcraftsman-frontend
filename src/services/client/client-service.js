@@ -147,6 +147,19 @@ const archiveJobPosting = async (jobId) => {
   }
 };
 
+const unarchiveJobPosting = async (jobId) => {
+  const url = `${API_URL_JOB}/unarchive/${jobId}`;
+
+  try {
+    const response = await axios.put(url, null, { headers: authHeader() });
+    console.log("Job posting unarchived successfully!", response);
+    return response.data;
+  } catch (error) {
+    console.error(`Error unarchiving job posting ${jobId}`, error);
+    throw error;
+  }
+};
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
@@ -158,6 +171,7 @@ const clientService = {
   getClientJobPostingsCount,
   deleteJobPosting,
   archiveJobPosting,
+  unarchiveJobPosting,
 };
 
 export default clientService;

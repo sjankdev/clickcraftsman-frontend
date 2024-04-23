@@ -53,6 +53,9 @@ const JobPostForm = () => {
 
   const handlePriceTypeChange = (selectedOption) => {
     setPriceType(selectedOption.value);
+    setPriceRangeFrom("");
+    setPriceRangeTo("");
+    setBudget("");
   };
 
   const handleCheckboxChange = (e) => {
@@ -140,14 +143,14 @@ const JobPostForm = () => {
               <label htmlFor="priceType">Price Type:</label>
               <Select
                 options={[
-                  { value: "PerHour", label: "Per Hour" },
-                  { value: "PerMonth", label: "Per Month" },
-                  { value: "FixedPrice", label: "Fixed Price" },
+                  { value: "PER_HOUR", label: "Per Hour" },
+                  { value: "PER_MONTH", label: "Per Month" },
+                  { value: "FIXED_PRICE", label: "Fixed Price" },
                 ]}
                 onChange={handlePriceTypeChange}
               />
             </div>
-            {priceType === "PerHour" || priceType === "PerMonth" ? (
+            {priceType === "PER_HOUR" || priceType === "PER_MONTH" ? (
               <>
                 <div className="form-group">
                   <label htmlFor="priceRangeFrom">Price Range From:</label>
@@ -170,7 +173,7 @@ const JobPostForm = () => {
                   />
                 </div>
               </>
-            ) : priceType === "FixedPrice" ? (
+            ) : priceType === "FIXED_PRICE" ? (
               <div className="form-group">
                 <label htmlFor="budget">Budget:</label>
                 <input

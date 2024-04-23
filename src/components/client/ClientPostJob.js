@@ -14,7 +14,10 @@ const JobPostForm = () => {
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [isRemote, setIsRemote] = useState(false);
-
+  const [priceType, setPriceType] = useState("");
+  const [priceRangeFrom, setPriceRangeFrom] = useState("");
+  const [priceRangeTo, setPriceRangeTo] = useState("");
+  const [budget, setBudget] = useState("");
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
@@ -48,6 +51,10 @@ const JobPostForm = () => {
     setLocation(selectedOption.value);
   };
 
+  const handlePriceTypeChange = (selectedOption) => {
+    setPriceType(selectedOption.value);
+  };
+
   const handleCheckboxChange = (e) => {
     setIsRemote(e.target.checked);
     setLocation("");
@@ -65,6 +72,10 @@ const JobPostForm = () => {
       requiredSkillIds: selectedSkills.map((skill) => skill.value),
       isRemote,
       location,
+      priceType,
+      priceRangeFrom,
+      priceRangeTo,
+      budget,
     };
 
     ClientService.postJob(userEmail, jobPostingData)
@@ -76,7 +87,7 @@ const JobPostForm = () => {
           (error.response &&
             error.response.data &&
             error.response.data.message) ||
-            "An error occurred while posting the job."
+          "An error occurred while posting the job."
         );
       });
   };
@@ -126,6 +137,52 @@ const JobPostForm = () => {
               />
             </div>
             <div className="form-group">
+              <label htmlFor="priceType">Price Type:</label>
+              <Select
+                options={[
+                  { value: "PerHour", label: "Per Hour" },
+                  { value: "PerMonth", label: "Per Month" },
+                  { value: "FixedPrice", label: "Fixed Price" },
+                ]}
+                onChange={handlePriceTypeChange}
+              />
+            </div>
+            {priceType === "PerHour" || priceType === "PerMonth" ? (
+              <>
+                <div className="form-group">
+                  <label htmlFor="priceRangeFrom">Price Range From:</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="priceRangeFrom"
+                    value={priceRangeFrom}
+                    onChange={(e) => setPriceRangeFrom(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="priceRangeTo">Price Range To:</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="priceRangeTo"
+                    value={priceRangeTo}
+                    onChange={(e) => setPriceRangeTo(e.target.value)}
+                  />
+                </div>
+              </>
+            ) : priceType === "FixedPrice" ? (
+              <div className="form-group">
+                <label htmlFor="budget">Budget:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="budget"
+                  value={budget}
+                  onChange={(e) => setBudget(e.target.value)}
+                />
+              </div>
+            ) : null}
+            <div className="form-group">
               <label htmlFor="isRemote">Is Remote?</label>
               <input
                 type="checkbox"
@@ -146,10 +203,10 @@ const JobPostForm = () => {
                 />
               </div>
             )}
-           <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary">
               Post Job
             </button>
-            </form>
+          </form>
         </div>
       ) : (
         <div>

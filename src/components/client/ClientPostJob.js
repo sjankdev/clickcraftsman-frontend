@@ -18,6 +18,7 @@ const JobPostForm = () => {
   const [priceRangeFrom, setPriceRangeFrom] = useState("");
   const [priceRangeTo, setPriceRangeTo] = useState("");
   const [budget, setBudget] = useState("");
+  const [jobType, setJobType] = useState("");
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
@@ -63,6 +64,10 @@ const JobPostForm = () => {
     setLocation("");
   };
 
+  const handleJobTypeChange = (selectedOption) => {
+    setJobType(selectedOption.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -79,6 +84,7 @@ const JobPostForm = () => {
       priceRangeFrom,
       priceRangeTo,
       budget,
+      jobType
     };
 
     ClientService.postJob(userEmail, jobPostingData)
@@ -185,6 +191,19 @@ const JobPostForm = () => {
                 />
               </div>
             ) : null}
+            <div className="form-group">
+              <label htmlFor="jobType">Job Type:</label>
+              <Select
+                options={[
+                  { value: "FULL_TIME", label: "Full Time" },
+                  { value: "PART_TIME", label: "Part Time" },
+                  { value: "CONTRACT", label: "Contract" },
+                  { value: "FREELANCE", label: "Freelance" },
+                  { value: "INTERNSHIP", label: "Internship" },
+                ]}
+                onChange={handleJobTypeChange}
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="isRemote">Is Remote?</label>
               <input

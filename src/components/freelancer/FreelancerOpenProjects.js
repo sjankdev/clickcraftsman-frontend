@@ -17,6 +17,8 @@ const FreelancerOpenProjects = () => {
   const [appliedJobIds, setAppliedJobIds] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [desiredPay, setDesiredPay] = useState("");
+
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
 
   useEffect(() => {
@@ -107,6 +109,7 @@ const FreelancerOpenProjects = () => {
       const applicationData = {
         coverLetter: "Sample cover letter",
         messageToClient: customMessage,
+        desiredPay: desiredPay
       };
 
       FreelancerService.applyForJob(jobId, applicationData)
@@ -146,7 +149,7 @@ const FreelancerOpenProjects = () => {
       {userRoles.includes("ROLE_FREELANCER") ? (
         <div>
           {jobs
-            .filter(job => !job.archived) 
+            .filter(job => !job.archived)
             .map((job) => (
               <div key={job.id} className="job-card">
                 <h3>{job.jobName}</h3>
@@ -178,16 +181,41 @@ const FreelancerOpenProjects = () => {
                       isOpen={isModalOpen && selectedJobId === job.id}
                       onRequestClose={closeModal}
                       contentLabel="Custom Message Modal"
+                      className="custom-modal"
+                      overlayClassName="custom-modal-overlay"
                     >
-                      <h2>Enter Your Custom Message</h2>
-                      <textarea
-                        value={customMessage}
-                        onChange={(e) => setCustomMessage(e.target.value)}
-                      />
-                      <button onClick={handleApplyWithCustomMessage}>
-                        Apply
-                      </button>
-                      <button onClick={closeModal}>Cancel</button>
+                      <div className="modal-header">
+                        <h2>Apply for Job</h2>
+                        <button className="close-btn" onClick={closeModal}>
+                          &times;
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <h3>Enter Your Custom Message</h3>
+                        <textarea
+                          value={customMessage}
+                          onChange={(e) => setCustomMessage(e.target.value)}
+                          className="message-textarea"
+                        />
+                        <div className="input-group">
+                          <label htmlFor="desired-pay">Desired Pay:</label>
+                          <input
+                            type="number"
+                            id="desired-pay"
+                            value={desiredPay}
+                            onChange={(e) => setDesiredPay(e.target.value)}
+                            className="desired-pay-input"
+                          />
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button onClick={handleApplyWithCustomMessage} className="apply-btn">
+                          Apply
+                        </button>
+                        <button onClick={closeModal} className="cancel-btn">
+                          Cancel
+                        </button>
+                      </div>
                     </Modal>
                   </div>
                 )}

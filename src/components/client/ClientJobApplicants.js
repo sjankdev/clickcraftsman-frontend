@@ -32,6 +32,8 @@ const ClientJobApplicants = () => {
                 <Link to={`/public-profile/${applicant.freelancerId}`}>
                   {applicant.freelancerFirstName} {applicant.freelancerLastName}
                 </Link>
+                <br></br>
+                Desired pay: {applicant.desiredPay}
               </>
             ) : (
               <>

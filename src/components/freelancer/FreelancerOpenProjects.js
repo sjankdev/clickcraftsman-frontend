@@ -18,6 +18,7 @@ const FreelancerOpenProjects = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [desiredPay, setDesiredPay] = useState("");
+  const [resumeFile, setResumeFile] = useState(null);
 
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
 
@@ -104,15 +105,12 @@ const FreelancerOpenProjects = () => {
 
   const handleApplyWithCustomMessage = () => {
     const jobId = selectedJobId;
-
     if (jobId) {
-      const applicationData = {
-        coverLetter: "Sample cover letter",
-        messageToClient: customMessage,
-        desiredPay: desiredPay,
-      };
-
-      FreelancerService.applyForJob(jobId, applicationData)
+      const formData = new FormData();
+      formData.append('resumeFile', resumeFile);
+      formData.append('messageToClient', customMessage);
+      formData.append('desiredPay', desiredPay);
+      FreelancerService.applyForJob(jobId, formData)
         .then((response) => {
           console.log("Job application submitted successfully");
           setApplicationMessages((prevMessages) => [
@@ -143,6 +141,12 @@ const FreelancerOpenProjects = () => {
         });
     }
   };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setResumeFile(file);
+  };
+
 
   return (
     <div className="container">
@@ -249,6 +253,7 @@ const FreelancerOpenProjects = () => {
                           />
                         </div>
                       </div>
+                      <input type="file" onChange={handleFileChange} accept=".pdf" />
                       <div className="modal-footer">
                         <button
                           onClick={handleApplyWithCustomMessage}

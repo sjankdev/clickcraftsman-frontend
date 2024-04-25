@@ -166,14 +166,14 @@ const FreelancerOpenProjects = () => {
                   </p>
                   {job.priceType === "FIXED_PRICE" && (
                     <div>
-                      <p>Price type: ${job.priceType}</p>
+                      <p>Price type: {job.priceType}</p>
                       <p>Budget: ${job.budget}</p>
                     </div>
                   )}
                   {job.priceType !== "FIXED_PRICE" && (
                     <div>
                       <p>Price Type: {job.priceType}</p>
-                      <p>Price Range: ${job.priceRangeFrom} - ${job.priceRangeTo}</p>
+                      <p>Price Range: {job.priceRangeFrom} - ${job.priceRangeTo}</p>
                     </div>
                   )}
                 </div>

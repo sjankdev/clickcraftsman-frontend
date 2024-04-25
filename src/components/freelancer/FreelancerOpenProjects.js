@@ -201,7 +201,7 @@ const FreelancerOpenProjects = () => {
                       overlayClassName="custom-modal-overlay"
                     >
                       <div className="modal-header">
-                        <h2>Apply for Job</h2>
+                        <h2>You're applying for {job.jobName}</h2>
                         <button className="close-btn" onClick={closeModal}>
                           &times;
                         </button>

@@ -156,14 +156,26 @@ const FreelancerOpenProjects = () => {
                 <p className="job-description">{job.description}</p>
                 <div className="job-details">
                   <p>Date Posted: {job.datePosted}</p>
-                  <p>Location: {job.location}</p>
-                  <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
+                  {job.location && <p>Location: {job.location}</p>}
+                  {!job.location && <p>Remote: {job.isRemote ? "Yes" : "No"}</p>}
                   <p>
                     Required Skills:{" "}
                     {job.requiredSkills
                       .map((skill) => skill.skillName)
                       .join(", ")}
                   </p>
+                  {job.priceType === "FIXED_PRICE" && (
+                    <div>
+                      <p>Price type: ${job.priceType}</p>
+                      <p>Budget: ${job.budget}</p>
+                    </div>
+                  )}
+                  {job.priceType !== "FIXED_PRICE" && (
+                    <div>
+                      <p>Price Type: {job.priceType}</p>
+                      <p>Price Range: ${job.priceRangeFrom} - ${job.priceRangeTo}</p>
+                    </div>
+                  )}
                 </div>
                 {appliedJobIds.includes(job.id) ? (
                   <p>You have already applied for this job.</p>
@@ -203,7 +215,9 @@ const FreelancerOpenProjects = () => {
                             type="number"
                             id="desired-pay"
                             value={desiredPay}
-                            onChange={(e) => setDesiredPay(e.target.value)}
+                            onChange={(e) =>
+
+                              setDesiredPay(e.target.value)}
                             className="desired-pay-input"
                           />
                         </div>

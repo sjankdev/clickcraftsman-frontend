@@ -17,6 +17,9 @@ const FreelancerOpenProjects = () => {
   const [appliedJobIds, setAppliedJobIds] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [desiredPay, setDesiredPay] = useState("");
+  const [resumeFile, setResumeFile] = useState(null);
+
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
 
   useEffect(() => {
@@ -102,14 +105,12 @@ const FreelancerOpenProjects = () => {
 
   const handleApplyWithCustomMessage = () => {
     const jobId = selectedJobId;
-
     if (jobId) {
-      const applicationData = {
-        coverLetter: "Sample cover letter",
-        messageToClient: customMessage,
-      };
-
-      FreelancerService.applyForJob(jobId, applicationData)
+      const formData = new FormData();
+      formData.append('resumeFile', resumeFile);
+      formData.append('messageToClient', customMessage);
+      formData.append('desiredPay', desiredPay);
+      FreelancerService.applyForJob(jobId, formData)
         .then((response) => {
           console.log("Job application submitted successfully");
           setApplicationMessages((prevMessages) => [
@@ -141,26 +142,48 @@ const FreelancerOpenProjects = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setResumeFile(file);
+  };
+
+
   return (
     <div className="container">
       {userRoles.includes("ROLE_FREELANCER") ? (
         <div>
           {jobs
-            .filter(job => !job.archived) 
+            .filter((job) => !job.archived)
             .map((job) => (
               <div key={job.id} className="job-card">
                 <h3>{job.jobName}</h3>
                 <p className="job-description">{job.description}</p>
                 <div className="job-details">
                   <p>Date Posted: {job.datePosted}</p>
-                  <p>Location: {job.location}</p>
-                  <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
+                  {job.location && <p>Location: {job.location}</p>}
+                  {!job.location && (
+                    <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
+                  )}
                   <p>
                     Required Skills:{" "}
                     {job.requiredSkills
                       .map((skill) => skill.skillName)
                       .join(", ")}
                   </p>
+                  {job.priceType === "FIXED_PRICE" && (
+                    <div>
+                      <p>Price type: {job.priceType}</p>
+                      <p>Budget: ${job.budget}</p>
+                    </div>
+                  )}
+                  {job.priceType !== "FIXED_PRICE" && (
+                    <div>
+                      <p>Price Type: {job.priceType}</p>
+                      <p>
+                        Price Range: {job.priceRangeFrom} - ${job.priceRangeTo}
+                      </p>
+                    </div>
+                  )}
                 </div>
                 {appliedJobIds.includes(job.id) ? (
                   <p>You have already applied for this job.</p>
@@ -178,16 +201,70 @@ const FreelancerOpenProjects = () => {
                       isOpen={isModalOpen && selectedJobId === job.id}
                       onRequestClose={closeModal}
                       contentLabel="Custom Message Modal"
+                      className="custom-modal"
+                      overlayClassName="custom-modal-overlay"
                     >
-                      <h2>Enter Your Custom Message</h2>
-                      <textarea
-                        value={customMessage}
-                        onChange={(e) => setCustomMessage(e.target.value)}
-                      />
-                      <button onClick={handleApplyWithCustomMessage}>
-                        Apply
-                      </button>
-                      <button onClick={closeModal}>Cancel</button>
+                      <div className="modal-header">
+                        <h2>You're applying for {job.jobName}</h2>
+                        <button className="close-btn" onClick={closeModal}>
+                          &times;
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <h3>Enter Your Custom Message</h3>
+                        <textarea
+                          value={customMessage}
+                          onChange={(e) => setCustomMessage(e.target.value)}
+                          className="message-textarea"
+                          placeholder="Insert your message here..."
+
+                        />
+                        <div className="input-group">
+                          <label htmlFor="desired-pay">
+                            {job.priceType === 'FIXED_PRICE' && (
+                              <>
+                                Desired Pay
+                                <br></br>
+                                <span> Client budget is: ${job.budget}</span>
+                              </>
+                            )}
+                            {job.priceType === 'PER_HOUR' && (
+                              <>
+                                Desired Pay per hour
+                                <br></br>
+                                Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}
+                              </>
+                            )}
+                            {job.priceType === 'PER_MONTH' && (
+                              <>
+                                Desired Pay per month
+                                <br></br>
+                                Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}
+                              </>
+                            )}
+                          </label>
+                          <input
+                            type="number"
+                            id="desired-pay"
+                            value={desiredPay}
+                            onChange={(e) => setDesiredPay(e.target.value)}
+                            className="desired-pay-input"
+                            placeholder="Insert your desired pay here..."
+                          />
+                        </div>
+                      </div>
+                      <input type="file" onChange={handleFileChange} accept=".pdf" />
+                      <div className="modal-footer">
+                        <button
+                          onClick={handleApplyWithCustomMessage}
+                          className="apply-btn"
+                        >
+                          Apply
+                        </button>
+                        <button onClick={closeModal} className="cancel-btn">
+                          Cancel
+                        </button>
+                      </div>
                     </Modal>
                   </div>
                 )}

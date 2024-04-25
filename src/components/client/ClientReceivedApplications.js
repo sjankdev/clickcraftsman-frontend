@@ -48,17 +48,15 @@ const ClientReceivedApplications = () => {
             <div className="applications-container">
               {jobApplications.map((application, index) => {
                 console.log("Rendering Application object:", application);
-
                 return (
                   <div key={index} className="application-item">
                     <div className="freelancer-info">
                       <strong>Freelancer:</strong>{" "}
                       {application.freelancerId ? (
-                        <Link
-                          to={`/public-profile/${application.freelancerId}`}
-                        >
-                          {application.freelancerFirstName}{" "}
-                          {application.freelancerLastName}
+                        <Link to={`/public-profile/${application.freelancerId}`}>
+                          {application.freelancerFirstName} {application.freelancerLastName}{" "}
+                          <br></br>
+                          <strong>Desired pay: {application.desiredPay}</strong>
                         </Link>
                       ) : (
                         <span className="invalid-freelancer-id">

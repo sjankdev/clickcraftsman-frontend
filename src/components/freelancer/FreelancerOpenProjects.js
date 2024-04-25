@@ -212,24 +212,30 @@ const FreelancerOpenProjects = () => {
                           value={customMessage}
                           onChange={(e) => setCustomMessage(e.target.value)}
                           className="message-textarea"
+                          placeholder="Insert your message here..."
+
                         />
                         <div className="input-group">
                           <label htmlFor="desired-pay">
                             {job.priceType === 'FIXED_PRICE' && (
                               <>
-                                Desired Pay: Client budget is: ${job.budget}
+                                Desired Pay
+                                <br></br>
+                                <span> Client budget is: ${job.budget}</span>
                               </>
                             )}
                             {job.priceType === 'PER_HOUR' && (
                               <>
-                                Desired Pay per hour:
-                                <span>- Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}</span>
+                                Desired Pay per hour
+                                <br></br>
+                                Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}
                               </>
                             )}
                             {job.priceType === 'PER_MONTH' && (
                               <>
-                                Desired Pay per month:
-                                <span>- Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}</span>
+                                Desired Pay per month
+                                <br></br>
+                                Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}
                               </>
                             )}
                           </label>
@@ -239,6 +245,7 @@ const FreelancerOpenProjects = () => {
                             value={desiredPay}
                             onChange={(e) => setDesiredPay(e.target.value)}
                             className="desired-pay-input"
+                            placeholder="Insert your desired pay here..."
                           />
                         </div>
                       </div>

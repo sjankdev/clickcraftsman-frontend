@@ -214,7 +214,25 @@ const FreelancerOpenProjects = () => {
                           className="message-textarea"
                         />
                         <div className="input-group">
-                          <label htmlFor="desired-pay">Desired Pay:</label>
+                          <label htmlFor="desired-pay">
+                            {job.priceType === 'FIXED_PRICE' && (
+                              <>
+                                Desired Pay: Client budget is: ${job.budget}
+                              </>
+                            )}
+                            {job.priceType === 'PER_HOUR' && (
+                              <>
+                                Desired Pay per hour:
+                                <span>- Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}</span>
+                              </>
+                            )}
+                            {job.priceType === 'PER_MONTH' && (
+                              <>
+                                Desired Pay per month:
+                                <span>- Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}</span>
+                              </>
+                            )}
+                          </label>
                           <input
                             type="number"
                             id="desired-pay"

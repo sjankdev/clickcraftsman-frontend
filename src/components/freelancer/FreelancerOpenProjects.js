@@ -109,7 +109,7 @@ const FreelancerOpenProjects = () => {
       const applicationData = {
         coverLetter: "Sample cover letter",
         messageToClient: customMessage,
-        desiredPay: desiredPay
+        desiredPay: desiredPay,
       };
 
       FreelancerService.applyForJob(jobId, applicationData)
@@ -149,7 +149,7 @@ const FreelancerOpenProjects = () => {
       {userRoles.includes("ROLE_FREELANCER") ? (
         <div>
           {jobs
-            .filter(job => !job.archived)
+            .filter((job) => !job.archived)
             .map((job) => (
               <div key={job.id} className="job-card">
                 <h3>{job.jobName}</h3>
@@ -157,7 +157,9 @@ const FreelancerOpenProjects = () => {
                 <div className="job-details">
                   <p>Date Posted: {job.datePosted}</p>
                   {job.location && <p>Location: {job.location}</p>}
-                  {!job.location && <p>Remote: {job.isRemote ? "Yes" : "No"}</p>}
+                  {!job.location && (
+                    <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
+                  )}
                   <p>
                     Required Skills:{" "}
                     {job.requiredSkills
@@ -173,7 +175,9 @@ const FreelancerOpenProjects = () => {
                   {job.priceType !== "FIXED_PRICE" && (
                     <div>
                       <p>Price Type: {job.priceType}</p>
-                      <p>Price Range: {job.priceRangeFrom} - ${job.priceRangeTo}</p>
+                      <p>
+                        Price Range: {job.priceRangeFrom} - ${job.priceRangeTo}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -215,15 +219,16 @@ const FreelancerOpenProjects = () => {
                             type="number"
                             id="desired-pay"
                             value={desiredPay}
-                            onChange={(e) =>
-
-                              setDesiredPay(e.target.value)}
+                            onChange={(e) => setDesiredPay(e.target.value)}
                             className="desired-pay-input"
                           />
                         </div>
                       </div>
                       <div className="modal-footer">
-                        <button onClick={handleApplyWithCustomMessage} className="apply-btn">
+                        <button
+                          onClick={handleApplyWithCustomMessage}
+                          className="apply-btn"
+                        >
                           Apply
                         </button>
                         <button onClick={closeModal} className="cancel-btn">

@@ -67,6 +67,7 @@ const ClientReceivedApplications = () => {
                     <div className="message-info">
                       <strong>Message:</strong> {application.messageToClient}
                     </div>
+                    <a href={`http://localhost:8080/api/job/resume/${application.id}`} download>Download Resume</a>
                   </div>
                 );
               })}

@@ -253,7 +253,19 @@ const FreelancerOpenProjects = () => {
                           />
                         </div>
                       </div>
-                      <input type="file" onChange={handleFileChange} accept=".pdf" />
+                      <div className="input-group">
+                        <label htmlFor="resume-upload" className="file-upload-label">
+                          <h3>Upload your resume</h3>
+                          <span className="file-upload-info"></span>
+                          <input
+                            type="file"
+                            id="resume-upload"
+                            onChange={handleFileChange}
+                            accept=".pdf"
+                            className="file-upload-input"
+                          />
+                        </label>
+                      </div>
                       <div className="modal-footer">
                         <button
                           onClick={handleApplyWithCustomMessage}

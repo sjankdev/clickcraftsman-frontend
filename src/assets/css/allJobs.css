@@ -146,17 +146,31 @@ button:hover {
   background-color: #0056b3;
 }
 
-.file-upload-label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.file-upload-label h3 {
+.file-label {
+  display: block;
+  font-size: 1.2rem;
+  color: #333333;
   margin-bottom: 5px;
 }
 
+.file-upload-input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
 .file-upload-info {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #666666;
+  margin-bottom: 5px;
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 1rem;
+  margin-top: 5px;
 }

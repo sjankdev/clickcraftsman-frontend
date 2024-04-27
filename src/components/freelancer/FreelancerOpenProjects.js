@@ -19,7 +19,7 @@ const FreelancerOpenProjects = () => {
   const [loading, setLoading] = useState(true);
   const [desiredPay, setDesiredPay] = useState("");
   const [resumeFile, setResumeFile] = useState(null);
-
+  const [fileTypeError, setFileTypeError] = useState("");
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
 
   useEffect(() => {
@@ -79,7 +79,9 @@ const FreelancerOpenProjects = () => {
     setIsModalOpen(false);
     setCustomMessage("");
     setSelectedJobId(null);
+    setFileTypeError(""); 
   };
+
 
   const handleApply = (jobId) => {
     const hasAlreadyApplied = applicationMessages.some(
@@ -106,6 +108,9 @@ const FreelancerOpenProjects = () => {
   const handleApplyWithCustomMessage = () => {
     const jobId = selectedJobId;
     if (jobId) {
+      if (!resumeFile || fileTypeError) {
+        return;
+      }
       const formData = new FormData();
       formData.append('resumeFile', resumeFile);
       formData.append('messageToClient', customMessage);
@@ -145,13 +150,20 @@ const FreelancerOpenProjects = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setResumeFile(file);
+    if (file) {
+      const fileType = file.type;
+      if (fileType !== "application/pdf") {
+        setFileTypeError("Unsupported file format. Please upload a PDF file.");
+      } else {
+        setFileTypeError("");
+      }
+    }
   };
-
 
   return (
     <div className="container">
       {userRoles.includes("ROLE_FREELANCER") ? (
-        <div>
+        <div className="jobs-container">
           {jobs
             .filter((job) => !job.archived)
             .map((job) => (
@@ -186,7 +198,9 @@ const FreelancerOpenProjects = () => {
                   )}
                 </div>
                 {appliedJobIds.includes(job.id) ? (
-                  <p>You have already applied for this job.</p>
+                  <p className="already-applied">
+                    You have already applied for this job.
+                  </p>
                 ) : (
                   <div>
                     <button onClick={() => handleApply(job.id)}>Apply</button>
@@ -217,31 +231,10 @@ const FreelancerOpenProjects = () => {
                           onChange={(e) => setCustomMessage(e.target.value)}
                           className="message-textarea"
                           placeholder="Insert your message here..."
-
                         />
                         <div className="input-group">
-                          <label htmlFor="desired-pay">
-                            {job.priceType === 'FIXED_PRICE' && (
-                              <>
-                                Desired Pay
-                                <br></br>
-                                <span> Client budget is: ${job.budget}</span>
-                              </>
-                            )}
-                            {job.priceType === 'PER_HOUR' && (
-                              <>
-                                Desired Pay per hour
-                                <br></br>
-                                Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}
-                              </>
-                            )}
-                            {job.priceType === 'PER_MONTH' && (
-                              <>
-                                Desired Pay per month
-                                <br></br>
-                                Client budget is: ${job.priceRangeFrom} - ${job.priceRangeTo}
-                              </>
-                            )}
+                          <label htmlFor="desired-pay" className="pay-label">
+                            Desired Pay:
                           </label>
                           <input
                             type="number"
@@ -252,11 +245,10 @@ const FreelancerOpenProjects = () => {
                             placeholder="Insert your desired pay here..."
                           />
                         </div>
-                      </div>
-                      <div className="input-group">
-                        <label htmlFor="resume-upload" className="file-upload-label">
-                          <h3>Upload your resume</h3>
-                          <span className="file-upload-info"></span>
+                        <div className="input-group">
+                          <label htmlFor="resume-upload" className="file-label">
+                            Upload your resume:
+                          </label>
                           <input
                             type="file"
                             id="resume-upload"
@@ -264,7 +256,13 @@ const FreelancerOpenProjects = () => {
                             accept=".pdf"
                             className="file-upload-input"
                           />
-                        </label>
+                          <div>
+                            <span className="file-upload-info">Supported format: PDF</span>
+                            {fileTypeError && (
+                              <div className="error-message">{fileTypeError}</div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                       <div className="modal-footer">
                         <button

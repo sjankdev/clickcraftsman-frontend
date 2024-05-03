@@ -79,7 +79,7 @@ const FreelancerOpenProjects = () => {
     setIsModalOpen(false);
     setCustomMessage("");
     setSelectedJobId(null);
-    setFileTypeError(""); 
+    setFileTypeError("");
   };
 
 
@@ -171,10 +171,10 @@ const FreelancerOpenProjects = () => {
                 <h3>{job.jobName}</h3>
                 <p className="job-description">{job.description}</p>
                 <div className="job-details">
-                  <p>Date Posted: {job.datePosted}</p>
+                  <p>{job.datePosted}</p>
                   {job.location && <p>Location: {job.location}</p>}
                   {!job.location && (
-                    <p>Remote: {job.isRemote ? "Yes" : "No"}</p>
+                    <p>{job.isRemote ? "Remote" : "No"}</p>
                   )}
                   <p>
                     Required Skills:{" "}
@@ -192,7 +192,7 @@ const FreelancerOpenProjects = () => {
                     <div>
                       <p>Price Type: {job.priceType}</p>
                       <p>
-                        Price Range: {job.priceRangeFrom} - ${job.priceRangeTo}
+                        {job.priceRangeFrom}$ - ${job.priceRangeTo}
                       </p>
                     </div>
                   )}

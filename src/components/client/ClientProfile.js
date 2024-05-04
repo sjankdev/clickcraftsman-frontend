@@ -178,7 +178,146 @@ const ClientProfile = () => {
           <p><strong>Live job posting:</strong> {liveJobPostingCount}</p>
           <p><strong>Archived job posting:</strong> {archivedJobPostingCount}</p>
         </div>
-      </div>  
+      </div>
+      <button type="button" className="update-button" onClick={handleEditClick}>
+          Update
+        </button>
+      {isEditing && (
+        <form className="edit-form">
+         <div className="form-group">
+            <label htmlFor="firstName">First Name:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={updateFormData.firstName}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="lastName">Last Name:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={updateFormData.lastName}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="contactPhone">Contact Phone:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="contactPhone"
+              name="contactPhone"
+              value={updateFormData.contactPhone}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="location">Location:</label>
+            <select
+              className="input-field"
+              id="location"
+              name="location"
+              value={updateFormData.location}
+              onChange={handleInputChange}
+            >
+              <option value="" disabled>
+                Select Location
+              </option>
+              {locations.map((location) => (
+                <option key={location} value={location}>
+                  {location}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="companyName">Company name</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companyName"
+              name="companyName"
+              value={updateFormData.companyName}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="companyIndustry">Company industry</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companyIndustry"
+              name="companyIndustry"
+              value={updateFormData.companyIndustry}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="companySize">Company size</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companySize"
+              name="companySize"
+              value={updateFormData.companySize}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="companyLocation">Company location</label>
+            <input
+              className="input-field"
+              type="text"
+              id="companyLocation"
+              name="companyLocation"
+              value={updateFormData.companyLocation}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="website">Website</label>
+            <input
+              className="input-field"
+              type="text"
+              id="website"
+              name="website"
+              value={updateFormData.website}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="instagram">Instagram</label>
+            <input
+              className="input-field"
+              type="text"
+              id="instagram"
+              name="instagram"
+              value={updateFormData.instagram}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="linkedin">Linkedin</label>
+            <input
+              className="input-field"
+              type="text"
+              id="linkedin"
+              name="linkedin"
+              value={updateFormData.linkedin}
+              onChange={handleInputChange}
+            />
+          </div>
+          <button type="button" className="update-button" onClick={handleUpdateClick}>
+          Update
+        </button>
+        </form>
+      )}
     </div>
   );
 }

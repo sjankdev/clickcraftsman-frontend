@@ -4,16 +4,46 @@ import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/clientProfile.css";
 import ClientService from "../../services/client/client-service";
-
-import { FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { AiOutlineGlobal, AiFillLinkedin, AiFillInstagram, AiOutlineBank, AiOutlineTeam, AiOutlineFieldTime } from 'react-icons/ai';
 
 const ClientProfile = () => {
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
   );
+
   const [profilePictureData, setProfilePictureData] = useState(null);
   const [liveJobPostingCount, setLiveJobPostingCount] = useState(0);
   const [archivedJobPostingCount, setArchivedJobPostingCount] = useState(0);
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    contactPhone: "",
+    location: "",
+    companyName: "",
+    companySize: "",
+    companyIndustry: "",
+    companyLocation: "",
+    website: "",
+    linkedin: "",
+    instagram: "",
+  });
+  const [updateFormData, setUpdateFormData] = useState({
+    firstName: "",
+    lastName: "",
+    contactPhone: "",
+    location: "",
+    companyName: "",
+    companySize: "",
+    companyIndustry: "",
+    companyLocation: "",
+    website: "",
+    linkedin: "",
+    instagram: "",
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchJobPostingCounts = async () => {
@@ -30,38 +60,6 @@ const ClientProfile = () => {
 
     fetchJobPostingCounts();
   }, []);
-
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    contactPhone: "",
-    location: "",
-    companyName: "",
-    companySize: "",
-    companyIndustry: "",
-    companyLocation: "",
-    website: "",
-    linkedin: "",
-    instagram: "",
-  });
-
-  const [updateFormData, setUpdateFormData] = useState({
-    firstName: "",
-    lastName: "",
-    contactPhone: "",
-    location: "",
-    companyName: "",
-    companySize: "",
-    companyIndustry: "",
-    companyLocation: "",
-    website: "",
-    linkedin: "",
-    instagram: "",
-  });
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchClientData = async () => {
@@ -139,196 +137,50 @@ const ClientProfile = () => {
 
   return (
     <div className="client-profile-container">
-      {isEditing ? (
-        <form className="edit-form">
-          <div className="form-group">
-            <label htmlFor="firstName">First Name:</label>
-            <input
-              className="input-field"
-              type="text"
-              id="firstName"
-              name="firstName"
-              value={updateFormData.firstName}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="lastName">Last Name:</label>
-            <input
-              className="input-field"
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={updateFormData.lastName}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="contactPhone">Contact Phone:</label>
-            <input
-              className="input-field"
-              type="text"
-              id="contactPhone"
-              name="contactPhone"
-              value={updateFormData.contactPhone}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="location">Location:</label>
-            <select
-              className="input-field"
-              id="location"
-              name="location"
-              value={updateFormData.location}
-              onChange={handleInputChange}
-            >
-              <option value="" disabled>
-                Select Location
-              </option>
-              {locations.map((location) => (
-                <option key={location} value={location}>
-                  {location}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="companyName">Company name</label>
-            <input
-              className="input-field"
-              type="text"
-              id="companyName"
-              name="companyName"
-              value={updateFormData.companyName}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="companyIndustry">Company industry</label>
-            <input
-              className="input-field"
-              type="text"
-              id="companyIndustry"
-              name="companyIndustry"
-              value={updateFormData.companyIndustry}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="companySize">Company size</label>
-            <input
-              className="input-field"
-              type="text"
-              id="companySize"
-              name="companySize"
-              value={updateFormData.companySize}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="companyLocation">Company location</label>
-            <input
-              className="input-field"
-              type="text"
-              id="companyLocation"
-              name="companyLocation"
-              value={updateFormData.companyLocation}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="website">Website</label>
-            <input
-              className="input-field"
-              type="text"
-              id="website"
-              name="website"
-              value={updateFormData.website}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="instagram">Instagram</label>
-            <input
-              className="input-field"
-              type="text"
-              id="instagram"
-              name="instagram"
-              value={updateFormData.instagram}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="linkedin">Linkedin</label>
-            <input
-              className="input-field"
-              type="text"
-              id="linkedin"
-              name="linkedin"
-              value={updateFormData.linkedin}
-              onChange={handleInputChange}
-            />
-          </div>
-          <button type="button" className="update-button" onClick={handleUpdateClick}>
-            Update
-          </button>
-        </form>
-      ) : (
-        <div className="profile-container">
-          <div className="profile-picture-client">
-            {profilePictureData && (
-              <img
-                src={`data:image/png;base64,${profilePictureData}`}
-                alt="Profile"
-              />
-            )}
-          </div>
-          <div className="profile-info">
-            <div className="name">
+      <div className="image-and-profile-info">
+        {profilePictureData && (
+          <img
+            src={`data:image/png;base64,${profilePictureData}`}
+            alt="Profile"
+            className="profile-image"
+          />
+        )}
+        <div className="profile-data">
+          <div className="name">
+            <div className="name-text">
               {userData.firstName} {userData.lastName}
             </div>
-            <div className="section-wrapper">
-              <div className="section-row">
-                <div className="section contact">
-                  <div className="section-title">Contact</div>
-                  <div className="location">
-                    <span className="icon"><FaMapMarkerAlt /></span>
-                    {userData.location}
-                  </div>
-                  <div className="contact-info">
-                    <span className="icon"><FaPhone /></span>
-                    {userData.contactPhone}
-                  </div>
-                </div>
-                <div className="section company-info">
-                  <div className="section-title">Company Info</div>
-                  <div><strong>Company Name:</strong> {userData.companyName}</div>
-                  <div><strong>Company Location:</strong> {userData.companyLocation}</div>
-                  <div><strong>Company Size:</strong> {userData.companySize}</div>
-                  <div><strong>Company Industry:</strong> {userData.companyIndustry}</div>
-                </div>
-              </div>
-              <div className="section socials">
-                <div className="section-title">Socials</div>
-                <div><strong>Website:</strong> {userData.website}</div>
-                <div><strong>Instagram:</strong> {userData.instagram}</div>
-                <div><strong>Linkedin:</strong> {userData.linkedin}</div>
-              </div>
-              <div className="section">
-                <div className="section-title">Job Postings</div>
-                <div>Live Job Postings: {liveJobPostingCount}</div>
-                <div>Archived Job Postings: {archivedJobPostingCount}</div>
-              </div>
-            </div>
-            <button className="edit-button" onClick={handleEditClick}>
-              Edit
-            </button>
+          </div>
+          <div className="contact-info">
+            <span className="icon"><FaMapMarkerAlt /></span>
+            <span className="location">{userData.location}</span>
+            <span className="icon"><FaPhone /></span>
+            <span className="contact-phone">{userData.contactPhone}</span>
+          </div>
+          <div className="social-links">
+            <div><AiOutlineGlobal /> Website: {userData.website}</div>
+            <div><AiFillLinkedin /> Linkedin: {userData.linkedin}</div>
+            <div><AiFillInstagram /> Instagram: {userData.instagram}</div>
           </div>
         </div>
-      )}
+      </div>
+      <hr className="line" />
+      <div className="company-and-jobs-info">
+        <div className="company-info">
+          <p>Company Info</p>
+          <p><AiOutlineBank /> {userData.companyName}</p>
+          <p><FaMapMarkerAlt /> {userData.companyLocation}</p>
+          <p><AiOutlineTeam /> {userData.companySize}</p>
+          <p><AiOutlineFieldTime /> {userData.companyIndustry}</p>
+        </div>
+        <div className="jobs-info">
+          <p>Jobs Info</p>
+          <p><strong>Live job posting:</strong> {liveJobPostingCount}</p>
+          <p><strong>Archived job posting:</strong> {archivedJobPostingCount}</p>
+        </div>
+      </div>  
     </div>
   );
-};
+}
 
 export default ClientProfile;

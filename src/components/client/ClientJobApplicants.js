@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import ClientService from "../../services/client/client-service";
 import "../../assets/css/clientJobApplicants.css";
-import { AiOutlineMail, AiOutlineDollar } from 'react-icons/ai';
+import { AiOutlineMail, AiOutlineDollar, AiOutlineFilePdf } from 'react-icons/ai';
 
 const ClientJobApplicants = () => {
   const { jobId } = useParams();
@@ -37,6 +37,9 @@ const ClientJobApplicants = () => {
           <p><AiOutlineMail /> {applicant.freelancerEmail}</p>
           <p><AiOutlineDollar /> {applicant.desiredPay}</p>
           <p>{applicant.messageToClient}</p>
+          <a href={`http://localhost:8080/api/job/resume/${applicant.id}`} download className="resume-download">
+            Download Resume <AiOutlineFilePdf />
+          </a>
         </div>
       ))}
     </div>

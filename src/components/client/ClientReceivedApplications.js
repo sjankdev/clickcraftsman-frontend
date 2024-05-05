@@ -57,6 +57,7 @@ const ClientReceivedApplications = () => {
                           {application.freelancerFirstName} {application.freelancerLastName}{" "}
                           <br></br>
                           <strong>Desired pay: {application.desiredPay}</strong>
+                          Email: {application.freelancerEmail}
                         </Link>
                       ) : (
                         <span className="invalid-freelancer-id">

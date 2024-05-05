@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import ClientService from "../../services/client/client-service";
 import "../../assets/css/clientJobApplicants.css";
-import { Container } from "react-bootstrap";
+import { AiOutlineMail, AiOutlineDollar } from 'react-icons/ai';
 
 const ClientJobApplicants = () => {
   const { jobId } = useParams();
@@ -21,32 +21,27 @@ const ClientJobApplicants = () => {
   }, [jobId]);
 
   return (
-    <Container>
-      <h2 className="mt-4">Job Applicants for Job ID: {jobId}</h2>
-      {applicants.map((applicant) => (
-        <div key={applicant.id} className="applicant-card">
-          <p className="applicant-name">
+    <div className="job-applicants-container">
+      <h2>Job Applicants for Job ID: {jobId}</h2>
+      {applicants.map((applicant, index) => (
+        <div className="job-applicant" key={index}>
+          <h3>
             {applicant.freelancerId ? (
-              <>
-                Freelancer:{" "}
-                <Link to={`/public-profile/${applicant.freelancerId}`}>
-                  {applicant.freelancerFirstName} {applicant.freelancerLastName}
-                </Link>
-                <br></br>
-                Desired pay: {applicant.desiredPay}
-              </>
+              <Link to={`/public-profile/${applicant.freelancerId}`}>
+                {applicant.freelancerFirstName} {applicant.freelancerLastName}
+              </Link>
             ) : (
-              <>
-                Freelancer: {applicant.freelancerFirstName}{" "}
-                {applicant.freelancerLastName}
-              </>
+              `${applicant.freelancerFirstName} ${applicant.freelancerLastName}`
             )}
-          </p>
-          <p className="message">Message: {applicant.messageToClient}</p>
+          </h3>
+          <p><AiOutlineMail /> {applicant.freelancerEmail}</p>
+          <p><AiOutlineDollar /> {applicant.desiredPay}</p>
+          <p>{applicant.messageToClient}</p>
         </div>
       ))}
-    </Container>
+    </div>
   );
+
 };
 
 export default ClientJobApplicants;

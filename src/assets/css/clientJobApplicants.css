@@ -1,26 +1,39 @@
-.container {
-  margin-top: 20px;
+.job-applicants-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-h2 {
-  color: #343a40;
+.job-applicant {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.applicant-card {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
-  padding: 15px;
-  margin-top: 20px;
-}
-
-.applicant-name {
-  color: #007bff;
-  font-size: 1.2rem;
+.job-applicant h3 {
+  margin-top: 0;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
-.message {
-  color: #495057;
+.job-applicant p {
+  font-size: 16px;
+  margin: 5px 0;
 }
 
+.job-applicant a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.job-applicant a:hover {
+  text-decoration: underline;
+}
+
+.job-applicant .icon {
+  vertical-align: middle;
+  margin-right: 5px;
+}

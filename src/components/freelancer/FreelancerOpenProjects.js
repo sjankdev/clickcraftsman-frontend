@@ -245,6 +245,20 @@ const FreelancerOpenProjects = () => {
                             placeholder="Insert your desired pay here..."
                           />
                         </div>
+                        {job.priceType === "FIXED_PRICE" && (
+                          <div className="input-group">
+                            <p>Price type: {job.priceType}</p>
+                            <br />
+                            <p>Client Budget: ${job.budget}</p>
+                          </div>
+                        )}
+                        {job.priceType !== "FIXED_PRICE" && (
+                          <div className="input-group">
+                            <p>Price Type: {job.priceType}</p>
+                            <br />
+                            <p>Client Budget: ${job.priceRangeFrom} - ${job.priceRangeTo}</p>
+                          </div>
+                        )}
                         <div className="input-group">
                           <label htmlFor="resume-upload" className="file-label">
                             Upload your resume:

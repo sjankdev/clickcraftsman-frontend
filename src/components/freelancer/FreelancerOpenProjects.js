@@ -168,20 +168,7 @@ const FreelancerOpenProjects = () => {
                       .map((skill) => skill.skillName)
                       .join(", ")}
                   </p>
-                  {job.priceType === "FIXED_PRICE" && (
-                    <div>
-                      <p>Price type: {job.priceType}</p>
-                      <p>Budget: ${job.budget}</p>
-                    </div>
-                  )}
-                  {job.priceType !== "FIXED_PRICE" && (
-                    <div>
-                      <p>Price Type: {job.priceType}</p>
-                      <p>
-                        {job.priceRangeFrom}$ - ${job.priceRangeTo}
-                      </p>
-                    </div>
-                  )}
+
                 </div>
                 {appliedJobIds.includes(job.id) ? (
                   <p className="already-applied">
@@ -231,9 +218,23 @@ const FreelancerOpenProjects = () => {
                             placeholder="Insert your desired pay here..."
                           />
                         </div>
+                        {job.priceType === "FIXED_PRICE" && (
+                          <div>
+                            <p>Price type: {job.priceType}</p>
+                            <p>Budget: ${job.budget}</p>
+                          </div>
+                        )}
+                        {job.priceType !== "FIXED_PRICE" && (
+                          <div>
+                            <p>Price Type: {job.priceType}</p>
+                            <p>
+                              {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                            </p>
+                          </div>
+                        )}
                         <div className="input-group">
                           <label htmlFor="resume-upload" className="file-label">
-                            Upload your resume:
+                            Upload your resume: {job.resumeRequired ? "(required)" : "(optional)"}
                           </label>
                           <input
                             type="file"

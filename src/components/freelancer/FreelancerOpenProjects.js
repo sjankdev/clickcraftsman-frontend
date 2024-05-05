@@ -60,19 +60,8 @@ const FreelancerOpenProjects = () => {
   const userRoles = authHeader().roles || [];
 
   const openModal = (jobId) => {
-    const hasAlreadyApplied = applicationMessages.some(
-      (msg) => msg.jobId === jobId
-    );
-
-    if (!hasAlreadyApplied) {
-      setIsModalOpen(true);
-      setSelectedJobId(jobId);
-    } else {
-      setApplicationMessages((prevMessages) => [
-        ...prevMessages,
-        { jobId, message: "You have already applied for this job." },
-      ]);
-    }
+    setIsModalOpen(true);
+    setSelectedJobId(jobId);
   };
 
   const closeModal = () => {
@@ -89,14 +78,7 @@ const FreelancerOpenProjects = () => {
     );
 
     if (!hasAlreadyApplied) {
-      if (!appliedJobIds.includes(jobId)) {
-        openModal(jobId);
-      } else {
-        setApplicationMessages((prevMessages) => [
-          ...prevMessages,
-          { jobId, message: "You have already applied for this job." },
-        ]);
-      }
+      openModal(jobId);
     } else {
       setApplicationMessages((prevMessages) => [
         ...prevMessages,
@@ -108,13 +90,19 @@ const FreelancerOpenProjects = () => {
   const handleApplyWithCustomMessage = () => {
     const jobId = selectedJobId;
     if (jobId) {
-      if (!resumeFile || fileTypeError) {
-        return;
-      }
       const formData = new FormData();
-      formData.append('resumeFile', resumeFile);
       formData.append('messageToClient', customMessage);
       formData.append('desiredPay', desiredPay);
+
+      if (resumeFile && !fileTypeError) {
+        formData.append('resumeFile', resumeFile);
+      } else {
+        if (jobs.find(job => job.id === jobId).resumeRequired) {
+          alert("Resume is required for this job. Please attach your resume.");
+          return;
+        }
+      }
+
       FreelancerService.applyForJob(jobId, formData)
         .then((response) => {
           console.log("Job application submitted successfully");
@@ -126,7 +114,6 @@ const FreelancerOpenProjects = () => {
         })
         .catch((error) => {
           console.error("Error submitting job application", error);
-
           if (error.response && error.response.status === 400) {
             setApplicationMessages((prevMessages) => [
               ...prevMessages,
@@ -137,8 +124,7 @@ const FreelancerOpenProjects = () => {
               ...prevMessages,
               {
                 jobId,
-                message:
-                  "An error occurred while submitting the job application.",
+                message: "An error occurred while submitting the job application.",
               },
             ]);
           }
@@ -245,20 +231,6 @@ const FreelancerOpenProjects = () => {
                             placeholder="Insert your desired pay here..."
                           />
                         </div>
-                        {job.priceType === "FIXED_PRICE" && (
-                          <div className="input-group">
-                            <p>Price type: {job.priceType}</p>
-                            <br />
-                            <p>Client Budget: ${job.budget}</p>
-                          </div>
-                        )}
-                        {job.priceType !== "FIXED_PRICE" && (
-                          <div className="input-group">
-                            <p>Price Type: {job.priceType}</p>
-                            <br />
-                            <p>Client Budget: ${job.priceRangeFrom} - ${job.priceRangeTo}</p>
-                          </div>
-                        )}
                         <div className="input-group">
                           <label htmlFor="resume-upload" className="file-label">
                             Upload your resume:

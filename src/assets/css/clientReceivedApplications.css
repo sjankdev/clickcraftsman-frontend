@@ -1,71 +1,53 @@
-.client-received-applications {
+.applications-wrapper {
   margin: 20px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .page-title {
-  font-size: 28px;
-  color: #2c3e50;
+  font-size: 32px;
   margin-bottom: 20px;
+  color: #333;
 }
 
 .no-applications-msg {
-  color: #7f8c8d;
   font-style: italic;
-  margin-top: 10px;
+  color: #888;
 }
 
 .applications-container {
-  width: 100%;
-}
-
-.job-application {
-  margin-bottom: 20px;
-}
-
-.job-info {
-  background-color: #3498db;
-  color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .application-item {
-  border: 1px solid #ecf0f1;
+  border: 1px solid #eaeaea;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
   padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  background-color: #ecf0f1;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
+  margin-bottom: 30px;
 }
 
-.application-item:hover {
-  transform: scale(1.02);
+.freelancer-info {
+  margin-bottom: 15px;
+  font-size: 18px;
 }
 
-.freelancer-info,
+.invalid-freelancer-id {
+  color: red;
+}
+
 .message-info {
   margin-bottom: 15px;
 }
 
-.freelancer-info strong,
-.message-info strong {
-  margin-right: 10px;
-  font-weight: bold;
-  color: #3498db;
+.resume-download {
+  display: inline-block;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
 }
 
-.alert-danger {
-  background-color: #e74c3c;
-  border-color: #c0392b;
-  color: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-.app-count {
-  font-size: 14px;
-  color: #4bc51a;
+.resume-download svg {
+  vertical-align: middle;
+  margin-left: 5px;
 }

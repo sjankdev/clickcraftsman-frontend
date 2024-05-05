@@ -19,6 +19,7 @@ const JobPostForm = () => {
   const [priceRangeTo, setPriceRangeTo] = useState("");
   const [budget, setBudget] = useState("");
   const [jobType, setJobType] = useState("");
+  const [resumeRequired, setResumeRequired] = useState(false);
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
@@ -84,7 +85,8 @@ const JobPostForm = () => {
       priceRangeFrom,
       priceRangeTo,
       budget,
-      jobType
+      jobType,
+      resumeRequired
     };
 
     ClientService.postJob(userEmail, jobPostingData)
@@ -122,6 +124,15 @@ const JobPostForm = () => {
                 required
                 value={jobName}
                 onChange={(e) => setJobName(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="resumeRequired">Resume Required?</label>
+              <input
+                type="checkbox"
+                id="resumeRequired"
+                checked={resumeRequired}
+                onChange={(e) => setResumeRequired(e.target.checked)}
               />
             </div>
             <div className="form-group">

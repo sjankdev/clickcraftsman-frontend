@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/freelancerPublicProfiles.css";
-
+import { AiOutlinePhone, AiOutlineEnvironment, AiOutlineProfile, AiOutlineTool } from 'react-icons/ai';
 const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
 
@@ -50,19 +50,18 @@ const FreelancerPublicProfiles = () => {
                 className="profile-picture"
               />
               <div className="profile-name">
-                {profile.firstName} {profile.lastName}
+                <AiOutlineProfile /> {profile.firstName} {profile.lastName}
               </div>
-              <div className="profile-heading">Contact</div>
-              <p className="profile-info">Phone: {profile.contactPhone}</p>
-              <div className="profile-heading">Location</div>
-              <p className="profile-info">{profile.location}</p>
-              <div className="profile-heading">Portfolio</div>
-              <p className="profile-info">{profile.portfolio}</p>
-              <div className="profile-heading">Years of Experience</div>
-              <p className="profile-info">{profile.yearsOfExperience}</p>
-              <div className="profile-heading">Skills</div>
-              <p className="profile-info">{profile.skills.join(", ")}</p>
-              <div className="profile-description">{profile.description}</div>
+              <p className="profile-info">
+                <AiOutlinePhone /> {profile.contactPhone}
+              </p>
+              <p className="profile-info">
+                <AiOutlineEnvironment /> {profile.location}
+              </p>
+              <div className="profile-info">
+                <AiOutlineTool />
+                {profile.skills.join(", ")}
+              </div>
               <div className="profile-links">
                 <Link
                   to={`/public-profile/${profile.id}`}

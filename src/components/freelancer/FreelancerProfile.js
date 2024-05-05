@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
-import "../../assets/css/clientProfile.css";
+import "../../assets/css/freelancerProfile.css";
 
 const JobOfferItem = ({ jobOffer }) => {
   return (

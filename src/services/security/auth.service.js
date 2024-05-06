@@ -20,7 +20,8 @@ const register = (
   companyIndustry,
   linkedin,
   website,
-  instagram
+  instagram,
+  aboutFreelancer
 ) => {
   const signUpRequestJson = JSON.stringify({
     email,
@@ -40,6 +41,7 @@ const register = (
     linkedin,
     website,
     instagram,
+    aboutFreelancer,
   });
 
   const signUpRequestBlob = new Blob([signUpRequestJson], {
@@ -66,6 +68,7 @@ const register = (
   formData.append("website", website);
   formData.append("instagram", instagram);
   formData.append("signUpRequest", signUpRequestBlob);
+  formData.append("aboutFreelancer", aboutFreelancer);
 
   return axios.post(API_URL + "signup", formData, {
     headers: {

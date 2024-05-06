@@ -27,6 +27,7 @@ export const register = createAsyncThunk(
       linkedin,
       website,
       instagram,
+      aboutFreelancer
     },
     thunkAPI
   ) => {
@@ -49,7 +50,8 @@ export const register = createAsyncThunk(
         companyIndustry,
         linkedin,
         website,
-        instagram
+        instagram,
+        aboutFreelancer
       );
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;

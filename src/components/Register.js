@@ -29,12 +29,13 @@ const Register = () => {
     yearsOfExperience: 0,
     profilePicture: "",
     companyName: "",
-    companyLocation: "", 
+    companyLocation: "",
     companySize: "",
     companyIndustry: "",
     linkedin: "",
     website: "",
     instagram: "",
+    aboutFreelancer: "",
   };
 
   const handleRegister = (formValue, { resetForm }) => {
@@ -50,13 +51,14 @@ const Register = () => {
       yearsOfExperience,
       skills,
       profilePicture,
-      companyName, 
+      companyName,
       companyLocation,
       companySize,
       companyIndustry,
       linkedin,
       website,
       instagram,
+      aboutFreelancer,
     } = formValue;
     setSuccessful(false);
 
@@ -72,13 +74,14 @@ const Register = () => {
       portfolio,
       yearsOfExperience,
       profilePicture,
-      companyName, 
+      companyName,
       companyLocation,
       companySize,
       companyIndustry,
       linkedin,
       website,
       instagram,
+      aboutFreelancer,
     };
 
     dispatch(
@@ -219,7 +222,16 @@ const Register = () => {
                       className="alert alert-danger"
                     />
                   </div>
-
+                  <div className="form-group">
+                    <label htmlFor="aboutFreelancer">
+                      About me
+                    </label>
+                    <Field
+                      name="aboutFreelancer"
+                      type="text"
+                      className="form-control"
+                    />
+                  </div>
                   <div className="form-group">
                     <label htmlFor="contactPhone">Contact Phone</label>
                     <Field

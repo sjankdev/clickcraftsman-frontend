@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ClientService from "../../services/client/client-service";
 import "../../assets/css/freelancerPublicProfileDetail.css";
-import { AiOutlinePhone, AiOutlineEnvironment, AiOutlineLink, AiOutlineClockCircle, AiOutlineTool } from 'react-icons/ai';
+import { AiOutlinePhone,AiOutlineRobot , AiOutlineEnvironment, AiOutlineLink, AiOutlineClockCircle, AiOutlineTool } from 'react-icons/ai';
 const FreelancerProfileDetail = () => {
   const [profile, setProfile] = useState(null);
   const { freelancerId } = useParams();
@@ -34,6 +34,7 @@ const FreelancerProfileDetail = () => {
         className="profile-picture-details"
       />
       <p className="profile-info"><AiOutlinePhone /> {profile.contactPhone}</p>
+      <p className="profile-info"><AiOutlineRobot /> {profile.aboutFreelancer}</p>
       <p className="profile-info"><AiOutlineEnvironment /> {profile.location}</p>
       <p className="profile-info"><AiOutlineLink /> {profile.portfolio}</p>
       <p className="profile-info"><AiOutlineClockCircle /> {profile.yearsOfExperience}</p>

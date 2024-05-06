@@ -37,9 +37,11 @@ const ClientJobApplicants = () => {
           <p><AiOutlineMail /> {applicant.freelancerEmail}</p>
           <p><AiOutlineDollar /> {applicant.desiredPay}</p>
           <p>{applicant.messageToClient}</p>
-          <a href={`http://localhost:8080/api/job/resume/${applicant.id}`} download className="resume-download">
-            Download Resume <AiOutlineFilePdf />
-          </a>
+          {applicant.hasResume && (
+            <a href={`http://localhost:8080/api/job/resume/${applicant.id}`} download className="resume-download">
+              Download Resume <AiOutlineFilePdf />
+            </a>
+          )}
         </div>
       ))}
     </div>

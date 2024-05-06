@@ -30,6 +30,7 @@ const FreelancerProfile = () => {
     contactPhone: "",
     location: "",
     portfolio: "",
+    aboutFreelancer: "",
     yearsOfExperience: 0,
     skills: skillsArray,
   });
@@ -40,6 +41,7 @@ const FreelancerProfile = () => {
     contactPhone: "",
     location: "",
     portfolio: "",
+    aboutFreelancer: "",
     yearsOfExperience: 0,
     skills: skillsArray,
   });
@@ -104,6 +106,7 @@ const FreelancerProfile = () => {
       const freelancerFields = {
         portfolio: updateFormData.portfolio,
         yearsOfExperience: updateFormData.yearsOfExperience,
+        aboutFreelancer: updateFormData.aboutFreelancer,
         skills: Array.isArray(updateFormData.skills)
           ? updateFormData.skills
           : [updateFormData.skills],
@@ -167,6 +170,17 @@ const FreelancerProfile = () => {
                 type="text"
                 name="lastName"
                 value={updateFormData.lastName}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div className="form-field">
+            <label>
+              About me:
+              <input
+                type="text"
+                name="aboutFreelancer"
+                value={updateFormData.aboutFreelancer}
                 onChange={handleInputChange}
               />
             </label>
@@ -262,6 +276,10 @@ const FreelancerProfile = () => {
             <div className="data-field">
               <div className="field-label">Last Name:</div>
               <div className="field-value">{userData.lastName}</div>
+            </div>
+            <div className="data-field">
+              <div className="field-label">About me:</div>
+              <div className="field-value">{userData.aboutFreelancer}</div>
             </div>
             <div className="data-field">
               <div className="field-label">Contact Phone:</div>

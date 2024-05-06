@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/freelancerPublicProfiles.css";
-import { AiOutlinePhone, AiOutlineEnvironment, AiOutlineProfile, AiOutlineTool } from 'react-icons/ai';
+import { AiOutlineRobot , AiOutlineEnvironment, AiOutlineProfile, AiOutlineTool } from 'react-icons/ai';
 const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
 
@@ -53,7 +53,7 @@ const FreelancerPublicProfiles = () => {
                 <AiOutlineProfile /> {profile.firstName} {profile.lastName}
               </div>
               <p className="profile-info">
-                <AiOutlinePhone /> {profile.contactPhone}
+                <AiOutlineRobot  /> {profile.aboutFreelancer}
               </p>
               <p className="profile-info">
                 <AiOutlineEnvironment /> {profile.location}

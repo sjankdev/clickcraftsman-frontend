@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/freelancerPublicProfiles.css";
-import { AiOutlineRobot , AiOutlineEnvironment, AiOutlineProfile, AiOutlineTool } from 'react-icons/ai';
-const FreelancerPublicProfiles = () => {
+import { AiOutlineUser, AiOutlineInfoCircle, AiOutlineEnvironment, AiOutlineTool } from 'react-icons/ai'; const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
-
   const [profilePictures, setProfilePictures] = useState([]);
 
   useEffect(() => {
@@ -38,37 +36,30 @@ const FreelancerPublicProfiles = () => {
   }, []);
 
   return (
-    <div className="freelancer-public-profiles-container">
-      <h1>Public Freelancer Profiles</h1>
-      <div className="profiles-list">
+    <div className="freelancer-profiles-container-opens">
+      <div className="profiles-grid-opens">
         {publicProfiles.map((profile, index) => (
-          <div key={profile.id} className="profile-card">
-            <div className="profile-details">
-              <img
-                src={`data:image/jpeg;base64,${profile.profilePictureData}`}
-                alt="Profile"
-                className="profile-picture"
-              />
-              <div className="profile-name">
-                <AiOutlineProfile /> {profile.firstName} {profile.lastName}
-              </div>
-              <p className="profile-info">
-                <AiOutlineRobot  /> {profile.aboutFreelancer}
+          <div key={profile.id} className="profile-card-opens">
+            <img
+              src={`data:image/jpeg;base64,${profile.profilePictureData}`}
+              alt="Profile"
+              className="profile-picture-opens"
+            />
+            <div className="profile-info-freelancer-opens">
+              <p className="profile-name-opens">
+                <AiOutlineUser className="icon" /> {profile.firstName} {profile.lastName}
               </p>
-              <p className="profile-info">
-                <AiOutlineEnvironment /> {profile.location}
+              <p className="profile-detail-opens">
+                <AiOutlineInfoCircle className="icon" /> {profile.aboutFreelancer}
               </p>
-              <div className="profile-info">
-                <AiOutlineTool />
-                {profile.skills.join(", ")}
-              </div>
-              <div className="profile-links">
-                <Link
-                  to={`/public-profile/${profile.id}`}
-                  className="profile-link"
-                >
-                  View Profile
-                </Link>
+              <p className="profile-detail-opens">
+                <AiOutlineEnvironment className="icon" /> {profile.location}
+              </p>
+              <p className="profile-detail-opens">
+                <AiOutlineTool className="icon" /> {profile.skills.join(", ")}
+              </p>
+              <div className="view-profile-button-container">
+                <Link to={`/public-profile/${profile.id}`} className="view-profile-link-opens">View Profile</Link>
               </div>
             </div>
           </div>

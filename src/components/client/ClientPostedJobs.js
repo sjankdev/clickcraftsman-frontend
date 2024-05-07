@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import ClientService from "../../services/client/client-service";
 import authHeader from "../../services/security/auth-header";
 import "../../assets/css/clientPostedJobs.css";
-import { Container, Alert, ListGroup, Spinner } from "react-bootstrap";
 
 const ClientPostedJobs = () => {
   const [jobPostings, setJobPostings] = useState([]);
@@ -67,62 +66,69 @@ const ClientPostedJobs = () => {
   };
 
   return (
-    <Container>
+    <div className="container-clients">
       {userRoles.includes("ROLE_CLIENT") ? (
-        <div>
-          <h2 className="my-4">My Job Postings</h2>
-          {loading && <Spinner animation="border" className="text-muted" />}
+        <>
+          <h2>My Job Postings</h2>
+          {loading && <div>Loading...</div>}
           {errorMessage && !loading && (
-            <Alert variant="danger" className="mt-4">
-              {errorMessage}
-            </Alert>
+            <div className="error-clients">
+              Error: {errorMessage}
+            </div>
           )}
           {jobPostings.length > 0 ? (
-            <ListGroup className="mt-4">
+            <div className="job-postings-clients">
               {jobPostings.map((job) => (
-                <ListGroup.Item key={job.id}>
-                  <h5>{job.jobName}</h5>
-                  <p>{job.description}</p>
-                  <Link to={`/client/job/${job.id}`}>View Applicants</Link>
-                  <button onClick={() => handleDeleteJob(job.id)} className="btn btn-danger ml-2">Delete</button>
-                  <button onClick={() => handleToggleArchive(job.id, false)} className="btn btn-warning ml-2">Archive</button>
-                </ListGroup.Item>
+                <div key={job.id} className="job-card-clients">
+                  <h3>{job.jobName}</h3>
+                  <p className="job-description-clients">{job.description}</p>
+                  <div className="button-group-clients">
+                    <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants</a>
+                    <div className="bottom-buttons-clients">
+                      <button onClick={() => handleDeleteJob(job.id)} className="btn-clients btn-delete-clients">Delete</button>
+                      <button onClick={() => handleToggleArchive(job.id, false)} className="btn-clients btn-archive-clients">Archive</button>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ListGroup>
-          ) : (
-            <div>
-              {!loading && (
-                <Alert variant="warning" className="mt-4">
-                  No active job postings available.
-                </Alert>
-              )}
             </div>
+          ) : (
+            <>
+              {!loading && (
+                <div className="no-job-postings-clients">
+                  No active job postings available.
+                </div>
+              )}
+            </>
           )}
           {archivedJobPostings.length > 0 && (
-            <div>
-              <h2 className="my-4">Archived Job Postings</h2>
-              <ListGroup className="mt-4">
+            <>
+              <h2>Archived Job Postings</h2>
+              <div className="archived-job-postings-clients">
                 {archivedJobPostings.map((job) => (
-                  <ListGroup.Item key={job.id}>
-                    <h5>{job.jobName}</h5>
-                    <p>{job.description}</p>
-                    <Link to={`/client/job/${job.id}`}>View Applicants</Link>
-                    <button onClick={() => handleToggleArchive(job.id, true)} className="btn btn-success ml-2">Unarchive</button>
-                  </ListGroup.Item>
+                  <div key={job.id} className="job-card-clients">
+                    <h3>{job.jobName}</h3>
+                    <p className="job-description-clients">{job.description}</p>
+                    <div className="button-group-clients">
+                      <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants</a>
+                      <div className="bottom-buttons-clients">
+                        <button onClick={() => handleToggleArchive(job.id, true)} className="btn-clients btn-unarchive-clients">Unarchive</button>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </ListGroup>
-            </div>
+              </div>
+            </>
           )}
-        </div>
+        </>
       ) : (
-        <div className="mt-4">
-          <Alert variant="danger">
-            You are not authorized to view this content.
-          </Alert>
+        <div className="unauthorized">
+          You are not authorized to view this content.
         </div>
       )}
-    </Container>
+    </div>
   );
+
 };
 
 export default ClientPostedJobs;

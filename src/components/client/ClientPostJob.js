@@ -4,7 +4,7 @@ import UserService from "../../services/utils/user.service";
 import useApiData from "../../services/utils/useApiData";
 import Select from "react-select";
 import authHeader from "../../services/security/auth-header";
-
+import "../../assets/css/jobPost.css";
 const JobPostForm = () => {
   const [jobName, setJobName] = useState("");
   const [description, setDescription] = useState("");
@@ -104,152 +104,152 @@ const JobPostForm = () => {
   };
 
   return (
-    <div className="container">
+    <div className="job-post-form">
       {userRoles.includes("ROLE_CLIENT") ? (
-        <div>
+        <>
           <h2>Post a Job</h2>
-          {errorMessage && (
-            <div className="alert alert-danger">{errorMessage}</div>
-          )}
-          {successMessage && (
-            <div className="alert alert-success">{successMessage}</div>
-          )}
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="jobName">Job Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="jobName"
-                required
-                value={jobName}
-                onChange={(e) => setJobName(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="resumeRequired">Resume Required?</label>
-              <input
-                type="checkbox"
-                id="resumeRequired"
-                checked={resumeRequired}
-                onChange={(e) => setResumeRequired(e.target.checked)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Job Description</label>
-              <textarea
-                className="form-control"
-                id="description"
-                required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label htmlFor="skills">Required Skills:</label>
-              <Select
-                options={skills.map((skill) => ({
-                  value: skill.skillName,
-                  label: skill.skillName,
-                }))}
-                isMulti
-                onChange={handleSkillsChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="priceType">Price Type:</label>
-              <Select
-                options={[
-                  { value: "PER_HOUR", label: "Per Hour" },
-                  { value: "PER_MONTH", label: "Per Month" },
-                  { value: "FIXED_PRICE", label: "Fixed Price" },
-                ]}
-                onChange={handlePriceTypeChange}
-              />
-            </div>
-            {priceType === "PER_HOUR" || priceType === "PER_MONTH" ? (
-              <>
-                <div className="form-group">
-                  <label htmlFor="priceRangeFrom">Price Range From:</label>
+          <div className="form-container">
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            {successMessage && <div className="success-message">{successMessage}</div>}
+            <form onSubmit={handleSubmit} className="form">
+              <div className="form-row">
+                <div className="form-section">
+                  <label htmlFor="jobName">Job Name</label>
                   <input
-                    type="number"
-                    className="form-control"
-                    id="priceRangeFrom"
-                    value={priceRangeFrom}
-                    onChange={(e) => setPriceRangeFrom(e.target.value)}
+                    type="text"
+                    id="jobName"
+                    required
+                    value={jobName}
+                    onChange={(e) => setJobName(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="priceRangeTo">Price Range To:</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="priceRangeTo"
-                    value={priceRangeTo}
-                    onChange={(e) => setPriceRangeTo(e.target.value)}
+                <div className="form-section">
+                  <label htmlFor="description">Job Description</label>
+                  <textarea
+                    id="description"
+                    required
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  ></textarea>
+                </div>
+
+              </div>
+              <div className="form-row">
+                <div className="form-section">
+                  <label htmlFor="skills">Required Skills:</label>
+                  <Select
+                    options={skills.map((skill) => ({
+                      value: skill.skillName,
+                      label: skill.skillName,
+                    }))}
+                    isMulti
+                    onChange={handleSkillsChange}
                   />
                 </div>
-              </>
-            ) : priceType === "FIXED_PRICE" ? (
-              <div className="form-group">
-                <label htmlFor="budget">Budget:</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="budget"
-                  value={budget}
-                  onChange={(e) => setBudget(e.target.value)}
-                />
+
+                <div className="form-section">
+                  <label htmlFor="priceType">Price Type:</label>
+                  <Select
+                    options={[
+                      { value: "PER_HOUR", label: "Per Hour" },
+                      { value: "PER_MONTH", label: "Per Month" },
+                      { value: "FIXED_PRICE", label: "Fixed Price" },
+                    ]}
+                    onChange={handlePriceTypeChange}
+                  />
+                </div>
+                {(priceType === "PER_HOUR" || priceType === "PER_MONTH") && (
+                  <div className="form-section">
+                    <div className="price-range">
+                      <label htmlFor="priceRangeFrom">Price Range From:</label>
+                      <input
+                        type="number"
+                        id="priceRangeFrom"
+                        value={priceRangeFrom}
+                        onChange={(e) => setPriceRangeFrom(e.target.value)}
+                      />
+                    </div>
+                    <div className="price-range">
+                      <label htmlFor="priceRangeTo">Price Range To:</label>
+                      <input
+                        type="number"
+                        id="priceRangeTo"
+                        value={priceRangeTo}
+                        onChange={(e) => setPriceRangeTo(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                )}
+                {priceType === "FIXED_PRICE" && (
+                  <div className="form-section">
+                    <label htmlFor="budget">Budget:</label>
+                    <input
+                      type="number"
+                      id="budget"
+                      value={budget}
+                      onChange={(e) => setBudget(e.target.value)}
+                    />
+                  </div>
+                )}
+                <div className="form-section">
+                  <label htmlFor="jobType">Job Type:</label>
+                  <Select
+                    options={[
+                      { value: "FULL_TIME", label: "Full Time" },
+                      { value: "PART_TIME", label: "Part Time" },
+                      { value: "CONTRACT", label: "Contract" },
+                      { value: "FREELANCE", label: "Freelance" },
+                      { value: "INTERNSHIP", label: "Internship" },
+                    ]}
+                    onChange={handleJobTypeChange}
+                  />
+                </div>
               </div>
-            ) : null}
-            <div className="form-group">
-              <label htmlFor="jobType">Job Type:</label>
-              <Select
-                options={[
-                  { value: "FULL_TIME", label: "Full Time" },
-                  { value: "PART_TIME", label: "Part Time" },
-                  { value: "CONTRACT", label: "Contract" },
-                  { value: "FREELANCE", label: "Freelance" },
-                  { value: "INTERNSHIP", label: "Internship" },
-                ]}
-                onChange={handleJobTypeChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="isRemote">Is Remote?</label>
-              <input
-                type="checkbox"
-                id="isRemote"
-                checked={isRemote}
-                onChange={handleCheckboxChange}
-              />
-            </div>
-            {isRemote ? null : (
-              <div className="form-group">
-                <label htmlFor="location">Location:</label>
-                <Select
-                  options={locations.map((location) => ({
-                    value: location,
-                    label: location,
-                  }))}
-                  onChange={handleLocationChange}
-                />
+              <div className="form-row">
+                <div className="form-section">
+                  <label htmlFor="isRemote">Is Remote?</label>
+                  <input
+                    type="checkbox"
+                    id="isRemote"
+                    checked={isRemote}
+                    onChange={handleCheckboxChange}
+                  />
+                  {!isRemote && (
+                    <div className="location-section">
+                      <label htmlFor="location">Location:</label>
+                      <Select
+                        options={locations.map((location) => ({
+                          value: location,
+                          label: location,
+                        }))}
+                        onChange={handleLocationChange}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="form-section">
+                  <label htmlFor="resumeRequired">Resume Required?</label>
+                  <input
+                    type="checkbox"
+                    id="resumeRequired"
+                    checked={resumeRequired}
+                    onChange={(e) => setResumeRequired(e.target.checked)}
+                  />
+                </div>
               </div>
-            )}
-            <button type="submit" className="btn btn-primary">
-              Post Job
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div>
-          <div className="alert alert-danger">
-            You are not authorized to view this content.
+              <button type="submit">Post Job</button>
+            </form>
           </div>
+        </>
+      ) : (
+        <div className="unauthorized-message">
+          You are not authorized to view this content.
         </div>
       )}
     </div>
   );
+  
+  
 };
 
 export default JobPostForm;

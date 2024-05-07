@@ -84,8 +84,10 @@ const ClientPostedJobs = () => {
                   <p className="job-description-clients">{job.description}</p>
                   <div className="button-group-clients">
                     <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants</a>
-                    <button onClick={() => handleDeleteJob(job.id)} className="btn-clients btn-delete-clients">Delete</button>
-                    <button onClick={() => handleToggleArchive(job.id, false)} className="btn-clients btn-archive-clients">Archive</button>
+                    <div className="bottom-buttons-clients">
+                      <button onClick={() => handleDeleteJob(job.id)} className="btn-clients btn-delete-clients">Delete</button>
+                      <button onClick={() => handleToggleArchive(job.id, false)} className="btn-clients btn-archive-clients">Archive</button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -109,7 +111,9 @@ const ClientPostedJobs = () => {
                     <p className="job-description-clients">{job.description}</p>
                     <div className="button-group-clients">
                       <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants</a>
-                      <button onClick={() => handleToggleArchive(job.id, true)} className="btn-clients btn-unarchive-clients">Unarchive</button>
+                      <div className="bottom-buttons-clients">
+                        <button onClick={() => handleToggleArchive(job.id, true)} className="btn-clients btn-unarchive-clients">Unarchive</button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -124,6 +128,7 @@ const ClientPostedJobs = () => {
       )}
     </div>
   );
+
 };
 
 export default ClientPostedJobs;

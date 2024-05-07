@@ -20,19 +20,21 @@
 
 .button-group-clients {
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 .bottom-buttons-clients {
   margin-top: auto;
+  display: flex;
 }
 
 .btn-clients {
-  padding: 8px 16px;
-  margin-top: 5px;
+  padding: 6px 12px;
   border: none;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 .btn-view-clients {

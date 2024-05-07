@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/freelancerPublicProfiles.css";
-import { AiOutlineRobot, AiOutlineEnvironment, AiOutlineProfile, AiOutlineTool } from 'react-icons/ai';
-const FreelancerPublicProfiles = () => {
+import { AiOutlineUser, AiOutlineInfoCircle, AiOutlineEnvironment, AiOutlineTool } from 'react-icons/ai'; const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
   const [profilePictures, setProfilePictures] = useState([]);
 
@@ -48,25 +47,26 @@ const FreelancerPublicProfiles = () => {
             />
             <div className="profile-info-freelancer-opens">
               <p className="profile-name-opens">
-                <AiOutlineProfile /> {profile.firstName} {profile.lastName}
+                <AiOutlineUser className="icon" /> {profile.firstName} {profile.lastName}
               </p>
               <p className="profile-detail-opens">
-                <AiOutlineRobot /> {profile.aboutFreelancer}
+                <AiOutlineInfoCircle className="icon" /> {profile.aboutFreelancer}
               </p>
               <p className="profile-detail-opens">
-                <AiOutlineEnvironment /> {profile.location}
+                <AiOutlineEnvironment className="icon" /> {profile.location}
               </p>
               <p className="profile-detail-opens">
-                <AiOutlineTool /> {profile.skills.join(", ")}
+                <AiOutlineTool className="icon" /> {profile.skills.join(", ")}
               </p>
-              <Link to={`/public-profile/${profile.id}`} className="view-profile-link-opens">View Profile</Link>
+              <div className="view-profile-button-container">
+                <Link to={`/public-profile/${profile.id}`} className="view-profile-link-opens">View Profile</Link>
+              </div>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
-
 };
 
 export default FreelancerPublicProfiles;

@@ -135,55 +135,55 @@ const ClientProfile = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="client-profile-container">
-      <div className="image-and-profile-info">
+    <div className="client-profile-container-clientee1">
+      <div className="image-and-profile-info-clientee1">
         {profilePictureData && (
           <img
             src={`data:image/png;base64,${profilePictureData}`}
             alt="Profile"
-            className="profile-image"
+            className="profile-image-clientee1"
           />
         )}
-        <div className="profile-data">
-          <div className="name">
-            <div className="name-text">
+        <div className="profile-data-clientee1">
+          <div className="name-clientee1">
+            <div className="name-text-clientee1">
               {userData.firstName} {userData.lastName}
             </div>
           </div>
-          <div className="contact-info">
-            <span className="icon"><FaMapMarkerAlt /></span>
-            <span className="location">{userData.location}</span>
-            <span className="icon"><FaPhone /></span>
-            <span className="contact-phone">{userData.contactPhone}</span>
+          <div className="contact-info-clientee1">
+            <span className="icon-clientee1"><FaMapMarkerAlt /></span>
+            <span className="location-clientee1">{userData.location}</span>
+            <span className="icon-clientee1"><FaPhone /></span>
+            <span className="contact-phone-clientee1">{userData.contactPhone}</span>
           </div>
-          <div className="social-links">
+          <div className="social-links-clientee1">
             <div><AiOutlineGlobal /> Website: {userData.website}</div>
             <div><AiFillLinkedin /> Linkedin: {userData.linkedin}</div>
             <div><AiFillInstagram /> Instagram: {userData.instagram}</div>
           </div>
         </div>
       </div>
-      <hr className="line" />
-      <div className="company-and-jobs-info">
-        <div className="company-info">
+      <hr className="line-clientee1" />
+      <div className="company-and-jobs-info-clientee1">
+        <div className="company-info-clientee1">
           <p>Company Info</p>
           <p><AiOutlineBank /> {userData.companyName}</p>
           <p><FaMapMarkerAlt /> {userData.companyLocation}</p>
           <p><AiOutlineTeam /> {userData.companySize}</p>
           <p><AiOutlineFieldTime /> {userData.companyIndustry}</p>
         </div>
-        <div className="jobs-info">
+        <div className="jobs-info-clientee1">
           <p>Jobs Info</p>
           <p><strong>Live job posting:</strong> {liveJobPostingCount}</p>
           <p><strong>Archived job posting:</strong> {archivedJobPostingCount}</p>
         </div>
       </div>
-      <button type="button" className="update-button" onClick={handleEditClick}>
+      <button type="button" className="update-button-clientee1" onClick={handleEditClick}>
         <AiFillEdit /> Edit Profile
       </button>
       {isEditing && (
-        <form className="edit-form">
-          <div className="form-group">
+        <form className="edit-form-clientee1">
+          <div className="form-group-clientee1">
             <label htmlFor="firstName">First Name:</label>
             <input
               className="input-field"
@@ -194,7 +194,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="lastName">Last Name:</label>
             <input
               className="input-field"
@@ -205,7 +205,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="contactPhone">Contact Phone:</label>
             <input
               className="input-field"
@@ -216,7 +216,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="location">Location:</label>
             <select
               className="input-field"
@@ -235,7 +235,7 @@ const ClientProfile = () => {
               ))}
             </select>
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="companyName">Company name</label>
             <input
               className="input-field"
@@ -246,7 +246,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="companyIndustry">Company industry</label>
             <input
               className="input-field"
@@ -257,7 +257,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="companySize">Company size</label>
             <input
               className="input-field"
@@ -268,7 +268,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="companyLocation">Company location</label>
             <input
               className="input-field"
@@ -279,7 +279,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="website">Website</label>
             <input
               className="input-field"
@@ -290,7 +290,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="instagram">Instagram</label>
             <input
               className="input-field"
@@ -301,7 +301,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group-clientee1">
             <label htmlFor="linkedin">Linkedin</label>
             <input
               className="input-field"
@@ -312,7 +312,7 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <button type="button" className="update-button" onClick={handleUpdateClick}>
+          <button type="button" className="update-button-clientee1" onClick={handleUpdateClick}>
             Update
           </button>
         </form>

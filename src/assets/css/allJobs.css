@@ -1,9 +1,9 @@
-.jobs-container {
+.jobs-container-freelancere {
   display: flex;
   flex-wrap: wrap;
 }
 
-.job-card {
+.job-card-freelancere {
   width: calc(33.33% - 20px); 
   margin: 10px;
   padding: 20px;
@@ -14,19 +14,19 @@
   transition: transform 0.3s ease;
 }
 
-.job-card:hover {
+.job-card-freelancere:hover {
   transform: translateY(-5px);
 }
 
-.job-card h3 {
+.job-card-freelancere h3 {
   color: #333333;
 }
 
-.job-card p {
+.job-card-freelancere p {
   color: #666666;
 }
 
-.job-card button {
+.job-card-freelancere button {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -40,11 +40,11 @@
   transition: background-color 0.3s ease;
 }
 
-.job-card button:hover {
+.job-card-freelancere button:hover {
   background-color: #45a049;
 }
 
-.unauthorized {
+.unauthorized-freelancere {
   text-align: center;
   margin-top: 20px;
 }

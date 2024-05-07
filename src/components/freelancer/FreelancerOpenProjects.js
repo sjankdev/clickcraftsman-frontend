@@ -147,13 +147,13 @@ const FreelancerOpenProjects = () => {
   };
 
   return (
-    <div className="jobs-container">
+    <div className="jobs-container-freelancere">
       {userRoles.includes("ROLE_FREELANCER") ? (
         <>
           {jobs
             .filter((job) => !job.archived)
             .map((job) => (
-              <div className="job-card" key={job.id}>
+              <div className="job-card-freelancere" key={job.id}>
                 <h3>{job.jobName}</h3>
                 <p>{job.description}</p>
                 <div>
@@ -181,8 +181,8 @@ const FreelancerOpenProjects = () => {
                       isOpen={isModalOpen && selectedJobId === job.id}
                       onRequestClose={closeModal}
                       contentLabel="Custom Message Modal"
-                      className="custom-modal"
-                      overlayClassName="custom-modal-overlay"
+                      className="custom-modal-freelancere"
+                      overlayClassName="custom-modal-overlay-freelancere"
                     >
                       <div>
                         <h2>You're applying for {job.jobName}</h2>
@@ -243,7 +243,7 @@ const FreelancerOpenProjects = () => {
             ))}
         </>
       ) : (
-        <div className="unauthorized">
+        <div className="unauthorized-freelancere">
           <div>You are not authorized to view this content.</div>
         </div>
       )}

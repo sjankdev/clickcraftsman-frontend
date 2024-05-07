@@ -5,8 +5,7 @@ import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/clientProfile.css";
 import ClientService from "../../services/client/client-service";
 import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
-import { AiOutlineGlobal, AiFillLinkedin, AiFillInstagram, AiOutlineBank, AiOutlineTeam, AiOutlineFieldTime } from 'react-icons/ai';
-
+import { AiOutlineGlobal, AiFillLinkedin, AiFillInstagram, AiOutlineBank, AiOutlineTeam, AiOutlineFieldTime, AiFillEdit } from 'react-icons/ai';
 const ClientProfile = () => {
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
@@ -180,11 +179,11 @@ const ClientProfile = () => {
         </div>
       </div>
       <button type="button" className="update-button" onClick={handleEditClick}>
-          Update
-        </button>
+        <AiFillEdit /> Edit Profile
+      </button>
       {isEditing && (
         <form className="edit-form">
-         <div className="form-group">
+          <div className="form-group">
             <label htmlFor="firstName">First Name:</label>
             <input
               className="input-field"
@@ -314,8 +313,8 @@ const ClientProfile = () => {
             />
           </div>
           <button type="button" className="update-button" onClick={handleUpdateClick}>
-          Update
-        </button>
+            Update
+          </button>
         </form>
       )}
     </div>

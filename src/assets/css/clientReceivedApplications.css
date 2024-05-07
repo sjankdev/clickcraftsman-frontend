@@ -1,6 +1,8 @@
-.applications-wrapper-clienetee {
-  margin: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.applications-container-clienetee {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  grid-gap: 20px; 
 }
 
 .page-title-clienetee {

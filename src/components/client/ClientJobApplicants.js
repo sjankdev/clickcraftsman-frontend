@@ -21,10 +21,10 @@ const ClientJobApplicants = () => {
   }, [jobId]);
 
   return (
-    <div className="job-applicants-container">
+    <div className="job-applicants-container-cliente">
       <h2>Job Applicants for Job ID: {jobId}</h2>
       {applicants.map((applicant, index) => (
-        <div className="job-applicant" key={index}>
+        <div className="job-applicant-cliente" key={index}>
           <h3>
             {applicant.freelancerId ? (
               <Link to={`/public-profile/${applicant.freelancerId}`}>
@@ -38,7 +38,7 @@ const ClientJobApplicants = () => {
           <p><AiOutlineDollar /> {applicant.desiredPay}</p>
           <p>{applicant.messageToClient}</p>
           {applicant.hasResume && (
-            <a href={`http://localhost:8080/api/job/resume/${applicant.id}`} download className="resume-download">
+            <a href={`http://localhost:8080/api/job/resume/${applicant.id}`} download className="resume-download-cliente">
               Download Resume <AiOutlineFilePdf />
             </a>
           )}

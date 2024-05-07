@@ -80,12 +80,12 @@ const ClientPostedJobs = () => {
             <div className="job-postings-clients">
               {jobPostings.map((job) => (
                 <div key={job.id} className="job-card-clients">
-                  <h5>{job.jobName}</h5>
-                  <p>{job.description}</p>
+                  <h3>{job.jobName}</h3>
+                  <p className="job-description-clients">{job.description}</p>
                   <div className="button-group-clients">
-                    <a href={`/client/job/${job.id}`} className="view-applicants-clients">View Applicants</a>
-                    <button onClick={() => handleDeleteJob(job.id)} className="delete">Delete</button>
-                    <button onClick={() => handleToggleArchive(job.id, false)} className="archive">Archive</button>
+                    <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants</a>
+                    <button onClick={() => handleDeleteJob(job.id)} className="btn-clients btn-delete-clients">Delete</button>
+                    <button onClick={() => handleToggleArchive(job.id, false)} className="btn-clients btn-archive-clients">Archive</button>
                   </div>
                 </div>
               ))}
@@ -105,11 +105,11 @@ const ClientPostedJobs = () => {
               <div className="archived-job-postings-clients">
                 {archivedJobPostings.map((job) => (
                   <div key={job.id} className="job-card-clients">
-                    <h5>{job.jobName}</h5>
-                    <p>{job.description}</p>
+                    <h3>{job.jobName}</h3>
+                    <p className="job-description-clients">{job.description}</p>
                     <div className="button-group-clients">
-                      <a href={`/client/job/${job.id}`} className="view-applicants-clients">View Applicants</a>
-                      <button onClick={() => handleToggleArchive(job.id, true)} className="unarchive">Unarchive</button>
+                      <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants</a>
+                      <button onClick={() => handleToggleArchive(job.id, true)} className="btn-clients btn-unarchive-clients">Unarchive</button>
                     </div>
                   </div>
                 ))}

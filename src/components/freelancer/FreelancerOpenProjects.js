@@ -147,93 +147,77 @@ const FreelancerOpenProjects = () => {
   };
 
   return (
-    <div className="container">
+    <div className="jobs-container-freelancere">
       {userRoles.includes("ROLE_FREELANCER") ? (
-        <div className="jobs-container">
+        <>
           {jobs
             .filter((job) => !job.archived)
             .map((job) => (
-              <div key={job.id} className="job-card">
+              <div className="job-card-freelancere" key={job.id}>
                 <h3>{job.jobName}</h3>
-                <p className="job-description">{job.description}</p>
-                <div className="job-details">
+                <p>{job.description}</p>
+                <div>
                   <p>{job.datePosted}</p>
                   {job.location && <p>Location: {job.location}</p>}
-                  {!job.location && (
-                    <p>{job.isRemote ? "Remote" : "No"}</p>
-                  )}
+                  {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
                   <p>
                     Required Skills:{" "}
                     {job.requiredSkills
                       .map((skill) => skill.skillName)
                       .join(", ")}
                   </p>
-
                 </div>
                 {appliedJobIds.includes(job.id) ? (
-                  <p className="already-applied">
-                    You have already applied for this job.
-                  </p>
+                  <p>You have already applied for this job.</p>
                 ) : (
-                  <div>
+                  <>
                     <button onClick={() => handleApply(job.id)}>Apply</button>
                     <hr />
                     {applicationMessages.map(
                       (msg) =>
-                        msg.jobId === job.id && (
-                          <p key={msg.jobId}>{msg.message}</p>
-                        )
+                        msg.jobId === job.id && <p key={msg.jobId}>{msg.message}</p>
                     )}
                     <Modal
                       isOpen={isModalOpen && selectedJobId === job.id}
                       onRequestClose={closeModal}
                       contentLabel="Custom Message Modal"
-                      className="custom-modal"
-                      overlayClassName="custom-modal-overlay"
+                      className="custom-modal-freelancere"
+                      overlayClassName="custom-modal-overlay-freelancere"
                     >
-                      <div className="modal-header">
+                      <div>
                         <h2>You're applying for {job.jobName}</h2>
-                        <button className="close-btn" onClick={closeModal}>
-                          &times;
-                        </button>
+                        <button onClick={closeModal}>&times;</button>
                       </div>
-                      <div className="modal-body">
+                      <div>
                         <h3>Enter Your Custom Message</h3>
                         <textarea
                           value={customMessage}
                           onChange={(e) => setCustomMessage(e.target.value)}
-                          className="message-textarea"
                           placeholder="Insert your message here..."
                         />
-                        <div className="input-group">
-                          <label htmlFor="desired-pay" className="pay-label">
-                            Desired Pay:
-                          </label>
+                        <div>
+                          <label htmlFor="desired-pay">Desired Pay:</label>
                           <input
                             type="number"
                             id="desired-pay"
                             value={desiredPay}
                             onChange={(e) => setDesiredPay(e.target.value)}
-                            className="desired-pay-input"
                             placeholder="Insert your desired pay here..."
                           />
                         </div>
-                        {job.priceType === "FIXED_PRICE" && (
+                        {job.priceType === "FIXED_PRICE" ? (
                           <div>
                             <p>Price type: {job.priceType}</p>
                             <p>Budget: ${job.budget}</p>
                           </div>
-                        )}
-                        {job.priceType !== "FIXED_PRICE" && (
+                        ) : (
                           <div>
                             <p>Price Type: {job.priceType}</p>
-                            <p>
-                              {job.priceRangeFrom}$ - ${job.priceRangeTo}
-                            </p>
+                            <p>{job.priceRangeFrom}$ - ${job.priceRangeTo}</p>
                           </div>
                         )}
-                        <div className="input-group">
-                          <label htmlFor="resume-upload" className="file-label">
+                        <div>
+                          <label htmlFor="resume-upload">
                             Upload your resume: {job.resumeRequired ? "(required)" : "(optional)"}
                           </label>
                           <input
@@ -241,38 +225,26 @@ const FreelancerOpenProjects = () => {
                             id="resume-upload"
                             onChange={handleFileChange}
                             accept=".pdf"
-                            className="file-upload-input"
                           />
                           <div>
-                            <span className="file-upload-info">Supported format: PDF</span>
-                            {fileTypeError && (
-                              <div className="error-message">{fileTypeError}</div>
-                            )}
+                            <span>Supported format: PDF</span>
+                            {fileTypeError && <div>{fileTypeError}</div>}
                           </div>
                         </div>
                       </div>
-                      <div className="modal-footer">
-                        <button
-                          onClick={handleApplyWithCustomMessage}
-                          className="apply-btn"
-                        >
-                          Apply
-                        </button>
-                        <button onClick={closeModal} className="cancel-btn">
-                          Cancel
-                        </button>
+                      <div>
+                        <button onClick={handleApplyWithCustomMessage}>Apply</button>
+                        <button onClick={closeModal}>Cancel</button>
                       </div>
                     </Modal>
-                  </div>
+                  </>
                 )}
               </div>
             ))}
-        </div>
+        </>
       ) : (
-        <div>
-          <div className="alert alert-danger">
-            You are not authorized to view this content.
-          </div>
+        <div className="unauthorized-freelancere">
+          <div>You are not authorized to view this content.</div>
         </div>
       )}
     </div>

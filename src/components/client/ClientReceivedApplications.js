@@ -39,38 +39,38 @@ const ClientReceivedApplications = () => {
   console.log("Rendering ClientReceivedApplications component...");
 
   return (
-    <div className="applications-wrapper">
+    <div className="applications-wrapper-clienetee">
       {userRoles.includes("ROLE_CLIENT") ? (
         <>
-          <h2 className="page-title">Received Applications for Projects</h2>
+          <h2 className="page-title-clienetee">Received Applications for Projects</h2>
           {jobApplications.length === 0 ? (
-            <p className="no-applications-msg">No job applications received.</p>
+            <p className="no-applications-msg-clienetee">No job applications received.</p>
           ) : (
-            <div className="applications-container">
+            <div className="applications-container-clienetee">
               {jobApplications.map((application, index) => {
                 return (
-                  <div key={index} className="application-item">
-                    <div className="freelancer-info">
+                  <div key={index} className="application-item-clienetee">
+                    <div className="freelancer-info-clienetee">
                       <strong>Freelancer:</strong>{" "}
                       {application.freelancerId ? (
                         <Link to={`/public-profile/${application.freelancerId}`}>
                           {application.freelancerFirstName} {application.freelancerLastName}
                         </Link>
                       ) : (
-                        <span className="invalid-freelancer-id">Invalid freelancerId: null</span>
+                        <span className="invalid-freelancer-id-clienetee">Invalid freelancerId: null</span>
                       )}
                     </div>
-                    <div className="message-info">
+                    <div className="message-info-clienetee">
                       <strong>Message:</strong> {application.messageToClient}
                       <br></br>
                       <strong>Desired pay:</strong> {application.desiredPay}
                     </div>
                     {application.hasResume ? (
-                      <a href={`http://localhost:8080/api/job/resume/${application.id}`} download className="resume-download">
+                      <a href={`http://localhost:8080/api/job/resume/${application.id}`} download className="resume-download-clienetee">
                         Download Resume <AiOutlineFilePdf />
                       </a>
                     ) : (
-                      <div className="no-resume-msg">No resume uploaded</div>
+                      <div className="no-resume-msg-clienetee">No resume uploaded</div>
                     )}
                   </div>
                 );
@@ -79,7 +79,7 @@ const ClientReceivedApplications = () => {
           )}
         </>
       ) : (
-        <div className="alert alert-danger">
+        <div className="alert-clienetee alert-danger-clienetee">
           You are not authorized to view this content.
         </div>
       )}

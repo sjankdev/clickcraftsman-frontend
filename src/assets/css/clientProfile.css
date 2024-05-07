@@ -1,4 +1,4 @@
-.client-profile-container {
+.client-profile-container-clientee1 {
   display: flex;
   flex-direction: column;
   padding: 50px;
@@ -8,16 +8,17 @@
   border-radius: 15px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
   height: auto;
+  margin: 0 auto;
 }
 
-.name {
+.name-clientee1 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 2rem;
   margin-bottom: 10px;
 }
 
-.contact-info {
+.contact-info-clientee1 {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 1.2rem;
@@ -25,11 +26,11 @@
   align-items: center;
 }
 
-.location {
+.location-clientee1 {
   margin-right: 20px;
 }
 
-.social-links {
+.social-links-clientee1 {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 1rem;
@@ -37,19 +38,19 @@
   line-height: 2;
 }
 
-.line {
+.line-clientee1 {
   width: 100%;
   height: 1px;
   background-color: #E0E0E0;
   margin: 20px 0;
 }
 
-.image-and-profile-info {
+.image-and-profile-info-clientee1 {
   display: flex;
   align-items: center;
 }
 
-.profile-image {
+.profile-image-clientee1 {
   width: 150px;
   height: 150px;
   margin-right: 20px;
@@ -58,46 +59,46 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.company-and-jobs-info {
+.company-and-jobs-info-clientee1 {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
   margin-bottom: 30px;
 }
 
-.company-info,
-.jobs-info {
+.company-info-clientee1,
+.jobs-info-clientee1 {
   flex: 1;
   min-width: 300px;
 }
 
-.contact-info svg,
-.social-links svg,
-.company-info svg {
+.contact-info-clientee1 svg,
+.social-links-clientee1 svg,
+.company-info-clientee1 svg {
   font-size: 1.5rem;
 }
 
 
 @media (max-width: 768px) {
-  .client-profile-container {
+  .client-profile-container-clientee1 {
     padding: 30px;
   }
 
-  .company-and-jobs-info {
+  .company-and-jobs-info-clientee1 {
     flex-direction: column;
     gap: 20px;
   }
 }
 
-.contact-info svg,
-.social-links svg,
-.company-info svg,
-.update-button svg {
+.contact-info-clientee1 svg,
+.social-links-clientee1 svg,
+.company-info-clientee1 svg,
+.update-button-clientee1 svg {
   font-size: 1.2rem;
   color: #3f51b5;
 }
 
-.update-button {
+.update-button-clientee1 {
   background-color: #007bff;
   color: #fff;
   padding: 8px 16px;
@@ -108,7 +109,7 @@
   margin-top: 10px;
 }
 
-.update-button:hover {
+.update-button-clientee1:hover {
   background-color: #48bb1b;
   color: #ffffff;
   text-decoration: none;

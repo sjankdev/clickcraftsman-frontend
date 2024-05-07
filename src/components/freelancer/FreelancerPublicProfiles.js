@@ -66,6 +66,7 @@ const FreelancerPublicProfiles = () => {
       </div>
     </div>
   );
+
 };
 
 export default FreelancerPublicProfiles;

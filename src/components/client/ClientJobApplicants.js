@@ -37,6 +37,7 @@ const ClientJobApplicants = () => {
           <p><AiOutlineMail /> {applicant.freelancerEmail}</p>
           <p><AiOutlineDollar /> {applicant.desiredPay}</p>
           <p>{applicant.messageToClient}</p>
+          <p>Applied On: {applicant.applicationTime}</p>
           {applicant.hasResume && (
             <a href={`http://localhost:8080/api/job/resume/${applicant.id}`} download className="resume-download-cliente">
               Download Resume <AiOutlineFilePdf />

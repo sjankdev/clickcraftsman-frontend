@@ -65,7 +65,7 @@ const ClientReceivedApplications = () => {
                       <br></br>
                       <strong>Desired pay:</strong> {application.desiredPay}
                       <br></br>
-                      <strong>Applied On: </strong>{application.applicationTime}
+                      <p>Applied On: {application.formattedApplicationTime}</p>
                     </div>
                     {application.hasResume ? (
                       <a href={`http://localhost:8080/api/job/resume/${application.id}`} download className="resume-download-clienetee">

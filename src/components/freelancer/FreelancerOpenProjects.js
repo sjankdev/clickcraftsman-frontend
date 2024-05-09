@@ -157,7 +157,7 @@ const FreelancerOpenProjects = () => {
                 <h3>{job.jobName}</h3>
                 <p>{job.description}</p>
                 <div>
-                  <p>{job.datePosted}</p>
+                <p>Posted: {job.formattedDatePosted}</p>
                   {job.location && <p>Location: {job.location}</p>}
                   {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
                   <p>

@@ -155,9 +155,18 @@ const FreelancerOpenProjects = () => {
               <div className="job-card-freelancere" key={job.id}>
                 <h3>{job.jobName}</h3>
                 <p>{job.description}</p>
-                <p>${job.budget}</p>
+                {job.priceType === "FIXED_PRICE" ? (
+                  <div>
+                    <p>Price type: {job.priceType}</p>
+                    <p>Budget: ${job.budget}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <p>Price Type: {job.priceType}</p>
+                    <p>{job.priceRangeFrom}$ - ${job.priceRangeTo}</p>
+                  </div>
+                )}
                 <p>{job.jobType}</p>
-                <p>{job.priceType}</p>
                 <div>
                   <p>Posted: {job.formattedApplicationTime}</p>
                   {job.location && <p>Location: {job.location}</p>}

@@ -71,7 +71,6 @@ const FreelancerOpenProjects = () => {
     setFileTypeError("");
   };
 
-
   const handleApply = (jobId) => {
     const hasAlreadyApplied = applicationMessages.some(
       (msg) => msg.jobId === jobId
@@ -156,15 +155,16 @@ const FreelancerOpenProjects = () => {
               <div className="job-card-freelancere" key={job.id}>
                 <h3>{job.jobName}</h3>
                 <p>{job.description}</p>
+                <p>${job.budget}</p>
+                <p>{job.jobType}</p>
+                <p>{job.priceType}</p>
                 <div>
-                <p>Posted: {job.formattedDatePosted}</p>
+                  <p>Posted: {job.formattedApplicationTime}</p>
                   {job.location && <p>Location: {job.location}</p>}
                   {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
                   <p>
                     Required Skills:{" "}
-                    {job.requiredSkills
-                      .map((skill) => skill.skillName)
-                      .join(", ")}
+                    {job.requiredSkillNames.join(", ")}
                   </p>
                 </div>
                 {appliedJobIds.includes(job.id) ? (

@@ -3,7 +3,7 @@ import * as Yup from "yup";
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("This is not a valid email.")
-    .required("This field is required!"),
+    .required("Email is required!"),
   password: Yup.string()
     .test(
       "len",
@@ -33,12 +33,31 @@ const validationSchema = Yup.object().shape({
     )
     .required("This field is required!"),
   location: Yup.string()
+    .required("Location is required!")
+    .test("is-selected", "Location is required!", (val) => val !== ""),
+  aboutFreelancer: Yup.string()
     .test(
       "len",
-      "The location must be between 2 and 40 characters.",
-      (val) => val && val.trim().length >= 2 && val.trim().length <= 40
+      "The about freelancer must be between 0 and 1000 characters.",
+      (val) => val && val.trim().length >= 0 && val.trim().length <= 1000
     )
     .required("This field is required!"),
+  yearsOfExperience: Yup.number()
+    .positive("Years of experience must be a positive number.")
+    .required("This field is required!"),
+  skills: Yup.array()
+    .of(Yup.string())
+    .min(1, "At least one skill must be selected.")
+    .required("This field is required!"),
+  linkedin: Yup.string()
+    .url("Invalid LinkedIn URL format.")
+    .nullable(),
+  website: Yup.string()
+    .url("Invalid website URL format.")
+    .nullable(),
+  instagram: Yup.string()
+    .url("Invalid Instagram URL format.")
+    .nullable(),
 });
 
 export default validationSchema;

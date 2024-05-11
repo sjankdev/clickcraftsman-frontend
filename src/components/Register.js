@@ -36,6 +36,7 @@ const Register = () => {
     website: "",
     instagram: "",
     aboutFreelancer: "",
+    skills: [],
   };
 
   const handleRegister = (formValue, { resetForm }) => {
@@ -230,7 +231,7 @@ const Register = () => {
                       <label htmlFor="aboutFreelancer">About Me</label>
                       <Field
                         name="aboutFreelancer"
-                        type="text"
+                        as="textarea"
                         className="form-control"
                       />
                       <ErrorMessage

@@ -3,7 +3,7 @@ import * as Yup from "yup";
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("This is not a valid email.")
-    .required("Email is required!"),
+    .required("Please, insert your email."),
   password: Yup.string()
     .test(
       "len",
@@ -33,7 +33,7 @@ const validationSchema = Yup.object().shape({
     )
     .required("This field is required!"),
   location: Yup.string()
-    .required("Location is required!")
+    .required("Please, select your location.")
     .test("is-selected", "Location is required!", (val) => val !== ""),
   linkedin: Yup.string()
     .url("Invalid LinkedIn URL format.")
@@ -50,10 +50,10 @@ const validationSchema = Yup.object().shape({
   }),
   aboutFreelancer: Yup.string().when('role', {
     is: (role) => role === 'freelancer',
-    then: Yup.string().required("About Me is required")
+    then: Yup.string().required("Please, provide a brief description about yourself.")
       .test('test-about-freelancer', 'About Me test', function (value) {
         console.log('About Freelancer Value:', value);
-        return true; 
+        return true;
       })
   }),
   yearsOfExperience: Yup.number().when('role', {

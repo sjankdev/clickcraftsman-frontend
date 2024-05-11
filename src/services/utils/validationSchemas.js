@@ -3,7 +3,7 @@ import * as Yup from "yup";
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("This is not a valid email.")
-    .required("Email is required!"),
+    .required("Please, insert your email."),
   password: Yup.string()
     .test(
       "len",
@@ -26,14 +26,10 @@ const validationSchema = Yup.object().shape({
     )
     .required("This field is required!"),
   contactPhone: Yup.string()
-    .test(
-      "len",
-      "The contact phone must be between 9 and 20 characters.",
-      (val) => val && val.trim().length >= 9 && val.trim().length <= 20
-    )
+    .matches(/^\+3816[0-9]{7,8}$/, 'Invalid Serbian mobile phone number')
     .required("This field is required!"),
   location: Yup.string()
-    .required("Location is required!")
+    .required("Please, select your location.")
     .test("is-selected", "Location is required!", (val) => val !== ""),
   linkedin: Yup.string()
     .url("Invalid LinkedIn URL format.")
@@ -44,45 +40,30 @@ const validationSchema = Yup.object().shape({
   instagram: Yup.string()
     .url("Invalid Instagram URL format.")
     .nullable(),
-  role: Yup.string().test('role', 'Role value: ${value}', function(value) {
+  role: Yup.string().test('role', 'Role value: ${value}', function (value) {
     console.log('Role:', value);
-    return true; // always return true to pass the test
-  })
-});
-
-validationSchema.when('role', {
-  is: (role) => role === 'freelancer',
-  then: Yup.object().shape({
-    aboutFreelancer: Yup.string()
+    return true;
+  }),
+  aboutFreelancer: Yup.string()
     .when('role', {
       is: (role) => role === 'freelancer',
       then: Yup.string()
-        .required("About freelancer is required.")
-        .test(
-          "len",
-          "The about freelancer must be between 0 and 1000 characters.",
-          (val) => val === null || (val && val.trim().length <= 1000)
-        ),
-      otherwise: Yup.string()
-        .nullable()
-        .test("required", "About freelancer is required.", (val) => val !== "")
+        .required("Please, provide a brief description about yourself.")
+        .min(100, "The description must be at least 100 characters long.")
+        .max(2000, "The description cannot exceed 2000 characters.")
     }),
-    yearsOfExperience: Yup.number()
-      .positive("Years of experience must be a positive number."),
-    skills: Yup.array()
-      .of(Yup.string())
-      .min(1, "At least one skill must be selected."),
+  yearsOfExperience: Yup.number().when('role', {
+    is: (role) => role === 'freelancer',
+    then: Yup.number()
+      .min(0, "Years of experience must be zero or a positive number.")
+      .integer("Years of experience must be an integer.")
+  }),
+  skills: Yup.array().when('role', {
+    is: (role) => role === 'freelancer',
+    then: Yup.array().of(Yup.string())
+      .min(1, "At least one skill must be selected.")
   })
 });
 
-validationSchema.when('role', {
-  is: (role) => role === 'client',
-  then: Yup.object().shape({
-    companyName: Yup.string(),
-    companyLocation: Yup.string(),
-    companySize: Yup.string(),
-    companyIndustry: Yup.string(),
-  })
-});
 
 export default validationSchema;

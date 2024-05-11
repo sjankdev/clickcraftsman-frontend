@@ -26,11 +26,7 @@ const validationSchema = Yup.object().shape({
     )
     .required("This field is required!"),
   contactPhone: Yup.string()
-    .test(
-      "len",
-      "The contact phone must be between 9 and 20 characters.",
-      (val) => val && val.trim().length >= 9 && val.trim().length <= 20
-    )
+    .matches(/^\+3816[0-9]{7,8}$/, 'Invalid Serbian mobile phone number')
     .required("This field is required!"),
   location: Yup.string()
     .required("Please, select your location.")
@@ -49,13 +45,13 @@ const validationSchema = Yup.object().shape({
     return true;
   }),
   aboutFreelancer: Yup.string()
-  .when('role', {
-    is: (role) => role === 'freelancer',
-    then: Yup.string()
-      .required("Please, provide a brief description about yourself.")
-      .min(100, "The description must be at least 100 characters long.")
-      .max(2000, "The description cannot exceed 2000 characters.")
-  }),
+    .when('role', {
+      is: (role) => role === 'freelancer',
+      then: Yup.string()
+        .required("Please, provide a brief description about yourself.")
+        .min(100, "The description must be at least 100 characters long.")
+        .max(2000, "The description cannot exceed 2000 characters.")
+    }),
   yearsOfExperience: Yup.number().when('role', {
     is: (role) => role === 'freelancer',
     then: Yup.number()

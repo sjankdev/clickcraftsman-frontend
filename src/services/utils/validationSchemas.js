@@ -44,45 +44,30 @@ const validationSchema = Yup.object().shape({
   instagram: Yup.string()
     .url("Invalid Instagram URL format.")
     .nullable(),
-  role: Yup.string().test('role', 'Role value: ${value}', function(value) {
+  role: Yup.string().test('role', 'Role value: ${value}', function (value) {
     console.log('Role:', value);
-    return true; // always return true to pass the test
+    return true;
+  }),
+  aboutFreelancer: Yup.string().when('role', {
+    is: (role) => role === 'freelancer',
+    then: Yup.string().required("About Me is required")
+      .test('test-about-freelancer', 'About Me test', function (value) {
+        console.log('About Freelancer Value:', value);
+        return true; 
+      })
+  }),
+  yearsOfExperience: Yup.number().when('role', {
+    is: (role) => role === 'freelancer',
+    then: Yup.number()
+      .min(0, "Years of experience must be zero or a positive number.")
+      .integer("Years of experience must be an integer.")
+  }),
+  skills: Yup.array().when('role', {
+    is: (role) => role === 'freelancer',
+    then: Yup.array().of(Yup.string())
+      .min(1, "At least one skill must be selected.")
   })
 });
 
-validationSchema.when('role', {
-  is: (role) => role === 'freelancer',
-  then: Yup.object().shape({
-    aboutFreelancer: Yup.string()
-    .when('role', {
-      is: (role) => role === 'freelancer',
-      then: Yup.string()
-        .required("About freelancer is required.")
-        .test(
-          "len",
-          "The about freelancer must be between 0 and 1000 characters.",
-          (val) => val === null || (val && val.trim().length <= 1000)
-        ),
-      otherwise: Yup.string()
-        .nullable()
-        .test("required", "About freelancer is required.", (val) => val !== "")
-    }),
-    yearsOfExperience: Yup.number()
-      .positive("Years of experience must be a positive number."),
-    skills: Yup.array()
-      .of(Yup.string())
-      .min(1, "At least one skill must be selected."),
-  })
-});
-
-validationSchema.when('role', {
-  is: (role) => role === 'client',
-  then: Yup.object().shape({
-    companyName: Yup.string(),
-    companyLocation: Yup.string(),
-    companySize: Yup.string(),
-    companyIndustry: Yup.string(),
-  })
-});
 
 export default validationSchema;

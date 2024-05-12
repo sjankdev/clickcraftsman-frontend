@@ -18,15 +18,25 @@
   }
 }
 
-.profile-card-opens {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.search-bar-container {
+  margin-bottom: 20px;
+}
+
+.search-bar-container input[type="text"] {
+  width: 50%; 
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.profiles-grid-opens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
   align-items: center;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
 }
 
 .profile-picture-opens {

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/freelancerPublicProfiles.css";
-import { AiOutlineUser, AiOutlineInfoCircle, AiOutlineEnvironment, AiOutlineTool } from 'react-icons/ai';
+import {
+  AiOutlineUser,
+  AiOutlineInfoCircle,
+  AiOutlineEnvironment,
+  AiOutlineTool,
+} from "react-icons/ai";
 
 const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
@@ -18,25 +23,25 @@ const FreelancerPublicProfiles = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    if (debouncedSearchTerm.trim() !== "") {
-      axios
-        .get(`http://localhost:8080/api/freelancer/search?skillName=${debouncedSearchTerm}`)
-        .then((response) => {
-          setPublicProfiles(response.data);
-        })
-        .catch((error) => {
-          console.error("Error searching profiles:", error);
-        });
-    } else {
-      axios
-        .get("http://localhost:8080/api/freelancer/getAllFreelancers")
-        .then((response) => {
-          setPublicProfiles(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching public profiles:", error);
-        });
-    }
+    const fetchProfiles = async () => {
+      try {
+        let response;
+        if (debouncedSearchTerm.trim() !== "") {
+          response = await axios.get(
+            `http://localhost:8080/api/freelancer/search?skillName=${debouncedSearchTerm}`
+          );
+        } else {
+          response = await axios.get(
+            "http://localhost:8080/api/freelancer/getAllFreelancers"
+          );
+        }
+        setPublicProfiles(response.data);
+      } catch (error) {
+        console.error("Error fetching profiles:", error);
+      }
+    };
+
+    fetchProfiles();
   }, [debouncedSearchTerm]);
 
   return (
@@ -59,10 +64,12 @@ const FreelancerPublicProfiles = () => {
             />
             <div className="profile-info-freelancer-opens">
               <p className="profile-name-opens">
-                <AiOutlineUser className="icon" /> {profile.firstName} {profile.lastName}
+                <AiOutlineUser className="icon" /> {profile.firstName}{" "}
+                {profile.lastName}
               </p>
               <p className="profile-detail-opens">
-                <AiOutlineInfoCircle className="icon" /> {profile.aboutFreelancer}
+                <AiOutlineInfoCircle className="icon" />{" "}
+                {profile.aboutFreelancer}
               </p>
               <p className="profile-detail-opens">
                 <AiOutlineEnvironment className="icon" /> {profile.location}
@@ -71,7 +78,12 @@ const FreelancerPublicProfiles = () => {
                 <AiOutlineTool className="icon" /> {profile.skills.join(", ")}
               </p>
               <div className="view-profile-button-container">
-                <Link to={`/public-profile/${profile.id}`} className="view-profile-link-opens">View Profile</Link>
+                <Link
+                  to={`/public-profile/${profile.id}`}
+                  className="view-profile-link-opens"
+                >
+                  View Profile
+                </Link>
               </div>
             </div>
           </div>

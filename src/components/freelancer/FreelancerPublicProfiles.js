@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Select from "react-select";
 import "../../assets/css/freelancerPublicProfiles.css";
 import {
   AiOutlineUser,
@@ -11,47 +12,73 @@ import {
 
 const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [skillsList, setSkillsList] = useState([]);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 300);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+    const fetchSkills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/utils/getAllSkills"
+        );
+        const formattedSkills = response.data.map((skill) => ({
+          value: skill.id,
+          label: skill.skillName,
+        }));
+        setSkillsList(formattedSkills);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      }
+    };
+    fetchSkills();
+  }, []);
 
   useEffect(() => {
+    let isMounted = true;
+    const delay = 300;
     const fetchProfiles = async () => {
       try {
         let response;
-        if (debouncedSearchTerm.trim() !== "") {
+        if (selectedSkills.length > 0) {
+          const selectedSkillIds = selectedSkills.map((skill) => skill.value);
+          const skillsParam = selectedSkillIds.join(",");
           response = await axios.get(
-            `http://localhost:8080/api/freelancer/search?skillName=${debouncedSearchTerm}`
+            `http://localhost:8080/api/freelancer/search?skillIds=${skillsParam}`
           );
         } else {
           response = await axios.get(
             "http://localhost:8080/api/freelancer/getAllFreelancers"
           );
         }
-        setPublicProfiles(response.data);
+        if (isMounted) {
+          setPublicProfiles(response.data);
+        }
       } catch (error) {
         console.error("Error fetching profiles:", error);
       }
     };
 
-    fetchProfiles();
-  }, [debouncedSearchTerm]);
+    const timeoutId = setTimeout(fetchProfiles, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+      isMounted = false;
+    };
+  }, [selectedSkills]);
+
+  const handleSkillChange = (selectedOptions) => {
+    setSelectedSkills(selectedOptions);
+  };
 
   return (
     <div className="freelancer-profiles-container-opens">
-      <div className="search-bar-container">
-        <input
-          type="text"
-          placeholder="Search by skill name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+      <div className="custom-select-wrapper">
+        <Select
+          isMulti
+          options={skillsList}
+          value={selectedSkills}
+          onChange={handleSkillChange}
+          placeholder="Select skills..."
         />
       </div>
       <div className="profiles-grid-opens">

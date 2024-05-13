@@ -13,7 +13,9 @@ import {
 const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
+  const [locationsList, setLocationsList] = useState([]);
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -30,7 +32,24 @@ const FreelancerPublicProfiles = () => {
         console.error("Error fetching skills:", error);
       }
     };
+
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/utils/getAllLocations"
+        );
+        const formattedLocations = response.data.map((location) => ({
+          value: location,
+          label: location,
+        }));
+        setLocationsList(formattedLocations);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
     fetchSkills();
+    fetchLocations();
   }, []);
 
   useEffect(() => {
@@ -39,17 +58,36 @@ const FreelancerPublicProfiles = () => {
     const fetchProfiles = async () => {
       try {
         let response;
-        if (selectedSkills.length > 0) {
-          const selectedSkillIds = selectedSkills.map((skill) => skill.value);
-          const skillsParam = selectedSkillIds.join(",");
+        if (selectedSkills.length > 0 && selectedLocations.length > 0) {
+          const selectedSkillIds = selectedSkills
+            .map((skill) => skill.value)
+            .join(",");
+          const selectedLocationNames = selectedLocations
+            .map((location) => location.value)
+            .join(",");
           response = await axios.get(
-            `http://localhost:8080/api/freelancer/search?skillIds=${skillsParam}`
+            `http://localhost:8080/api/freelancer/searchBySkillAndLocation?skillIds=${selectedSkillIds}&locations=${selectedLocationNames}`
+          );
+        } else if (selectedSkills.length > 0) {
+          const selectedSkillIds = selectedSkills
+            .map((skill) => skill.value)
+            .join(",");
+          response = await axios.get(
+            `http://localhost:8080/api/freelancer/searchBySkill?skillIds=${selectedSkillIds}`
+          );
+        } else if (selectedLocations.length > 0) {
+          const selectedLocationNames = selectedLocations
+            .map((location) => location.value)
+            .join(",");
+          response = await axios.get(
+            `http://localhost:8080/api/freelancer/searchByLocation?locations=${selectedLocationNames}`
           );
         } else {
           response = await axios.get(
             "http://localhost:8080/api/freelancer/getAllFreelancers"
           );
         }
+        console.log("Profile API response:", response);
         if (isMounted) {
           setPublicProfiles(response.data);
         }
@@ -64,10 +102,15 @@ const FreelancerPublicProfiles = () => {
       clearTimeout(timeoutId);
       isMounted = false;
     };
-  }, [selectedSkills]);
+  }, [selectedSkills, selectedLocations]);
 
   const handleSkillChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions);
+  };
+
+  const handleLocationChange = (selectedOptions) => {
+    console.log("Selected Locations:", selectedOptions);
+    setSelectedLocations(selectedOptions);
   };
 
   return (
@@ -79,6 +122,16 @@ const FreelancerPublicProfiles = () => {
           value={selectedSkills}
           onChange={handleSkillChange}
           placeholder="Select skills..."
+        />
+      </div>
+      <div className="custom-select-wrapper">
+        {" "}
+        <Select
+          isMulti
+          options={locationsList}
+          value={selectedLocations}
+          onChange={handleLocationChange}
+          placeholder="Select locations..."
         />
       </div>
       <div className="profiles-grid-opens">

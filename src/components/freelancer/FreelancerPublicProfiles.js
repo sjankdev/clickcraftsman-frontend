@@ -72,7 +72,7 @@ const FreelancerPublicProfiles = () => {
 
   return (
     <div className="freelancer-profiles-container-opens">
-      <div className="search-bar-container">
+      <div className="custom-select-wrapper">
         <Select
           isMulti
           options={skillsList}

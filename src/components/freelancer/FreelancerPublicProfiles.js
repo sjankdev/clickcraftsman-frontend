@@ -14,6 +14,8 @@ const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
+  const [yearsOfExperienceRange, setYearsOfExperienceRange] = useState("");
+
   const [skillsList, setSkillsList] = useState([]);
   const [locationsList, setLocationsList] = useState([]);
 
@@ -57,37 +59,24 @@ const FreelancerPublicProfiles = () => {
     const delay = 300;
     const fetchProfiles = async () => {
       try {
-        let response;
-        if (selectedSkills.length > 0 && selectedLocations.length > 0) {
-          const selectedSkillIds = selectedSkills
+        const queryParams = {};
+        if (selectedSkills.length > 0) {
+          queryParams.skillIds = selectedSkills
             .map((skill) => skill.value)
             .join(",");
-          const selectedLocationNames = selectedLocations
-            .map((location) => location.value)
-            .join(",");
-          response = await axios.get(
-            `http://localhost:8080/api/freelancer/searchBySkillAndLocation?skillIds=${selectedSkillIds}&locations=${selectedLocationNames}`
-          );
-        } else if (selectedSkills.length > 0) {
-          const selectedSkillIds = selectedSkills
-            .map((skill) => skill.value)
-            .join(",");
-          response = await axios.get(
-            `http://localhost:8080/api/freelancer/searchBySkill?skillIds=${selectedSkillIds}`
-          );
-        } else if (selectedLocations.length > 0) {
-          const selectedLocationNames = selectedLocations
-            .map((location) => location.value)
-            .join(",");
-          response = await axios.get(
-            `http://localhost:8080/api/freelancer/searchByLocation?locations=${selectedLocationNames}`
-          );
-        } else {
-          response = await axios.get(
-            "http://localhost:8080/api/freelancer/getAllFreelancers"
-          );
         }
-        console.log("Profile API response:", response);
+        if (selectedLocations.length > 0) {
+          queryParams.locations = selectedLocations
+            .map((location) => location.value)
+            .join(",");
+        }
+        if (yearsOfExperienceRange) {
+          queryParams.yearsOfExperienceRange = yearsOfExperienceRange;
+        }
+        const response = await axios.get(
+          "http://localhost:8080/api/freelancer/search",
+          { params: queryParams }
+        );
         if (isMounted) {
           setPublicProfiles(response.data);
         }
@@ -102,15 +91,18 @@ const FreelancerPublicProfiles = () => {
       clearTimeout(timeoutId);
       isMounted = false;
     };
-  }, [selectedSkills, selectedLocations]);
+  }, [selectedSkills, selectedLocations, yearsOfExperienceRange]);
 
   const handleSkillChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions);
   };
 
   const handleLocationChange = (selectedOptions) => {
-    console.log("Selected Locations:", selectedOptions);
     setSelectedLocations(selectedOptions);
+  };
+
+  const handleExperienceRangeChange = (event) => {
+    setYearsOfExperienceRange(event.target.value);
   };
 
   return (
@@ -133,6 +125,15 @@ const FreelancerPublicProfiles = () => {
           onChange={handleLocationChange}
           placeholder="Select locations..."
         />
+      </div>
+      <div className="years-of-experience-range-input">
+        <select onChange={handleExperienceRangeChange}>
+          <option value="">Select years of experience range...</option>
+          <option value="0-1">0 - 1</option>
+          <option value="1-3">1 - 3</option>
+          <option value="3-5">3 - 5</option>
+          <option value="5+">5+</option>
+        </select>
       </div>
       <div className="profiles-grid-opens">
         {publicProfiles.map((profile, index) => (

@@ -23,12 +23,9 @@ const FreelancerOpenProjects = () => {
   const [resumeFile, setResumeFile] = useState(null);
   const [fileTypeError, setFileTypeError] = useState("");
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
-  const initialLocation = null;
+  const [locationsList, setLocationsList] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
 
-  const [selectedLocation, setSelectedLocation] = useState(initialLocation);
-  const locations = useApiData(
-    "http://localhost:8080/api/utils/getAllLocations"
-  );
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -65,6 +62,25 @@ const FreelancerOpenProjects = () => {
   }, []);
 
   const userRoles = authHeader().roles || [];
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/utils/getAllLocations"
+        );
+        const formattedLocations = response.data.map((location) => ({
+          value: location,
+          label: location,
+        }));
+        setLocationsList(formattedLocations);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   const openModal = (jobId) => {
     setIsModalOpen(true);
@@ -140,6 +156,38 @@ const FreelancerOpenProjects = () => {
     }
   };
 
+  useEffect(() => {
+    let isMounted = true;
+    const delay = 300;
+    const fetchProfiles = async () => {
+      try {
+        const queryParams = {};
+
+        if (selectedLocations.length > 0) {
+          queryParams.locations = selectedLocations
+            .map((location) => location.value)
+            .join(",");
+        }
+        const response = await axios.get(
+          "http://localhost:8080/api/job/searchJobs",
+          { params: queryParams }
+        );
+        if (isMounted) {
+          setContent(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching profiles:", error);
+      }
+    };
+
+    const timeoutId = setTimeout(fetchProfiles, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+      isMounted = false;
+    };
+  }, [selectedLocations]);
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setResumeFile(file);
@@ -153,42 +201,29 @@ const FreelancerOpenProjects = () => {
     }
   };
 
-  const handleLocationChange = (selectedOption) => {
-    setSelectedLocation(selectedOption ? selectedOption.value : null);
+  const handleLocationChange = (selectedOptions) => {
+    setSelectedLocations(selectedOptions);
   };
-
-  useEffect(() => {
-    if (selectedLocation) {
-      FreelancerService.searchJobs({ location: selectedLocation })
-        .then((response) => {
-          setContent(response.data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching filtered jobs", error);
-          setErrorMessage("Error fetching filtered jobs");
-          setLoading(false);
-        });
-    }
-  }, [selectedLocation]);
 
   return (
     <div className="jobs-container-freelancere">
+      {" "}
       <Select
-        options={locations.map((location) => ({
-          value: location,
-          label: location,
-        }))}
-        value={locations.find((location) => location === selectedLocation)}
+        isMulti
+        options={locationsList}
+        value={selectedLocations}
         onChange={handleLocationChange}
-        placeholder="Select Location"
+        placeholder="Select locations..."
       />
       {userRoles.includes("ROLE_FREELANCER") ? (
         <>
           {jobs
             .filter(
               (job) =>
-                (!selectedLocation || job.location === selectedLocation) &&
+                (!selectedLocations.length ||
+                  selectedLocations.some(
+                    (location) => location.value === job.location
+                  )) &&
                 !job.archived
             )
             .map((job) => (

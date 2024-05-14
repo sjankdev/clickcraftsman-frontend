@@ -30,7 +30,8 @@ const FreelancerOpenProjects = () => {
   const [selectedPriceTypes, setSelectedPriceTypes] = useState([]);
   const [priceRangeFrom, setPriceRangeFrom] = useState("");
   const [priceRangeTo, setPriceRangeTo] = useState("");
-
+  const [budgetFrom, setBudgetFrom] = useState("");
+  const [budgetTo, setBudgetTo] = useState("");
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -181,6 +182,14 @@ const FreelancerOpenProjects = () => {
     }
   };
 
+  const handleBudgetFromChange = (event) => {
+    setBudgetFrom(event.target.value);
+  };
+
+  const handleBudgetToChange = (event) => {
+    setBudgetTo(event.target.value);
+  };
+
   useEffect(() => {
     let isMounted = true;
     const delay = 300;
@@ -216,6 +225,12 @@ const FreelancerOpenProjects = () => {
           queryParams.priceRangeTo = priceRangeTo;
         }
 
+        if (budgetFrom) {
+          queryParams.budgetFrom = budgetFrom;
+        }
+        if (budgetTo) {
+          queryParams.budgetTo = budgetTo;
+        }
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -237,8 +252,8 @@ const FreelancerOpenProjects = () => {
     selectedSkills,
     selectedJobTypes,
     selectedPriceTypes,
-    priceRangeFrom,
-    priceRangeTo,
+    budgetFrom,
+    budgetTo,
   ]);
 
   const handlePriceRangeFromChange = (event) => {
@@ -315,6 +330,24 @@ const FreelancerOpenProjects = () => {
           value={priceRangeTo}
           onChange={handlePriceRangeToChange}
           placeholder="Enter maximum price..."
+        />
+      </div>
+      <div>
+        <label htmlFor="budgetFrom">Budget From:</label>
+        <input
+          type="number"
+          id="budgetFrom"
+          value={budgetFrom}
+          onChange={handleBudgetFromChange}
+          placeholder="Enter budget from..."
+        />
+        <label htmlFor="budgetTo">Budget To:</label>
+        <input
+          type="number"
+          id="budgetTo"
+          value={budgetTo}
+          onChange={handleBudgetToChange}
+          placeholder="Enter budget to..."
         />
       </div>
       {Array.isArray(content) &&

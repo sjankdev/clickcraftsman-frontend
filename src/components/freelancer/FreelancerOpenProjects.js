@@ -184,24 +184,25 @@ const FreelancerOpenProjects = () => {
     const fetchProfiles = async () => {
       try {
         const queryParams = {};
-
         if (selectedLocations.length > 0) {
-          queryParams.locations = selectedLocations.map(
+          queryParams["locations[]"] = selectedLocations.map(
             (location) => location.value
           );
         }
         if (selectedSkills.length > 0) {
-          queryParams.skillIds = selectedSkills.map((skill) => skill.value);
-        }
-        if (selectedJobTypes.length > 0) {
-          queryParams.jobTypes = selectedJobTypes
-            .map((type) => type.value.toUpperCase())
+          queryParams.skillIds = selectedSkills
+            .map((skill) => skill.value)
             .join(",");
         }
-        const response = await axios.get(
-          "http://localhost:8080/api/job/searchJobs",
-          { params: queryParams }
-        );
+
+        if (selectedJobTypes.length > 0) {
+          queryParams.jobTypes = selectedJobTypes.map((type) =>
+            type.value.toUpperCase()
+          );
+        }
+        const queryString = new URLSearchParams(queryParams).toString();
+        const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
+        const response = await axios.get(url);
         if (isMounted) {
           setContent(response.data);
         }
@@ -209,9 +210,7 @@ const FreelancerOpenProjects = () => {
         console.error("Error fetching profiles:", error);
       }
     };
-
     const timeoutId = setTimeout(fetchProfiles, delay);
-
     return () => {
       clearTimeout(timeoutId);
       isMounted = false;

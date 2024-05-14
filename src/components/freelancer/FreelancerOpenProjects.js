@@ -28,6 +28,8 @@ const FreelancerOpenProjects = () => {
   const [skillsList, setSkillsList] = useState([]);
   const [selectedJobTypes, setSelectedJobTypes] = useState([]);
   const [selectedPriceTypes, setSelectedPriceTypes] = useState([]);
+  const [priceRangeFrom, setPriceRangeFrom] = useState("");
+  const [priceRangeTo, setPriceRangeTo] = useState("");
 
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
@@ -206,6 +208,14 @@ const FreelancerOpenProjects = () => {
             type.value.toUpperCase()
           );
         }
+
+        if (priceRangeFrom) {
+          queryParams.priceRangeFrom = priceRangeFrom;
+        }
+        if (priceRangeTo) {
+          queryParams.priceRangeTo = priceRangeTo;
+        }
+
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -216,12 +226,28 @@ const FreelancerOpenProjects = () => {
         console.error("Error fetching profiles:", error);
       }
     };
+
     const timeoutId = setTimeout(fetchProfiles, delay);
     return () => {
       clearTimeout(timeoutId);
       isMounted = false;
     };
-  }, [selectedLocations, selectedSkills, selectedJobTypes, selectedPriceTypes]);
+  }, [
+    selectedLocations,
+    selectedSkills,
+    selectedJobTypes,
+    selectedPriceTypes,
+    priceRangeFrom,
+    priceRangeTo,
+  ]);
+
+  const handlePriceRangeFromChange = (event) => {
+    setPriceRangeFrom(event.target.value);
+  };
+
+  const handlePriceRangeToChange = (event) => {
+    setPriceRangeTo(event.target.value);
+  };
 
   return (
     <div className="jobs-container-freelancere">
@@ -269,6 +295,26 @@ const FreelancerOpenProjects = () => {
           value={selectedPriceTypes}
           onChange={setSelectedPriceTypes}
           placeholder="Select price types..."
+        />
+      </div>
+      <div>
+        <label htmlFor="price-range-from">Price Range From:</label>
+        <input
+          type="number"
+          id="price-range-from"
+          value={priceRangeFrom}
+          onChange={handlePriceRangeFromChange}
+          placeholder="Enter minimum price..."
+        />
+      </div>
+      <div>
+        <label htmlFor="price-range-to">Price Range To:</label>
+        <input
+          type="number"
+          id="price-range-to"
+          value={priceRangeTo}
+          onChange={handlePriceRangeToChange}
+          placeholder="Enter maximum price..."
         />
       </div>
       {Array.isArray(content) &&

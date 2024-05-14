@@ -5,6 +5,8 @@ import FreelancerService from "../../services/freelancer/freelancer-service";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/allJobs.css";
 import authHeader from "../../services/security/auth-header";
+import Select from "react-select";
+import axios from "axios";
 
 Modal.setAppElement("#root");
 
@@ -20,7 +22,11 @@ const FreelancerOpenProjects = () => {
   const [desiredPay, setDesiredPay] = useState("");
   const [resumeFile, setResumeFile] = useState(null);
   const [fileTypeError, setFileTypeError] = useState("");
-  const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
+  const [locationsList, setLocationsList] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [skillsList, setSkillsList] = useState([]);
+  const [selectedJobTypes, setSelectedJobTypes] = useState([]);
 
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
@@ -55,9 +61,33 @@ const FreelancerOpenProjects = () => {
         }
         setLoading(false);
       });
-  }, []);
 
-  const userRoles = authHeader().roles || [];
+    const fetchSkillsAndLocations = async () => {
+      try {
+        const skillsResponse = await axios.get(
+          "http://localhost:8080/api/utils/getAllSkills"
+        );
+        const formattedSkills = skillsResponse.data.map((skill) => ({
+          value: skill.id,
+          label: skill.skillName,
+        }));
+        setSkillsList(formattedSkills);
+
+        const locationsResponse = await axios.get(
+          "http://localhost:8080/api/utils/getAllLocations"
+        );
+        const formattedLocations = locationsResponse.data.map((location) => ({
+          value: location,
+          label: location,
+        }));
+        setLocationsList(formattedLocations);
+      } catch (error) {
+        console.error("Error fetching skills and locations:", error);
+      }
+    };
+
+    fetchSkillsAndLocations();
+  }, []);
 
   const openModal = (jobId) => {
     setIsModalOpen(true);
@@ -90,13 +120,14 @@ const FreelancerOpenProjects = () => {
     const jobId = selectedJobId;
     if (jobId) {
       const formData = new FormData();
-      formData.append('messageToClient', customMessage);
-      formData.append('desiredPay', desiredPay);
+      formData.append("messageToClient", customMessage);
+      formData.append("desiredPay", desiredPay);
 
       if (resumeFile && !fileTypeError) {
-        formData.append('resumeFile', resumeFile);
+        formData.append("resumeFile", resumeFile);
       } else {
-        if (jobs.find(job => job.id === jobId).resumeRequired) {
+        const job = content.find((job) => job.id === jobId);
+        if (job && job.resumeRequired) {
           alert("Resume is required for this job. Please attach your resume.");
           return;
         }
@@ -107,6 +138,7 @@ const FreelancerOpenProjects = () => {
           console.log("Job application submitted successfully");
           setApplicationMessages((prevMessages) => [
             ...prevMessages,
+
             { jobId, message: "Job application submitted successfully" },
           ]);
           closeModal();
@@ -123,7 +155,8 @@ const FreelancerOpenProjects = () => {
               ...prevMessages,
               {
                 jobId,
-                message: "An error occurred while submitting the job application.",
+                message:
+                  "An error occurred while submitting the job application.",
               },
             ]);
           }
@@ -145,117 +178,185 @@ const FreelancerOpenProjects = () => {
     }
   };
 
+  useEffect(() => {
+    let isMounted = true;
+    const delay = 300;
+    const fetchProfiles = async () => {
+      try {
+        const queryParams = {};
+        if (selectedLocations.length > 0) {
+          queryParams.locations = selectedLocations
+            .map((locations) => locations.value)
+            .join(",");
+        }
+        if (selectedSkills.length > 0) {
+          queryParams.skillIds = selectedSkills
+            .map((skill) => skill.value)
+            .join(",");
+        }
+
+        if (selectedJobTypes.length > 0) {
+          queryParams.jobTypes = selectedJobTypes.map((type) =>
+            type.value.toUpperCase()
+          );
+        }
+        const queryString = new URLSearchParams(queryParams).toString();
+        const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
+        const response = await axios.get(url);
+        if (isMounted) {
+          setContent(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching profiles:", error);
+      }
+    };
+    const timeoutId = setTimeout(fetchProfiles, delay);
+    return () => {
+      clearTimeout(timeoutId);
+      isMounted = false;
+    };
+  }, [selectedLocations, selectedSkills, selectedJobTypes]);
+
   return (
     <div className="jobs-container-freelancere">
-      {userRoles.includes("ROLE_FREELANCER") ? (
-        <>
-          {jobs
-            .filter((job) => !job.archived)
-            .map((job) => (
-              <div className="job-card-freelancere" key={job.id}>
-                <h3>{job.jobName}</h3>
-                <p>{job.description}</p>
-                {job.priceType === "FIXED_PRICE" ? (
-                  <div>
-                    <p>Price type: {job.priceType}</p>
-                    <p>Budget: ${job.budget}</p>
-                  </div>
-                ) : (
-                  <div>
-                    <p>Price Type: {job.priceType}</p>
-                    <p>{job.priceRangeFrom}$ - ${job.priceRangeTo}</p>
-                  </div>
-                )}
-                <p>{job.jobType}</p>
-                <div>
-                  <p>Posted: {job.formattedApplicationTime}</p>
-                  {job.location && <p>Location: {job.location}</p>}
-                  {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
-                  <p>
-                    Required Skills:{" "}
-                    {job.requiredSkillNames.join(", ")}
-                  </p>
-                </div>
-                {appliedJobIds.includes(job.id) ? (
-                  <p>You have already applied for this job.</p>
-                ) : (
-                  <>
-                    <button onClick={() => handleApply(job.id)}>Apply</button>
-                    <hr />
-                    {applicationMessages.map(
-                      (msg) =>
-                        msg.jobId === job.id && <p key={msg.jobId}>{msg.message}</p>
-                    )}
-                    <Modal
-                      isOpen={isModalOpen && selectedJobId === job.id}
-                      onRequestClose={closeModal}
-                      contentLabel="Custom Message Modal"
-                      className="custom-modal-freelancere"
-                      overlayClassName="custom-modal-overlay-freelancere"
-                    >
-                      <div>
-                        <h2>You're applying for {job.jobName}</h2>
-                        <button onClick={closeModal}>&times;</button>
-                      </div>
-                      <div>
-                        <h3>Enter Your Custom Message</h3>
-                        <textarea
-                          value={customMessage}
-                          onChange={(e) => setCustomMessage(e.target.value)}
-                          placeholder="Insert your message here..."
-                        />
-                        <div>
-                          <label htmlFor="desired-pay">Desired Pay:</label>
-                          <input
-                            type="number"
-                            id="desired-pay"
-                            value={desiredPay}
-                            onChange={(e) => setDesiredPay(e.target.value)}
-                            placeholder="Insert your desired pay here..."
-                          />
-                        </div>
-                        {job.priceType === "FIXED_PRICE" ? (
-                          <div>
-                            <p>Price type: {job.priceType}</p>
-                            <p>Budget: ${job.budget}</p>
-                          </div>
-                        ) : (
-                          <div>
-                            <p>Price Type: {job.priceType}</p>
-                            <p>{job.priceRangeFrom}$ - ${job.priceRangeTo}</p>
-                          </div>
-                        )}
-                        <div>
-                          <label htmlFor="resume-upload">
-                            Upload your resume: {job.resumeRequired ? "(required)" : "(optional)"}
-                          </label>
-                          <input
-                            type="file"
-                            id="resume-upload"
-                            onChange={handleFileChange}
-                            accept=".pdf"
-                          />
-                          <div>
-                            <span>Supported format: PDF</span>
-                            {fileTypeError && <div>{fileTypeError}</div>}
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <button onClick={handleApplyWithCustomMessage}>Apply</button>
-                        <button onClick={closeModal}>Cancel</button>
-                      </div>
-                    </Modal>
-                  </>
-                )}
+      <div className="custom-select-wrapper">
+        <Select
+          isMulti
+          options={skillsList}
+          value={selectedSkills}
+          onChange={setSelectedSkills}
+          placeholder="Select skills..."
+        />
+      </div>
+      <div className="custom-select-wrapper">
+        <Select
+          isMulti
+          options={locationsList}
+          value={selectedLocations}
+          onChange={setSelectedLocations}
+          placeholder="Select locations..."
+        />
+      </div>
+      <div className="custom-select-wrapper">
+        <Select
+          isMulti
+          options={[
+            { value: "FULL_TIME", label: "Full Time" },
+            { value: "PART_TIME", label: "Part Time" },
+            { value: "CONTRACT", label: "Contract" },
+            { value: "FREELANCE", label: "Freelance" },
+            { value: "INTERNSHIP", label: "Internship" },
+          ]}
+          value={selectedJobTypes}
+          onChange={setSelectedJobTypes}
+          placeholder="Select job types..."
+        />
+      </div>
+
+      {Array.isArray(content) &&
+        content.map((job) => (
+          <div className="job-card-freelancere" key={job.id}>
+            <h3>{job.jobName}</h3>
+            <p>{job.description}</p>
+            {job.priceType === "FIXED_PRICE" ? (
+              <div>
+                <p>Price type: {job.priceType}</p>
+                <p>Budget: ${job.budget}</p>
               </div>
-            ))}
-        </>
-      ) : (
-        <div className="unauthorized-freelancere">
-          <div>You are not authorized to view this content.</div>
-        </div>
-      )}
+            ) : (
+              <div>
+                <p>Price Type: {job.priceType}</p>
+                <p>
+                  {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                </p>
+              </div>
+            )}
+            <p>{job.jobType}</p>
+            <div>
+              <p>Posted: {job.formattedApplicationTime}</p>
+              {job.location && <p>Location: {job.location}</p>}
+              {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
+              <p>Required Skills: {job.requiredSkillNames.join(", ")}</p>
+            </div>
+            {appliedJobIds.includes(job.id) ? (
+              <p>You have already applied for this job.</p>
+            ) : (
+              <>
+                <button onClick={() => handleApply(job.id)}>Apply</button>
+                <hr />
+                {applicationMessages.map(
+                  (msg) =>
+                    msg.jobId === job.id && <p key={msg.jobId}>{msg.message}</p>
+                )}
+                <Modal
+                  isOpen={isModalOpen && selectedJobId === job.id}
+                  onRequestClose={closeModal}
+                  contentLabel="Custom Message Modal"
+                  className="custom-modal-freelancere"
+                  overlayClassName="custom-modal-overlay-freelancere"
+                >
+                  <div>
+                    <h2>You're applying for {job.jobName}</h2>
+                    <button onClick={closeModal}>&times;</button>
+                  </div>
+                  <div>
+                    <h3>Enter Your Custom Message</h3>
+                    <textarea
+                      value={customMessage}
+                      onChange={(e) => setCustomMessage(e.target.value)}
+                      placeholder="Insert your message here..."
+                    />
+                    <div>
+                      <label htmlFor="desired-pay">Desired Pay:</label>
+                      <input
+                        type="number"
+                        id="desired-pay"
+                        value={desiredPay}
+                        onChange={(e) => setDesiredPay(e.target.value)}
+                        placeholder="Insert your desired pay here..."
+                      />
+                    </div>
+                    {job.priceType === "FIXED_PRICE" ? (
+                      <div>
+                        <p>Price type: {job.priceType}</p>
+                        <p>Budget: ${job.budget}</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p>Price Type: {job.priceType}</p>
+                        <p>
+                          {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                        </p>
+                      </div>
+                    )}
+                    <div>
+                      <label htmlFor="resume-upload">
+                        Upload your resume:{" "}
+                        {job.resumeRequired ? "(required)" : "(optional)"}
+                      </label>
+                      <input
+                        type="file"
+                        id="resume-upload"
+                        onChange={handleFileChange}
+                        accept=".pdf"
+                      />
+                      <div>
+                        <span>Supported format: PDF</span>
+                        {fileTypeError && <div>{fileTypeError}</div>}
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button onClick={handleApplyWithCustomMessage}>
+                      Apply
+                    </button>
+                    <button onClick={closeModal}>Cancel</button>
+                  </div>
+                </Modal>
+              </>
+            )}
+          </div>
+        ))}
     </div>
   );
 };

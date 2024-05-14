@@ -33,9 +33,26 @@ const getAppliedJobs = async () => {
   }
 };
 
+const searchJobs = async (filterParams) => {
+  const url = `${API_URL_JOB}/searchJobs`;
+
+  try {
+    const response = await axios.get(url, {
+      params: filterParams,
+      headers: authHeader(),
+    });
+    console.log("searchJobs method, freelancer");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching job search results", error);
+    throw error;
+  }
+};
+
 const freelancerService = {
   applyForJob,
   getAppliedJobs,
+  searchJobs,
 };
 
 export default freelancerService;

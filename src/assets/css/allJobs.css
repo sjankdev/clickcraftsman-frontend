@@ -1,3 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
 .jobs-container-freelancere {
   display: flex;
   flex-wrap: wrap;
@@ -20,10 +29,12 @@
 
 .job-card-freelancere h3 {
   color: #333333;
+  margin-bottom: 10px;
 }
 
 .job-card-freelancere p {
   color: #666666;
+  margin-bottom: 5px;
 }
 
 .job-card-freelancere button {
@@ -38,6 +49,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 .job-card-freelancere button:hover {
@@ -47,4 +59,17 @@
 .unauthorized-freelancere {
   text-align: center;
   margin-top: 20px;
+}
+
+.react-select__control {
+  width: 100%;
+}
+
+.react-select__menu {
+  width: calc(100% - 2px);
+  margin-left: 1px;
+}
+
+.react-select__option {
+  padding: 10px 15px;
 }

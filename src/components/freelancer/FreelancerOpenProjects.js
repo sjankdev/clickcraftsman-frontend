@@ -27,6 +27,7 @@ const FreelancerOpenProjects = () => {
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const [selectedJobTypes, setSelectedJobTypes] = useState([]);
+  const [selectedPriceTypes, setSelectedPriceTypes] = useState([]);
 
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
@@ -200,6 +201,11 @@ const FreelancerOpenProjects = () => {
             type.value.toUpperCase()
           );
         }
+        if (selectedPriceTypes.length > 0) {
+          queryParams.priceTypes = selectedPriceTypes.map((type) =>
+            type.value.toUpperCase()
+          );
+        }
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -215,7 +221,7 @@ const FreelancerOpenProjects = () => {
       clearTimeout(timeoutId);
       isMounted = false;
     };
-  }, [selectedLocations, selectedSkills, selectedJobTypes]);
+  }, [selectedLocations, selectedSkills, selectedJobTypes, selectedPriceTypes]);
 
   return (
     <div className="jobs-container-freelancere">
@@ -252,7 +258,19 @@ const FreelancerOpenProjects = () => {
           placeholder="Select job types..."
         />
       </div>
-
+      <div className="custom-select-wrapper">
+        <Select
+          isMulti
+          options={[
+            { value: "PER_HOUR", label: "Per hour" },
+            { value: "PER_MONTH", label: "Per month" },
+            { value: "FIXED_PRICE", label: "Fixed price" },
+          ]}
+          value={selectedPriceTypes}
+          onChange={setSelectedPriceTypes}
+          placeholder="Select price types..."
+        />
+      </div>
       {Array.isArray(content) &&
         content.map((job) => (
           <div className="job-card-freelancere" key={job.id}>

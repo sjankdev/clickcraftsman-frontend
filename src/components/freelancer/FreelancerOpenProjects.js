@@ -207,7 +207,6 @@ const FreelancerOpenProjects = () => {
 
   return (
     <div className="jobs-container-freelancere">
-      {" "}
       <Select
         isMulti
         options={locationsList}

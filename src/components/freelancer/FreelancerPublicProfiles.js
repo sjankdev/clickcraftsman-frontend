@@ -57,37 +57,21 @@ const FreelancerPublicProfiles = () => {
     const delay = 300;
     const fetchProfiles = async () => {
       try {
-        let response;
-        if (selectedSkills.length > 0 && selectedLocations.length > 0) {
-          const selectedSkillIds = selectedSkills
+        const queryParams = {};
+        if (selectedSkills.length > 0) {
+          queryParams.skillIds = selectedSkills
             .map((skill) => skill.value)
             .join(",");
-          const selectedLocationNames = selectedLocations
-            .map((location) => location.value)
-            .join(",");
-          response = await axios.get(
-            `http://localhost:8080/api/freelancer/searchBySkillAndLocation?skillIds=${selectedSkillIds}&locations=${selectedLocationNames}`
-          );
-        } else if (selectedSkills.length > 0) {
-          const selectedSkillIds = selectedSkills
-            .map((skill) => skill.value)
-            .join(",");
-          response = await axios.get(
-            `http://localhost:8080/api/freelancer/searchBySkill?skillIds=${selectedSkillIds}`
-          );
-        } else if (selectedLocations.length > 0) {
-          const selectedLocationNames = selectedLocations
-            .map((location) => location.value)
-            .join(",");
-          response = await axios.get(
-            `http://localhost:8080/api/freelancer/searchByLocation?locations=${selectedLocationNames}`
-          );
-        } else {
-          response = await axios.get(
-            "http://localhost:8080/api/freelancer/getAllFreelancers"
-          );
         }
-        console.log("Profile API response:", response);
+        if (selectedLocations.length > 0) {
+          queryParams.locations = selectedLocations
+            .map((location) => location.value)
+            .join(",");
+        }
+        const response = await axios.get(
+          "http://localhost:8080/api/freelancer/search",
+          { params: queryParams }
+        );
         if (isMounted) {
           setPublicProfiles(response.data);
         }
@@ -109,7 +93,6 @@ const FreelancerPublicProfiles = () => {
   };
 
   const handleLocationChange = (selectedOptions) => {
-    console.log("Selected Locations:", selectedOptions);
     setSelectedLocations(selectedOptions);
   };
 

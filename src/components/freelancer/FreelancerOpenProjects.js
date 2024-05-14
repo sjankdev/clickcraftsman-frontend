@@ -5,6 +5,8 @@ import FreelancerService from "../../services/freelancer/freelancer-service";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/allJobs.css";
 import authHeader from "../../services/security/auth-header";
+import Select from "react-select";
+import axios from "axios";
 
 Modal.setAppElement("#root");
 
@@ -21,7 +23,12 @@ const FreelancerOpenProjects = () => {
   const [resumeFile, setResumeFile] = useState(null);
   const [fileTypeError, setFileTypeError] = useState("");
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
+  const initialLocation = null;
 
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+  const locations = useApiData(
+    "http://localhost:8080/api/utils/getAllLocations"
+  );
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -90,13 +97,13 @@ const FreelancerOpenProjects = () => {
     const jobId = selectedJobId;
     if (jobId) {
       const formData = new FormData();
-      formData.append('messageToClient', customMessage);
-      formData.append('desiredPay', desiredPay);
+      formData.append("messageToClient", customMessage);
+      formData.append("desiredPay", desiredPay);
 
       if (resumeFile && !fileTypeError) {
-        formData.append('resumeFile', resumeFile);
+        formData.append("resumeFile", resumeFile);
       } else {
-        if (jobs.find(job => job.id === jobId).resumeRequired) {
+        if (jobs.find((job) => job.id === jobId).resumeRequired) {
           alert("Resume is required for this job. Please attach your resume.");
           return;
         }
@@ -123,7 +130,8 @@ const FreelancerOpenProjects = () => {
               ...prevMessages,
               {
                 jobId,
-                message: "An error occurred while submitting the job application.",
+                message:
+                  "An error occurred while submitting the job application.",
               },
             ]);
           }
@@ -145,12 +153,44 @@ const FreelancerOpenProjects = () => {
     }
   };
 
+  const handleLocationChange = (selectedOption) => {
+    setSelectedLocation(selectedOption ? selectedOption.value : null);
+  };
+
+  useEffect(() => {
+    if (selectedLocation) {
+      FreelancerService.searchJobs({ location: selectedLocation })
+        .then((response) => {
+          setContent(response.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching filtered jobs", error);
+          setErrorMessage("Error fetching filtered jobs");
+          setLoading(false);
+        });
+    }
+  }, [selectedLocation]);
+
   return (
     <div className="jobs-container-freelancere">
+      <Select
+        options={locations.map((location) => ({
+          value: location,
+          label: location,
+        }))}
+        value={locations.find((location) => location === selectedLocation)}
+        onChange={handleLocationChange}
+        placeholder="Select Location"
+      />
       {userRoles.includes("ROLE_FREELANCER") ? (
         <>
           {jobs
-            .filter((job) => !job.archived)
+            .filter(
+              (job) =>
+                (!selectedLocation || job.location === selectedLocation) &&
+                !job.archived
+            )
             .map((job) => (
               <div className="job-card-freelancere" key={job.id}>
                 <h3>{job.jobName}</h3>
@@ -163,7 +203,9 @@ const FreelancerOpenProjects = () => {
                 ) : (
                   <div>
                     <p>Price Type: {job.priceType}</p>
-                    <p>{job.priceRangeFrom}$ - ${job.priceRangeTo}</p>
+                    <p>
+                      {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                    </p>
                   </div>
                 )}
                 <p>{job.jobType}</p>
@@ -171,10 +213,7 @@ const FreelancerOpenProjects = () => {
                   <p>Posted: {job.formattedApplicationTime}</p>
                   {job.location && <p>Location: {job.location}</p>}
                   {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
-                  <p>
-                    Required Skills:{" "}
-                    {job.requiredSkillNames.join(", ")}
-                  </p>
+                  <p>Required Skills: {job.requiredSkillNames.join(", ")}</p>
                 </div>
                 {appliedJobIds.includes(job.id) ? (
                   <p>You have already applied for this job.</p>
@@ -184,7 +223,9 @@ const FreelancerOpenProjects = () => {
                     <hr />
                     {applicationMessages.map(
                       (msg) =>
-                        msg.jobId === job.id && <p key={msg.jobId}>{msg.message}</p>
+                        msg.jobId === job.id && (
+                          <p key={msg.jobId}>{msg.message}</p>
+                        )
                     )}
                     <Modal
                       isOpen={isModalOpen && selectedJobId === job.id}
@@ -222,12 +263,15 @@ const FreelancerOpenProjects = () => {
                         ) : (
                           <div>
                             <p>Price Type: {job.priceType}</p>
-                            <p>{job.priceRangeFrom}$ - ${job.priceRangeTo}</p>
+                            <p>
+                              {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                            </p>
                           </div>
                         )}
                         <div>
                           <label htmlFor="resume-upload">
-                            Upload your resume: {job.resumeRequired ? "(required)" : "(optional)"}
+                            Upload your resume:{" "}
+                            {job.resumeRequired ? "(required)" : "(optional)"}
                           </label>
                           <input
                             type="file"
@@ -242,7 +286,9 @@ const FreelancerOpenProjects = () => {
                         </div>
                       </div>
                       <div>
-                        <button onClick={handleApplyWithCustomMessage}>Apply</button>
+                        <button onClick={handleApplyWithCustomMessage}>
+                          Apply
+                        </button>
                         <button onClick={closeModal}>Cancel</button>
                       </div>
                     </Modal>

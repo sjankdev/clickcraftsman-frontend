@@ -25,6 +25,8 @@ const FreelancerOpenProjects = () => {
   const jobs = useApiData("http://localhost:8080/api/job/getAllJobs");
   const [locationsList, setLocationsList] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [skillsList, setSkillsList] = useState([]);
 
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
@@ -64,6 +66,21 @@ const FreelancerOpenProjects = () => {
   const userRoles = authHeader().roles || [];
 
   useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/utils/getAllSkills"
+        );
+        const formattedSkills = response.data.map((skill) => ({
+          value: skill.id,
+          label: skill.skillName,
+        }));
+        setSkillsList(formattedSkills);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      }
+    };
+
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
@@ -79,6 +96,7 @@ const FreelancerOpenProjects = () => {
       }
     };
 
+    fetchSkills();
     fetchLocations();
   }, []);
 
@@ -168,6 +186,11 @@ const FreelancerOpenProjects = () => {
             .map((location) => location.value)
             .join(",");
         }
+        if (selectedSkills.length > 0) {
+          queryParams.skillIds = selectedSkills
+            .map((skill) => skill.value)
+            .join(",");
+        }
         const response = await axios.get(
           "http://localhost:8080/api/job/searchJobs",
           { params: queryParams }
@@ -205,15 +228,31 @@ const FreelancerOpenProjects = () => {
     setSelectedLocations(selectedOptions);
   };
 
+  const handleSkillChange = (selectedOptions) => {
+    setSelectedSkills(selectedOptions);
+  };
+
   return (
     <div className="jobs-container-freelancere">
-      <Select
-        isMulti
-        options={locationsList}
-        value={selectedLocations}
-        onChange={handleLocationChange}
-        placeholder="Select locations..."
-      />
+      <div className="custom-select-wrapper">
+        <Select
+          isMulti
+          options={skillsList}
+          value={selectedSkills}
+          onChange={handleSkillChange}
+          placeholder="Select skills..."
+        />
+      </div>
+      <div className="custom-select-wrapper">
+        {" "}
+        <Select
+          isMulti
+          options={locationsList}
+          value={selectedLocations}
+          onChange={handleLocationChange}
+          placeholder="Select locations..."
+        />
+      </div>
       {userRoles.includes("ROLE_FREELANCER") ? (
         <>
           {jobs
@@ -222,6 +261,10 @@ const FreelancerOpenProjects = () => {
                 (!selectedLocations.length ||
                   selectedLocations.some(
                     (location) => location.value === job.location
+                  )) &&
+                (!selectedSkills.length ||
+                  selectedSkills.every((selectedSkill) =>
+                    job.requiredSkillNames.includes(selectedSkill.label)
                   )) &&
                 !job.archived
             )

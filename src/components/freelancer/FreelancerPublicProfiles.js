@@ -14,6 +14,8 @@ const FreelancerPublicProfiles = () => {
   const [publicProfiles, setPublicProfiles] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
+  const [yearsOfExperienceRange, setYearsOfExperienceRange] = useState("");
+
   const [skillsList, setSkillsList] = useState([]);
   const [locationsList, setLocationsList] = useState([]);
 
@@ -68,6 +70,9 @@ const FreelancerPublicProfiles = () => {
             .map((location) => location.value)
             .join(",");
         }
+        if (yearsOfExperienceRange) {
+          queryParams.yearsOfExperienceRange = yearsOfExperienceRange;
+        }
         const response = await axios.get(
           "http://localhost:8080/api/freelancer/search",
           { params: queryParams }
@@ -86,7 +91,7 @@ const FreelancerPublicProfiles = () => {
       clearTimeout(timeoutId);
       isMounted = false;
     };
-  }, [selectedSkills, selectedLocations]);
+  }, [selectedSkills, selectedLocations, yearsOfExperienceRange]);
 
   const handleSkillChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions);
@@ -94,6 +99,10 @@ const FreelancerPublicProfiles = () => {
 
   const handleLocationChange = (selectedOptions) => {
     setSelectedLocations(selectedOptions);
+  };
+
+  const handleExperienceRangeChange = (event) => {
+    setYearsOfExperienceRange(event.target.value);
   };
 
   return (
@@ -116,6 +125,15 @@ const FreelancerPublicProfiles = () => {
           onChange={handleLocationChange}
           placeholder="Select locations..."
         />
+      </div>
+      <div className="years-of-experience-range-input">
+        <select onChange={handleExperienceRangeChange}>
+          <option value="">Select years of experience range...</option>
+          <option value="0-1">0 - 1</option>
+          <option value="1-3">1 - 3</option>
+          <option value="3-5">3 - 5</option>
+          <option value="5+">5+</option>
+        </select>
       </div>
       <div className="profiles-grid-opens">
         {publicProfiles.map((profile, index) => (

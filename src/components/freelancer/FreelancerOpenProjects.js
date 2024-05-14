@@ -185,9 +185,9 @@ const FreelancerOpenProjects = () => {
       try {
         const queryParams = {};
         if (selectedLocations.length > 0) {
-          queryParams["locations[]"] = selectedLocations.map(
-            (location) => location.value
-          );
+          queryParams.locations = selectedLocations
+            .map((locations) => locations.value)
+            .join(",");
         }
         if (selectedSkills.length > 0) {
           queryParams.skillIds = selectedSkills

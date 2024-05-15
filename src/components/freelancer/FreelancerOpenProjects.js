@@ -27,7 +27,11 @@ const FreelancerOpenProjects = () => {
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const [selectedJobTypes, setSelectedJobTypes] = useState([]);
-
+  const [selectedPriceTypes, setSelectedPriceTypes] = useState([]);
+  const [priceRangeFrom, setPriceRangeFrom] = useState("");
+  const [priceRangeTo, setPriceRangeTo] = useState("");
+  const [budgetFrom, setBudgetFrom] = useState("");
+  const [budgetTo, setBudgetTo] = useState("");
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -178,6 +182,14 @@ const FreelancerOpenProjects = () => {
     }
   };
 
+  const handleBudgetFromChange = (event) => {
+    setBudgetFrom(event.target.value);
+  };
+
+  const handleBudgetToChange = (event) => {
+    setBudgetTo(event.target.value);
+  };
+
   useEffect(() => {
     let isMounted = true;
     const delay = 300;
@@ -200,6 +212,25 @@ const FreelancerOpenProjects = () => {
             type.value.toUpperCase()
           );
         }
+        if (selectedPriceTypes.length > 0) {
+          queryParams.priceTypes = selectedPriceTypes.map((type) =>
+            type.value.toUpperCase()
+          );
+        }
+
+        if (priceRangeFrom) {
+          queryParams.priceRangeFrom = priceRangeFrom;
+        }
+        if (priceRangeTo) {
+          queryParams.priceRangeTo = priceRangeTo;
+        }
+
+        if (budgetFrom) {
+          queryParams.budgetFrom = budgetFrom;
+        }
+        if (budgetTo) {
+          queryParams.budgetTo = budgetTo;
+        }
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -210,12 +241,30 @@ const FreelancerOpenProjects = () => {
         console.error("Error fetching profiles:", error);
       }
     };
+
     const timeoutId = setTimeout(fetchProfiles, delay);
     return () => {
       clearTimeout(timeoutId);
       isMounted = false;
     };
-  }, [selectedLocations, selectedSkills, selectedJobTypes]);
+  }, [
+    selectedLocations,
+    selectedSkills,
+    selectedJobTypes,
+    selectedPriceTypes,
+    budgetFrom,
+    budgetTo,
+    priceRangeFrom,
+    priceRangeTo,
+  ]);
+
+  const handlePriceRangeFromChange = (event) => {
+    setPriceRangeFrom(event.target.value);
+  };
+
+  const handlePriceRangeToChange = (event) => {
+    setPriceRangeTo(event.target.value);
+  };
 
   return (
     <div className="jobs-container-freelancere">
@@ -252,7 +301,70 @@ const FreelancerOpenProjects = () => {
           placeholder="Select job types..."
         />
       </div>
-
+      <div className="custom-select-wrapper">
+        <Select
+          isMulti
+          options={[
+            { value: "PER_HOUR", label: "Per hour" },
+            { value: "PER_MONTH", label: "Per month" },
+            { value: "FIXED_PRICE", label: "Fixed price" },
+          ]}
+          value={selectedPriceTypes}
+          onChange={setSelectedPriceTypes}
+          placeholder="Select price types..."
+        />
+      </div>
+      {(selectedPriceTypes.length === 0 ||
+        selectedPriceTypes.some(
+          (priceType) => priceType.value !== "FIXED_PRICE"
+        )) && (
+        <>
+          <div>
+            <label htmlFor="price-range-from">Price Range From:</label>
+            <input
+              type="number"
+              id="price-range-from"
+              value={priceRangeFrom}
+              onChange={handlePriceRangeFromChange}
+              placeholder="Enter minimum price..."
+            />
+          </div>
+          <div>
+            <label htmlFor="price-range-to">Price Range To:</label>
+            <input
+              type="number"
+              id="price-range-to"
+              value={priceRangeTo}
+              onChange={handlePriceRangeToChange}
+              placeholder="Enter maximum price..."
+            />
+          </div>
+        </>
+      )}
+      {(selectedPriceTypes.length === 0 ||
+        selectedPriceTypes.some(
+          (priceType) =>
+            priceType.value !== "PER_HOUR" && priceType.value !== "PER_MONTH"
+        )) && (
+        <div>
+          <label htmlFor="budgetFrom">Budget From:</label>
+          <input
+            type="number"
+            id="budgetFrom"
+            value={budgetFrom}
+            onChange={handleBudgetFromChange}
+            placeholder="Enter budget from..."
+          />
+          <label htmlFor="budgetTo">Budget To:</label>
+          <input
+            type="number"
+            id="budgetTo"
+            value={budgetTo}
+            onChange={handleBudgetToChange}
+            placeholder="Enter budget to..."
+          />
+        </div>
+      )}
       {Array.isArray(content) &&
         content.map((job) => (
           <div className="job-card-freelancere" key={job.id}>

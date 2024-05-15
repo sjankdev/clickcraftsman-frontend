@@ -254,6 +254,8 @@ const FreelancerOpenProjects = () => {
     selectedPriceTypes,
     budgetFrom,
     budgetTo,
+    priceRangeFrom,
+    priceRangeTo,
   ]);
 
   const handlePriceRangeFromChange = (event) => {
@@ -312,44 +314,57 @@ const FreelancerOpenProjects = () => {
           placeholder="Select price types..."
         />
       </div>
-      <div>
-        <label htmlFor="price-range-from">Price Range From:</label>
-        <input
-          type="number"
-          id="price-range-from"
-          value={priceRangeFrom}
-          onChange={handlePriceRangeFromChange}
-          placeholder="Enter minimum price..."
-        />
-      </div>
-      <div>
-        <label htmlFor="price-range-to">Price Range To:</label>
-        <input
-          type="number"
-          id="price-range-to"
-          value={priceRangeTo}
-          onChange={handlePriceRangeToChange}
-          placeholder="Enter maximum price..."
-        />
-      </div>
-      <div>
-        <label htmlFor="budgetFrom">Budget From:</label>
-        <input
-          type="number"
-          id="budgetFrom"
-          value={budgetFrom}
-          onChange={handleBudgetFromChange}
-          placeholder="Enter budget from..."
-        />
-        <label htmlFor="budgetTo">Budget To:</label>
-        <input
-          type="number"
-          id="budgetTo"
-          value={budgetTo}
-          onChange={handleBudgetToChange}
-          placeholder="Enter budget to..."
-        />
-      </div>
+      {(selectedPriceTypes.length === 0 ||
+        selectedPriceTypes.some(
+          (priceType) => priceType.value !== "FIXED_PRICE"
+        )) && (
+        <>
+          <div>
+            <label htmlFor="price-range-from">Price Range From:</label>
+            <input
+              type="number"
+              id="price-range-from"
+              value={priceRangeFrom}
+              onChange={handlePriceRangeFromChange}
+              placeholder="Enter minimum price..."
+            />
+          </div>
+          <div>
+            <label htmlFor="price-range-to">Price Range To:</label>
+            <input
+              type="number"
+              id="price-range-to"
+              value={priceRangeTo}
+              onChange={handlePriceRangeToChange}
+              placeholder="Enter maximum price..."
+            />
+          </div>
+        </>
+      )}
+      {(selectedPriceTypes.length === 0 ||
+        selectedPriceTypes.some(
+          (priceType) =>
+            priceType.value !== "PER_HOUR" && priceType.value !== "PER_MONTH"
+        )) && (
+        <div>
+          <label htmlFor="budgetFrom">Budget From:</label>
+          <input
+            type="number"
+            id="budgetFrom"
+            value={budgetFrom}
+            onChange={handleBudgetFromChange}
+            placeholder="Enter budget from..."
+          />
+          <label htmlFor="budgetTo">Budget To:</label>
+          <input
+            type="number"
+            id="budgetTo"
+            value={budgetTo}
+            onChange={handleBudgetToChange}
+            placeholder="Enter budget to..."
+          />
+        </div>
+      )}
       {Array.isArray(content) &&
         content.map((job) => (
           <div className="job-card-freelancere" key={job.id}>

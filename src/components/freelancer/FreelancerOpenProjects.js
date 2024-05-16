@@ -190,6 +190,33 @@ const FreelancerOpenProjects = () => {
     setBudgetTo(event.target.value);
   };
 
+  const handlePriceRangeFromChange = (event) => {
+    setPriceRangeFrom(event.target.value);
+  };
+
+  const handlePriceRangeToChange = (event) => {
+    setPriceRangeTo(event.target.value);
+  };
+
+  const isFixedPriceSelected = () => {
+    return (
+      selectedPriceTypes.length === 0 ||
+      selectedPriceTypes.some((priceType) => priceType.value === "FIXED_PRICE")
+    );
+  };
+
+
+  const isHourlyOrMonthlySelected = () => {
+    return (
+      selectedPriceTypes.length === 0 ||
+      selectedPriceTypes.some(
+        (priceType) =>
+          priceType.value !== "PER_HOUR" && priceType.value !== "PER_MONTH"
+      )
+    );
+  };
+
+
   useEffect(() => {
     let isMounted = true;
     const delay = 300;
@@ -258,14 +285,6 @@ const FreelancerOpenProjects = () => {
     priceRangeTo,
   ]);
 
-  const handlePriceRangeFromChange = (event) => {
-    setPriceRangeFrom(event.target.value);
-  };
-
-  const handlePriceRangeToChange = (event) => {
-    setPriceRangeTo(event.target.value);
-  };
-
   return (
     <div className="jobs-container-freelancere">
       <div className="custom-select-wrapper">
@@ -314,10 +333,7 @@ const FreelancerOpenProjects = () => {
           placeholder="Select price types..."
         />
       </div>
-      {(selectedPriceTypes.length === 0 ||
-        selectedPriceTypes.some(
-          (priceType) => priceType.value !== "FIXED_PRICE"
-        )) && (
+      {isFixedPriceSelected() && (
         <>
           <div>
             <label htmlFor="price-range-from">Price Range From:</label>
@@ -341,11 +357,7 @@ const FreelancerOpenProjects = () => {
           </div>
         </>
       )}
-      {(selectedPriceTypes.length === 0 ||
-        selectedPriceTypes.some(
-          (priceType) =>
-            priceType.value !== "PER_HOUR" && priceType.value !== "PER_MONTH"
-        )) && (
+      {isHourlyOrMonthlySelected() && (
         <div>
           <label htmlFor="budgetFrom">Budget From:</label>
           <input

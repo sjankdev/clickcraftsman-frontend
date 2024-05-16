@@ -32,6 +32,10 @@ const FreelancerOpenProjects = () => {
   const [priceRangeTo, setPriceRangeTo] = useState("");
   const [budgetFrom, setBudgetFrom] = useState("");
   const [budgetTo, setBudgetTo] = useState("");
+  const [jobName, setJobName] = useState("");
+  const [isRemote, setIsRemote] = useState(false);
+  const [resumeRequiredFilter, setResumeRequiredFilter] = useState(false);
+  const [selectedDateFilter, setSelectedDateFilter] = useState("");
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -103,6 +107,11 @@ const FreelancerOpenProjects = () => {
     setCustomMessage("");
     setSelectedJobId(null);
     setFileTypeError("");
+  };
+
+  const handleDateFilterChange = (event) => {
+    console.log(event.target.value);
+    setSelectedDateFilter(event.target.value);
   };
 
   const handleApply = (jobId) => {
@@ -190,6 +199,44 @@ const FreelancerOpenProjects = () => {
     setBudgetTo(event.target.value);
   };
 
+  const handlePriceRangeFromChange = (event) => {
+    setPriceRangeFrom(event.target.value);
+  };
+
+  const handlePriceRangeToChange = (event) => {
+    setPriceRangeTo(event.target.value);
+  };
+
+  const isFixedPriceSelected = () => {
+    return (
+      selectedPriceTypes.length === 0 ||
+      selectedPriceTypes.some((priceType) => priceType.value === "FIXED_PRICE")
+    );
+  };
+
+  const isHourlyOrMonthlySelected = () => {
+    return (
+      selectedPriceTypes.length === 0 ||
+      selectedPriceTypes.some(
+        (priceType) =>
+          priceType.value !== "PER_HOUR" && priceType.value !== "PER_MONTH"
+      )
+    );
+  };
+
+  const handleJobNameChange = (event) => {
+    const jobName = event.target.value;
+    setJobName(jobName);
+  };
+
+  const handleRemoteChange = () => {
+    setIsRemote(!isRemote);
+  };
+
+  const handleResumeRequiredChange = () => {
+    setResumeRequiredFilter(!resumeRequiredFilter);
+  };
+
   useEffect(() => {
     let isMounted = true;
     const delay = 300;
@@ -231,6 +278,27 @@ const FreelancerOpenProjects = () => {
         if (budgetTo) {
           queryParams.budgetTo = budgetTo;
         }
+        if (jobName) {
+          queryParams.jobName = jobName;
+        }
+        if (isRemote) {
+          queryParams.isRemote = isRemote;
+        }
+        if (resumeRequiredFilter !== null) {
+          queryParams.resumeRequired = resumeRequiredFilter;
+        }
+        if (selectedDateFilter === "today") {
+          queryParams.dateRange = "today";
+        } else if (selectedDateFilter === "yesterday") {
+          queryParams.dateRange = "yesterday";
+        } else if (selectedDateFilter === "thisWeek") {
+          queryParams.dateRange = "thisWeek";
+        } else if (selectedDateFilter === "thisMonth") {
+          queryParams.dateRange = "thisMonth";
+        } else if (selectedDateFilter === "earlierThanThisMonth") {
+          queryParams.dateRange = "earlierThanThisMonth";
+        }
+
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -248,6 +316,9 @@ const FreelancerOpenProjects = () => {
       isMounted = false;
     };
   }, [
+    jobName,
+    isRemote,
+    resumeRequiredFilter,
     selectedLocations,
     selectedSkills,
     selectedJobTypes,
@@ -256,18 +327,54 @@ const FreelancerOpenProjects = () => {
     budgetTo,
     priceRangeFrom,
     priceRangeTo,
+    selectedDateFilter,
   ]);
-
-  const handlePriceRangeFromChange = (event) => {
-    setPriceRangeFrom(event.target.value);
-  };
-
-  const handlePriceRangeToChange = (event) => {
-    setPriceRangeTo(event.target.value);
-  };
 
   return (
     <div className="jobs-container-freelancere">
+      <div className="custom-select-wrapper">
+        <label htmlFor="job-name">Job Name:</label>
+        <input
+          type="text"
+          id="job-name"
+          value={jobName}
+          onChange={handleJobNameChange}
+          placeholder="Enter job name..."
+        />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="date-filter">Filter by Date:</label>
+        <select
+          id="date-filter"
+          value={selectedDateFilter}
+          onChange={handleDateFilterChange}
+        >
+          <option value="">All</option>
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="thisWeek">This Week</option>
+          <option value="thisMonth">This Month</option>
+          <option value="earlierThanThisMonth">Earlier Than This Month</option>
+        </select>
+      </div>
+      <div className="custom-select-wrapper">
+        <label htmlFor="is-remote">Remote:</label>
+        <input
+          type="checkbox"
+          id="is-remote"
+          checked={isRemote}
+          onChange={handleRemoteChange}
+        />
+      </div>
+      <div className="custom-select-wrapper">
+        <label htmlFor="resume-required-filter">Resume Required:</label>
+        <input
+          type="checkbox"
+          id="resume-required-filter"
+          checked={resumeRequiredFilter}
+          onChange={handleResumeRequiredChange}
+        />
+      </div>
       <div className="custom-select-wrapper">
         <Select
           isMulti
@@ -314,10 +421,7 @@ const FreelancerOpenProjects = () => {
           placeholder="Select price types..."
         />
       </div>
-      {(selectedPriceTypes.length === 0 ||
-        selectedPriceTypes.some(
-          (priceType) => priceType.value !== "FIXED_PRICE"
-        )) && (
+      {isFixedPriceSelected() && (
         <>
           <div>
             <label htmlFor="price-range-from">Price Range From:</label>
@@ -341,11 +445,7 @@ const FreelancerOpenProjects = () => {
           </div>
         </>
       )}
-      {(selectedPriceTypes.length === 0 ||
-        selectedPriceTypes.some(
-          (priceType) =>
-            priceType.value !== "PER_HOUR" && priceType.value !== "PER_MONTH"
-        )) && (
+      {isHourlyOrMonthlySelected() && (
         <div>
           <label htmlFor="budgetFrom">Budget From:</label>
           <input

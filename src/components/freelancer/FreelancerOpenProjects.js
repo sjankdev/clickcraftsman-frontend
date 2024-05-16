@@ -34,6 +34,8 @@ const FreelancerOpenProjects = () => {
   const [budgetTo, setBudgetTo] = useState("");
   const [jobName, setJobName] = useState("");
   const [isRemote, setIsRemote] = useState(false);
+  const [resumeRequiredFilter, setResumeRequiredFilter] = useState(false);
+
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -226,6 +228,10 @@ const FreelancerOpenProjects = () => {
     setIsRemote(!isRemote);
   };
 
+  const handleResumeRequiredChange = () => {
+    setResumeRequiredFilter(!resumeRequiredFilter);
+  };
+
   useEffect(() => {
     let isMounted = true;
     const delay = 300;
@@ -273,7 +279,9 @@ const FreelancerOpenProjects = () => {
         if (isRemote) {
           queryParams.isRemote = isRemote;
         }
-
+        if (resumeRequiredFilter !== null) {
+          queryParams.resumeRequired = resumeRequiredFilter;
+        }
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -293,6 +301,7 @@ const FreelancerOpenProjects = () => {
   }, [
     jobName,
     isRemote,
+    resumeRequiredFilter,
     selectedLocations,
     selectedSkills,
     selectedJobTypes,
@@ -322,6 +331,15 @@ const FreelancerOpenProjects = () => {
           id="is-remote"
           checked={isRemote}
           onChange={handleRemoteChange}
+        />
+      </div>
+      <div className="custom-select-wrapper">
+        <label htmlFor="resume-required-filter">Resume Required:</label>
+        <input
+          type="checkbox"
+          id="resume-required-filter"
+          checked={resumeRequiredFilter}
+          onChange={handleResumeRequiredChange}
         />
       </div>
       <div className="custom-select-wrapper">

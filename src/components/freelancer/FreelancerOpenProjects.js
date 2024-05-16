@@ -35,7 +35,7 @@ const FreelancerOpenProjects = () => {
   const [jobName, setJobName] = useState("");
   const [isRemote, setIsRemote] = useState(false);
   const [resumeRequiredFilter, setResumeRequiredFilter] = useState(false);
-
+  const [selectedDateFilter, setSelectedDateFilter] = useState("");
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -107,6 +107,11 @@ const FreelancerOpenProjects = () => {
     setCustomMessage("");
     setSelectedJobId(null);
     setFileTypeError("");
+  };
+
+  const handleDateFilterChange = (event) => {
+    console.log(event.target.value);
+    setSelectedDateFilter(event.target.value);
   };
 
   const handleApply = (jobId) => {
@@ -282,6 +287,18 @@ const FreelancerOpenProjects = () => {
         if (resumeRequiredFilter !== null) {
           queryParams.resumeRequired = resumeRequiredFilter;
         }
+        if (selectedDateFilter === "today") {
+          queryParams.dateRange = "today";
+        } else if (selectedDateFilter === "yesterday") {
+          queryParams.dateRange = "yesterday";
+        } else if (selectedDateFilter === "thisWeek") {
+          queryParams.dateRange = "thisWeek";
+        } else if (selectedDateFilter === "lastTwoWeeks") {
+          queryParams.dateRange = "lastTwoWeeks";
+        } else if (selectedDateFilter === "lastMonth") {
+          queryParams.dateRange = "lastMonth";
+        }
+
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -310,6 +327,7 @@ const FreelancerOpenProjects = () => {
     budgetTo,
     priceRangeFrom,
     priceRangeTo,
+    selectedDateFilter,
   ]);
 
   return (
@@ -323,6 +341,21 @@ const FreelancerOpenProjects = () => {
           onChange={handleJobNameChange}
           placeholder="Enter job name..."
         />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="date-filter">Filter by Date:</label>
+        <select
+          id="date-filter"
+          value={selectedDateFilter}
+          onChange={handleDateFilterChange}
+        >
+          <option value="">All</option>
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="thisWeek">This Week</option>
+          <option value="lastTwoWeeks">Last Two Weeks</option>
+          <option value="lastMonth">Last Month</option>
+        </select>
       </div>
       <div className="custom-select-wrapper">
         <label htmlFor="is-remote">Remote:</label>

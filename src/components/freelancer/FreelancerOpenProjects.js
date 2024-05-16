@@ -207,20 +207,20 @@ const FreelancerOpenProjects = () => {
     setPriceRangeTo(event.target.value);
   };
 
-  const isFixedPriceSelected = () => {
-    return (
-      selectedPriceTypes.length === 0 ||
-      selectedPriceTypes.some((priceType) => priceType.value === "FIXED_PRICE")
-    );
-  };
-
   const isHourlyOrMonthlySelected = () => {
     return (
       selectedPriceTypes.length === 0 ||
       selectedPriceTypes.some(
         (priceType) =>
-          priceType.value !== "PER_HOUR" && priceType.value !== "PER_MONTH"
+          priceType.value === "PER_HOUR" || priceType.value === "PER_MONTH"
       )
+    );
+  };
+
+  const isFixedPriceSelected = () => {
+    return (
+      selectedPriceTypes.length === 0 ||
+      selectedPriceTypes.some((priceType) => priceType.value === "FIXED_PRICE")
     );
   };
 
@@ -424,46 +424,51 @@ const FreelancerOpenProjects = () => {
       {isFixedPriceSelected() && (
         <>
           <div>
-            <label htmlFor="price-range-from">Price Range From:</label>
+            <label htmlFor="budget-from">Budget from:</label>
             <input
               type="number"
-              id="price-range-from"
-              value={priceRangeFrom}
-              onChange={handlePriceRangeFromChange}
+              id="budget-from"
+              value={budgetFrom}
+              onChange={handleBudgetFromChange}
               placeholder="Enter minimum price..."
             />
           </div>
           <div>
-            <label htmlFor="price-range-to">Price Range To:</label>
+            <label htmlFor="budget-to">Budget to:</label>
             <input
               type="number"
-              id="price-range-to"
-              value={priceRangeTo}
-              onChange={handlePriceRangeToChange}
+              id="budget-to"
+              value={budgetTo}
+              onChange={handleBudgetToChange}
               placeholder="Enter maximum price..."
             />
           </div>
         </>
       )}
+
       {isHourlyOrMonthlySelected() && (
-        <div>
-          <label htmlFor="budgetFrom">Budget From:</label>
-          <input
-            type="number"
-            id="budgetFrom"
-            value={budgetFrom}
-            onChange={handleBudgetFromChange}
-            placeholder="Enter budget from..."
-          />
-          <label htmlFor="budgetTo">Budget To:</label>
-          <input
-            type="number"
-            id="budgetTo"
-            value={budgetTo}
-            onChange={handleBudgetToChange}
-            placeholder="Enter budget to..."
-          />
-        </div>
+        <>
+          <div>
+            <label htmlFor="priceFrom">Price from</label>
+            <input
+              type="number"
+              id="priceFrom"
+              value={priceRangeFrom}
+              onChange={handlePriceRangeFromChange}
+              placeholder="Enter price range from..."
+            />
+          </div>
+          <div>
+            <label htmlFor="priceTo">Price To:</label>
+            <input
+              type="number"
+              id="priceTo"
+              value={priceRangeTo}
+              onChange={handlePriceRangeToChange}
+              placeholder="Enter price range to..."
+            />
+          </div>
+        </>
       )}
       {Array.isArray(content) &&
         content.map((job) => (

@@ -32,6 +32,7 @@ const FreelancerOpenProjects = () => {
   const [priceRangeTo, setPriceRangeTo] = useState("");
   const [budgetFrom, setBudgetFrom] = useState("");
   const [budgetTo, setBudgetTo] = useState("");
+  const [jobName, setJobName] = useState("");
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -205,7 +206,6 @@ const FreelancerOpenProjects = () => {
     );
   };
 
-
   const isHourlyOrMonthlySelected = () => {
     return (
       selectedPriceTypes.length === 0 ||
@@ -216,6 +216,10 @@ const FreelancerOpenProjects = () => {
     );
   };
 
+  const handleJobNameChange = (event) => {
+    const jobName = event.target.value;
+    setJobName(jobName);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -258,6 +262,10 @@ const FreelancerOpenProjects = () => {
         if (budgetTo) {
           queryParams.budgetTo = budgetTo;
         }
+        if (jobName) {
+          queryParams.jobName = jobName;
+        }
+
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
@@ -275,6 +283,7 @@ const FreelancerOpenProjects = () => {
       isMounted = false;
     };
   }, [
+    jobName,
     selectedLocations,
     selectedSkills,
     selectedJobTypes,
@@ -287,6 +296,16 @@ const FreelancerOpenProjects = () => {
 
   return (
     <div className="jobs-container-freelancere">
+      <div className="custom-select-wrapper">
+        <label htmlFor="job-name">Job Name:</label>
+        <input
+          type="text"
+          id="job-name"
+          value={jobName}
+          onChange={handleJobNameChange}
+          placeholder="Enter job name..."
+        />
+      </div>
       <div className="custom-select-wrapper">
         <Select
           isMulti

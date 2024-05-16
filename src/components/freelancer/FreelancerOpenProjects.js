@@ -293,10 +293,10 @@ const FreelancerOpenProjects = () => {
           queryParams.dateRange = "yesterday";
         } else if (selectedDateFilter === "thisWeek") {
           queryParams.dateRange = "thisWeek";
-        } else if (selectedDateFilter === "lastTwoWeeks") {
-          queryParams.dateRange = "lastTwoWeeks";
-        } else if (selectedDateFilter === "lastMonth") {
-          queryParams.dateRange = "lastMonth";
+        } else if (selectedDateFilter === "thisMonth") {
+          queryParams.dateRange = "thisMonth";
+        } else if (selectedDateFilter === "earlierThanThisMonth") {
+          queryParams.dateRange = "earlierThanThisMonth";
         }
 
         const queryString = new URLSearchParams(queryParams).toString();
@@ -353,8 +353,8 @@ const FreelancerOpenProjects = () => {
           <option value="today">Today</option>
           <option value="yesterday">Yesterday</option>
           <option value="thisWeek">This Week</option>
-          <option value="lastTwoWeeks">Last Two Weeks</option>
-          <option value="lastMonth">Last Month</option>
+          <option value="thisMonth">This Month</option>
+          <option value="earlierThanThisMonth">Earlier Than This Month</option>
         </select>
       </div>
       <div className="custom-select-wrapper">

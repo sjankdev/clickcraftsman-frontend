@@ -33,6 +33,7 @@ const FreelancerOpenProjects = () => {
   const [budgetFrom, setBudgetFrom] = useState("");
   const [budgetTo, setBudgetTo] = useState("");
   const [jobName, setJobName] = useState("");
+  const [isRemote, setIsRemote] = useState(false);
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -221,6 +222,10 @@ const FreelancerOpenProjects = () => {
     setJobName(jobName);
   };
 
+  const handleRemoteChange = () => {
+    setIsRemote(!isRemote);
+  };
+
   useEffect(() => {
     let isMounted = true;
     const delay = 300;
@@ -265,6 +270,9 @@ const FreelancerOpenProjects = () => {
         if (jobName) {
           queryParams.jobName = jobName;
         }
+        if (isRemote) {
+          queryParams.isRemote = isRemote;
+        }
 
         const queryString = new URLSearchParams(queryParams).toString();
         const url = `http://localhost:8080/api/job/searchJobs?${queryString}`;
@@ -284,6 +292,7 @@ const FreelancerOpenProjects = () => {
     };
   }, [
     jobName,
+    isRemote,
     selectedLocations,
     selectedSkills,
     selectedJobTypes,
@@ -304,6 +313,15 @@ const FreelancerOpenProjects = () => {
           value={jobName}
           onChange={handleJobNameChange}
           placeholder="Enter job name..."
+        />
+      </div>
+      <div className="custom-select-wrapper">
+        <label htmlFor="is-remote">Remote:</label>
+        <input
+          type="checkbox"
+          id="is-remote"
+          checked={isRemote}
+          onChange={handleRemoteChange}
         />
       </div>
       <div className="custom-select-wrapper">

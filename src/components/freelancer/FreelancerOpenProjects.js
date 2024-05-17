@@ -335,13 +335,12 @@ const FreelancerOpenProjects = () => {
     <div className="jobs-container-freelancere">
       <div className="filters-grid">
         <div className="custom-select-wrapper">
-          <label htmlFor="job-name">Job Name:</label>
           <input
             type="text"
             id="job-name"
             value={jobName}
             onChange={handleJobNameChange}
-            placeholder="Enter job name..."
+            placeholder="Ključne reči posla..."
           />
         </div>
         <div className="filter-item">
@@ -362,7 +361,7 @@ const FreelancerOpenProjects = () => {
           </select>
         </div>
         <div className="checkbox-wrapper">
-          <label htmlFor="is-remote">Remote:</label>
+          <label htmlFor="is-remote">Rad od kuće?</label>
           <input
             type="checkbox"
             id="is-remote"
@@ -371,7 +370,7 @@ const FreelancerOpenProjects = () => {
           />
         </div>
         <div className="checkbox-wrapper">
-          <label htmlFor="resume-required-filter">Resume Required:</label>
+          <label htmlFor="resume-required-filter">CV obavezan?</label>
           <input
             type="checkbox"
             id="resume-required-filter"
@@ -385,7 +384,7 @@ const FreelancerOpenProjects = () => {
             options={skillsList}
             value={selectedSkills}
             onChange={setSelectedSkills}
-            placeholder="Select skills..."
+            placeholder="Pretražite po veštinama..."
           />
         </div>
         <div className="custom-select-wrapper">
@@ -394,7 +393,7 @@ const FreelancerOpenProjects = () => {
             options={locationsList}
             value={selectedLocations}
             onChange={setSelectedLocations}
-            placeholder="Select locations..."
+            placeholder="Pretražite po lokacijama..."
           />
         </div>
         <div className="custom-select-wrapper">
@@ -409,7 +408,7 @@ const FreelancerOpenProjects = () => {
             ]}
             value={selectedJobTypes}
             onChange={setSelectedJobTypes}
-            placeholder="Select job types..."
+            placeholder="Pretražite po tipu posla..."
           />
         </div>
         <div className="custom-select-wrapper">
@@ -422,29 +421,27 @@ const FreelancerOpenProjects = () => {
             ]}
             value={selectedPriceTypes}
             onChange={setSelectedPriceTypes}
-            placeholder="Select price types..."
+            placeholder="Pretražite po načinu plaćanja..."
           />
         </div>
         {isFixedPriceSelected() && (
           <div className="budget-fields">
             <div>
-              <label htmlFor="budget-from">Budget from:</label>
               <input
                 type="number"
                 id="budget-from"
                 value={budgetFrom}
                 onChange={handleBudgetFromChange}
-                placeholder="Min price..."
+                placeholder="Budžet od..."
               />
             </div>
             <div>
-              <label htmlFor="budget-to">Budget to:</label>
               <input
                 type="number"
                 id="budget-to"
                 value={budgetTo}
                 onChange={handleBudgetToChange}
-                placeholder="Max price..."
+                placeholder="Budžet do..."
               />
             </div>
           </div>
@@ -452,23 +449,21 @@ const FreelancerOpenProjects = () => {
         {isHourlyOrMonthlySelected() && (
           <div className="price-fields">
             <div>
-              <label htmlFor="priceFrom">Price from:</label>
               <input
                 type="number"
                 id="priceFrom"
                 value={priceRangeFrom}
                 onChange={handlePriceRangeFromChange}
-                placeholder="Min price..."
+                placeholder="Satnica od..."
               />
             </div>
             <div>
-              <label htmlFor="priceTo">Price to:</label>
               <input
                 type="number"
                 id="priceTo"
                 value={priceRangeTo}
                 onChange={handlePriceRangeToChange}
-                placeholder="Max price..."
+                placeholder="Satnica do..."
               />
             </div>
           </div>

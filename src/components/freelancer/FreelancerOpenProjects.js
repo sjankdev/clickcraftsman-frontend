@@ -36,6 +36,7 @@ const FreelancerOpenProjects = () => {
   const [isRemote, setIsRemote] = useState(false);
   const [resumeRequiredFilter, setResumeRequiredFilter] = useState(false);
   const [selectedDateFilter, setSelectedDateFilter] = useState("");
+
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -332,248 +333,255 @@ const FreelancerOpenProjects = () => {
 
   return (
     <div className="jobs-container-freelancere">
-      <div className="custom-select-wrapper">
-        <label htmlFor="job-name">Job Name:</label>
-        <input
-          type="text"
-          id="job-name"
-          value={jobName}
-          onChange={handleJobNameChange}
-          placeholder="Enter job name..."
-        />
-      </div>
-      <div className="filter-item">
-        <label htmlFor="date-filter">Filter by Date:</label>
-        <select
-          id="date-filter"
-          value={selectedDateFilter}
-          onChange={handleDateFilterChange}
-        >
-          <option value="">All</option>
-          <option value="today">Today</option>
-          <option value="yesterday">Yesterday</option>
-          <option value="thisWeek">This Week</option>
-          <option value="thisMonth">This Month</option>
-          <option value="earlierThanThisMonth">Earlier Than This Month</option>
-        </select>
-      </div>
-      <div className="custom-select-wrapper">
-        <label htmlFor="is-remote">Remote:</label>
-        <input
-          type="checkbox"
-          id="is-remote"
-          checked={isRemote}
-          onChange={handleRemoteChange}
-        />
-      </div>
-      <div className="custom-select-wrapper">
-        <label htmlFor="resume-required-filter">Resume Required:</label>
-        <input
-          type="checkbox"
-          id="resume-required-filter"
-          checked={resumeRequiredFilter}
-          onChange={handleResumeRequiredChange}
-        />
-      </div>
-      <div className="custom-select-wrapper">
-        <Select
-          isMulti
-          options={skillsList}
-          value={selectedSkills}
-          onChange={setSelectedSkills}
-          placeholder="Select skills..."
-        />
-      </div>
-      <div className="custom-select-wrapper">
-        <Select
-          isMulti
-          options={locationsList}
-          value={selectedLocations}
-          onChange={setSelectedLocations}
-          placeholder="Select locations..."
-        />
-      </div>
-      <div className="custom-select-wrapper">
-        <Select
-          isMulti
-          options={[
-            { value: "FULL_TIME", label: "Full Time" },
-            { value: "PART_TIME", label: "Part Time" },
-            { value: "CONTRACT", label: "Contract" },
-            { value: "FREELANCE", label: "Freelance" },
-            { value: "INTERNSHIP", label: "Internship" },
-          ]}
-          value={selectedJobTypes}
-          onChange={setSelectedJobTypes}
-          placeholder="Select job types..."
-        />
-      </div>
-      <div className="custom-select-wrapper">
-        <Select
-          isMulti
-          options={[
-            { value: "PER_HOUR", label: "Per hour" },
-            { value: "PER_MONTH", label: "Per month" },
-            { value: "FIXED_PRICE", label: "Fixed price" },
-          ]}
-          value={selectedPriceTypes}
-          onChange={setSelectedPriceTypes}
-          placeholder="Select price types..."
-        />
-      </div>
-      {isFixedPriceSelected() && (
-        <>
-          <div>
-            <label htmlFor="budget-from">Budget from:</label>
-            <input
-              type="number"
-              id="budget-from"
-              value={budgetFrom}
-              onChange={handleBudgetFromChange}
-              placeholder="Enter minimum price..."
-            />
-          </div>
-          <div>
-            <label htmlFor="budget-to">Budget to:</label>
-            <input
-              type="number"
-              id="budget-to"
-              value={budgetTo}
-              onChange={handleBudgetToChange}
-              placeholder="Enter maximum price..."
-            />
-          </div>
-        </>
-      )}
-
-      {isHourlyOrMonthlySelected() && (
-        <>
-          <div>
-            <label htmlFor="priceFrom">Price from</label>
-            <input
-              type="number"
-              id="priceFrom"
-              value={priceRangeFrom}
-              onChange={handlePriceRangeFromChange}
-              placeholder="Enter price range from..."
-            />
-          </div>
-          <div>
-            <label htmlFor="priceTo">Price To:</label>
-            <input
-              type="number"
-              id="priceTo"
-              value={priceRangeTo}
-              onChange={handlePriceRangeToChange}
-              placeholder="Enter price range to..."
-            />
-          </div>
-        </>
-      )}
-      {Array.isArray(content) &&
-        content.map((job) => (
-          <div className="job-card-freelancere" key={job.id}>
-            <h3>{job.jobName}</h3>
-            <p>{job.description}</p>
-            {job.priceType === "FIXED_PRICE" ? (
-              <div>
-                <p>Price type: {job.priceType}</p>
-                <p>Budget: ${job.budget}</p>
-              </div>
-            ) : (
-              <div>
-                <p>Price Type: {job.priceType}</p>
-                <p>
-                  {job.priceRangeFrom}$ - ${job.priceRangeTo}
-                </p>
-              </div>
-            )}
-            <p>{job.jobType}</p>
+      <div className="filters-grid">
+        <div className="custom-select-wrapper">
+          <label htmlFor="job-name">Job Name:</label>
+          <input
+            type="text"
+            id="job-name"
+            value={jobName}
+            onChange={handleJobNameChange}
+            placeholder="Enter job name..."
+          />
+        </div>
+        <div className="filter-item">
+          <label htmlFor="date-filter">Filter by Date:</label>
+          <select
+            id="date-filter"
+            value={selectedDateFilter}
+            onChange={handleDateFilterChange}
+          >
+            <option value="">All</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="thisWeek">This Week</option>
+            <option value="thisMonth">This Month</option>
+            <option value="earlierThanThisMonth">
+              Earlier Than This Month
+            </option>
+          </select>
+        </div>
+        <div className="checkbox-wrapper">
+          <label htmlFor="is-remote">Remote:</label>
+          <input
+            type="checkbox"
+            id="is-remote"
+            checked={isRemote}
+            onChange={handleRemoteChange}
+          />
+        </div>
+        <div className="checkbox-wrapper">
+          <label htmlFor="resume-required-filter">Resume Required:</label>
+          <input
+            type="checkbox"
+            id="resume-required-filter"
+            checked={resumeRequiredFilter}
+            onChange={handleResumeRequiredChange}
+          />
+        </div>
+        <div className="custom-select-wrapper">
+          <Select
+            isMulti
+            options={skillsList}
+            value={selectedSkills}
+            onChange={setSelectedSkills}
+            placeholder="Select skills..."
+          />
+        </div>
+        <div className="custom-select-wrapper">
+          <Select
+            isMulti
+            options={locationsList}
+            value={selectedLocations}
+            onChange={setSelectedLocations}
+            placeholder="Select locations..."
+          />
+        </div>
+        <div className="custom-select-wrapper">
+          <Select
+            isMulti
+            options={[
+              { value: "FULL_TIME", label: "Full Time" },
+              { value: "PART_TIME", label: "Part Time" },
+              { value: "CONTRACT", label: "Contract" },
+              { value: "FREELANCE", label: "Freelance" },
+              { value: "INTERNSHIP", label: "Internship" },
+            ]}
+            value={selectedJobTypes}
+            onChange={setSelectedJobTypes}
+            placeholder="Select job types..."
+          />
+        </div>
+        <div className="custom-select-wrapper">
+          <Select
+            isMulti
+            options={[
+              { value: "PER_HOUR", label: "Per hour" },
+              { value: "PER_MONTH", label: "Per month" },
+              { value: "FIXED_PRICE", label: "Fixed price" },
+            ]}
+            value={selectedPriceTypes}
+            onChange={setSelectedPriceTypes}
+            placeholder="Select price types..."
+          />
+        </div>
+        {isFixedPriceSelected() && (
+          <div className="budget-fields">
             <div>
-              <p>Posted: {job.formattedApplicationTime}</p>
-              {job.location && <p>Location: {job.location}</p>}
-              {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
-              <p>Required Skills: {job.requiredSkillNames.join(", ")}</p>
+              <label htmlFor="budget-from">Budget from:</label>
+              <input
+                type="number"
+                id="budget-from"
+                value={budgetFrom}
+                onChange={handleBudgetFromChange}
+                placeholder="Min price..."
+              />
             </div>
-            {appliedJobIds.includes(job.id) ? (
-              <p>You have already applied for this job.</p>
-            ) : (
-              <>
-                <button onClick={() => handleApply(job.id)}>Apply</button>
-                <hr />
-                {applicationMessages.map(
-                  (msg) =>
-                    msg.jobId === job.id && <p key={msg.jobId}>{msg.message}</p>
-                )}
-                <Modal
-                  isOpen={isModalOpen && selectedJobId === job.id}
-                  onRequestClose={closeModal}
-                  contentLabel="Custom Message Modal"
-                  className="custom-modal-freelancere"
-                  overlayClassName="custom-modal-overlay-freelancere"
-                >
-                  <div>
-                    <h2>You're applying for {job.jobName}</h2>
-                    <button onClick={closeModal}>&times;</button>
-                  </div>
-                  <div>
-                    <h3>Enter Your Custom Message</h3>
-                    <textarea
-                      value={customMessage}
-                      onChange={(e) => setCustomMessage(e.target.value)}
-                      placeholder="Insert your message here..."
-                    />
-                    <div>
-                      <label htmlFor="desired-pay">Desired Pay:</label>
-                      <input
-                        type="number"
-                        id="desired-pay"
-                        value={desiredPay}
-                        onChange={(e) => setDesiredPay(e.target.value)}
-                        placeholder="Insert your desired pay here..."
-                      />
-                    </div>
-                    {job.priceType === "FIXED_PRICE" ? (
-                      <div>
-                        <p>Price type: {job.priceType}</p>
-                        <p>Budget: ${job.budget}</p>
-                      </div>
-                    ) : (
-                      <div>
-                        <p>Price Type: {job.priceType}</p>
-                        <p>
-                          {job.priceRangeFrom}$ - ${job.priceRangeTo}
-                        </p>
-                      </div>
-                    )}
-                    <div>
-                      <label htmlFor="resume-upload">
-                        Upload your resume:{" "}
-                        {job.resumeRequired ? "(required)" : "(optional)"}
-                      </label>
-                      <input
-                        type="file"
-                        id="resume-upload"
-                        onChange={handleFileChange}
-                        accept=".pdf"
-                      />
-                      <div>
-                        <span>Supported format: PDF</span>
-                        {fileTypeError && <div>{fileTypeError}</div>}
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <button onClick={handleApplyWithCustomMessage}>
-                      Apply
-                    </button>
-                    <button onClick={closeModal}>Cancel</button>
-                  </div>
-                </Modal>
-              </>
-            )}
+            <div>
+              <label htmlFor="budget-to">Budget to:</label>
+              <input
+                type="number"
+                id="budget-to"
+                value={budgetTo}
+                onChange={handleBudgetToChange}
+                placeholder="Max price..."
+              />
+            </div>
           </div>
-        ))}
+        )}
+        {isHourlyOrMonthlySelected() && (
+          <div className="price-fields">
+            <div>
+              <label htmlFor="priceFrom">Price from:</label>
+              <input
+                type="number"
+                id="priceFrom"
+                value={priceRangeFrom}
+                onChange={handlePriceRangeFromChange}
+                placeholder="Min price..."
+              />
+            </div>
+            <div>
+              <label htmlFor="priceTo">Price to:</label>
+              <input
+                type="number"
+                id="priceTo"
+                value={priceRangeTo}
+                onChange={handlePriceRangeToChange}
+                placeholder="Max price..."
+              />
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="jobs-grid">
+        {Array.isArray(content) &&
+          content.map((job) => (
+            <div className="job-card-freelancere" key={job.id}>
+              <h3>{job.jobName}</h3>
+              <p>{job.description}</p>
+              {job.priceType === "FIXED_PRICE" ? (
+                <div>
+                  <p>Price type: {job.priceType}</p>
+                  <p>Budget: ${job.budget}</p>
+                </div>
+              ) : (
+                <div>
+                  <p>Price Type: {job.priceType}</p>
+                  <p>
+                    {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                  </p>
+                </div>
+              )}
+              <p>{job.jobType}</p>
+              <div>
+                <p>Posted: {job.formattedApplicationTime}</p>
+                {job.location && <p>Location: {job.location}</p>}
+                {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
+                <p>Required Skills: {job.requiredSkillNames.join(", ")}</p>
+              </div>
+              {appliedJobIds.includes(job.id) ? (
+                <p>You have already applied for this job.</p>
+              ) : (
+                <>
+                  <button onClick={() => handleApply(job.id)}>Apply</button>
+                  <hr />
+                  {applicationMessages.map(
+                    (msg) =>
+                      msg.jobId === job.id && (
+                        <p key={msg.jobId}>{msg.message}</p>
+                      )
+                  )}
+                  <Modal
+                    isOpen={isModalOpen && selectedJobId === job.id}
+                    onRequestClose={closeModal}
+                    contentLabel="Custom Message Modal"
+                    className="custom-modal-freelancere"
+                    overlayClassName="custom-modal-overlay-freelancere"
+                  >
+                    <div>
+                      <h2>You're applying for {job.jobName}</h2>
+                      <button onClick={closeModal}>&times;</button>
+                    </div>
+                    <div>
+                      <h3>Enter Your Custom Message</h3>
+                      <textarea
+                        value={customMessage}
+                        onChange={(e) => setCustomMessage(e.target.value)}
+                        placeholder="Insert your message here..."
+                      />
+                      <div>
+                        <label htmlFor="desired-pay">Desired Pay:</label>
+                        <input
+                          type="number"
+                          id="desired-pay"
+                          value={desiredPay}
+                          onChange={(e) => setDesiredPay(e.target.value)}
+                          placeholder="Insert your desired pay here..."
+                        />
+                      </div>
+                      {job.priceType === "FIXED_PRICE" ? (
+                        <div>
+                          <p>Price type: {job.priceType}</p>
+                          <p>Budget: ${job.budget}</p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p>Price Type: {job.priceType}</p>
+                          <p>
+                            {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                          </p>
+                        </div>
+                      )}
+                      <div>
+                        <label htmlFor="resume-upload">
+                          Upload your resume:{" "}
+                          {job.resumeRequired ? "(required)" : "(optional)"}
+                        </label>
+                        <input
+                          type="file"
+                          id="resume-upload"
+                          onChange={handleFileChange}
+                          accept=".pdf"
+                        />
+                        <div>
+                          <span>Supported format: PDF</span>
+                          {fileTypeError && <div>{fileTypeError}</div>}
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button onClick={handleApplyWithCustomMessage}>
+                        Apply
+                      </button>
+                      <button onClick={closeModal}>Cancel</button>
+                    </div>
+                  </Modal>
+                </>
+              )}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

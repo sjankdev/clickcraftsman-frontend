@@ -340,24 +340,21 @@ const FreelancerOpenProjects = () => {
             id="job-name"
             value={jobName}
             onChange={handleJobNameChange}
-            placeholder="Ključne reči posla..."
+            placeholder="Ključne reči"
           />
         </div>
         <div className="filter-item">
-          <label htmlFor="date-filter">Filter by Date:</label>
           <select
             id="date-filter"
             value={selectedDateFilter}
             onChange={handleDateFilterChange}
           >
-            <option value="">All</option>
-            <option value="today">Today</option>
-            <option value="yesterday">Yesterday</option>
-            <option value="thisWeek">This Week</option>
-            <option value="thisMonth">This Month</option>
-            <option value="earlierThanThisMonth">
-              Earlier Than This Month
-            </option>
+            <option value="">Objavljeno</option>
+            <option value="today">Danas</option>
+            <option value="yesterday">Juče</option>
+            <option value="thisWeek">Ove nedelje</option>
+            <option value="thisMonth">Ovog meseca</option>
+            <option value="earlierThanThisMonth">Stariji od mesec</option>
           </select>
         </div>
         <div className="checkbox-wrapper">
@@ -384,7 +381,7 @@ const FreelancerOpenProjects = () => {
             options={skillsList}
             value={selectedSkills}
             onChange={setSelectedSkills}
-            placeholder="Pretražite po veštinama..."
+            placeholder="Veštine"
           />
         </div>
         <div className="custom-select-wrapper">
@@ -393,7 +390,7 @@ const FreelancerOpenProjects = () => {
             options={locationsList}
             value={selectedLocations}
             onChange={setSelectedLocations}
-            placeholder="Pretražite po lokacijama..."
+            placeholder="Lokacija"
           />
         </div>
         <div className="custom-select-wrapper">
@@ -408,7 +405,7 @@ const FreelancerOpenProjects = () => {
             ]}
             value={selectedJobTypes}
             onChange={setSelectedJobTypes}
-            placeholder="Pretražite po tipu posla..."
+            placeholder="Tip posla"
           />
         </div>
         <div className="custom-select-wrapper">
@@ -421,7 +418,7 @@ const FreelancerOpenProjects = () => {
             ]}
             value={selectedPriceTypes}
             onChange={setSelectedPriceTypes}
-            placeholder="Pretražite po načinu plaćanja..."
+            placeholder="Način isplate"
           />
         </div>
         {isFixedPriceSelected() && (

@@ -83,7 +83,9 @@ const ClientPostedJobs = () => {
                   <h3>{job.jobName}</h3>
                   <p className="job-description-clients">{job.description}</p>
                   <div className="button-group-clients">
-                    <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants ({job.numberOfApplicants})</a>
+                    <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">
+                      View Applicants ({job.numberOfApplicants}) ({job.numberOfRecentApplicants} new)
+                    </a>
                     <div className="bottom-buttons-clients">
                       <button onClick={() => handleDeleteJob(job.id)} className="btn-clients btn-delete-clients">Delete</button>
                       <button onClick={() => handleToggleArchive(job.id, false)} className="btn-clients btn-archive-clients">Archive</button>

@@ -173,6 +173,19 @@ const getArchivedClientJobPostingsCount = async () => {
   }
 };
 
+const getClientJobPostingCount = async (jobId) => {
+  const url = `${API_URL_JOB}/job-applications/${jobId}`;
+
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    console.log("getClientJobPostingCount method, client");
+    return response.data.length; 
+  } catch (error) {
+    console.error(`Error fetching job applications for job ${jobId}`, error);
+    throw error;
+  }
+};
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
@@ -186,6 +199,7 @@ const clientService = {
   unarchiveJobPosting,
   getLiveClientJobPostingsCount,
   getArchivedClientJobPostingsCount,
+  getClientJobPostingCount,
 };
 
 export default clientService;

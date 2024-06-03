@@ -34,9 +34,14 @@ const FreelancerOpenProjects = () => {
   const [budgetTo, setBudgetTo] = useState("");
   const [jobName, setJobName] = useState("");
   const [isRemote, setIsRemote] = useState(false);
-  const [resumeRequiredFilter, setResumeRequiredFilter] = useState(false);
-  const [selectedDateFilter, setSelectedDateFilter] = useState("");
-
+  const resumeRequirementOptions = [
+    { value: "All", label: "Prikazi sve" },
+    { value: "Yes", label: "Da" },
+    { value: "No", label: "Ne" },
+  ]; const [selectedDateFilter, setSelectedDateFilter] = useState("");
+  const [resumeRequirementFilter, setResumeRequirementFilter] = useState(
+    resumeRequirementOptions[0]
+  );
   useEffect(() => {
     UserService.getFreelancerOpenProjects()
       .then((response) => {
@@ -234,8 +239,8 @@ const FreelancerOpenProjects = () => {
     setIsRemote(!isRemote);
   };
 
-  const handleResumeRequiredChange = () => {
-    setResumeRequiredFilter(!resumeRequiredFilter);
+  const handleResumeRequirementChange = (selectedOption) => {
+    setResumeRequirementFilter(selectedOption);
   };
 
   useEffect(() => {
@@ -285,8 +290,8 @@ const FreelancerOpenProjects = () => {
         if (isRemote) {
           queryParams.isRemote = isRemote;
         }
-        if (resumeRequiredFilter !== null) {
-          queryParams.resumeRequired = resumeRequiredFilter;
+        if (resumeRequirementFilter.value !== "All") {
+          queryParams.resumeRequired = resumeRequirementFilter.value === "Yes";
         }
         if (selectedDateFilter === "today") {
           queryParams.dateRange = "today";
@@ -319,7 +324,7 @@ const FreelancerOpenProjects = () => {
   }, [
     jobName,
     isRemote,
-    resumeRequiredFilter,
+    resumeRequirementFilter,
     selectedLocations,
     selectedSkills,
     selectedJobTypes,
@@ -366,13 +371,13 @@ const FreelancerOpenProjects = () => {
             onChange={handleRemoteChange}
           />
         </div>
-        <div className="checkbox-wrapper">
-          <label htmlFor="resume-required-filter">CV obavezan?</label>
-          <input
-            type="checkbox"
+        <div className="select-wrapper">
+          <label htmlFor="resume-required-filter">CV obavezan?:</label>
+          <Select
             id="resume-required-filter"
-            checked={resumeRequiredFilter}
-            onChange={handleResumeRequiredChange}
+            value={resumeRequirementFilter}
+            onChange={handleResumeRequirementChange}
+            options={resumeRequirementOptions}
           />
         </div>
         <div className="custom-select-wrapper">

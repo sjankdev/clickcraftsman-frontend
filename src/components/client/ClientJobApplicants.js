@@ -6,7 +6,20 @@ import { AiOutlineMail, AiOutlineDollar, AiOutlineFilePdf } from 'react-icons/ai
 
 const ClientJobApplicants = () => {
   const { jobId } = useParams();
+  const [jobDetails, setJobDetails] = useState({});
   const [applicants, setApplicants] = useState([]);
+
+  useEffect(() => {
+    console.log("Fetching job details for jobId:", jobId);
+    ClientService.getJobDetails(jobId)
+      .then((response) => {
+        console.log("Received job details:", response);
+        setJobDetails(response);
+      })
+      .catch((error) =>
+        console.error(`Error fetching job details for job ${jobId}`, error)
+      );
+  }, [jobId]);
 
   useEffect(() => {
     console.log("Fetching applicants for jobId:", jobId);
@@ -22,7 +35,7 @@ const ClientJobApplicants = () => {
 
   return (
     <div className="job-applicants-container-cliente">
-      <h2>Job Applicants for Job ID: {jobId}</h2>
+      <h2>Job Applicants for Job: {jobDetails.jobName}</h2>
       {applicants.map((applicant, index) => (
         <div className="job-applicant-cliente" key={index}>
           <h3>
@@ -47,7 +60,6 @@ const ClientJobApplicants = () => {
       ))}
     </div>
   );
-
 };
 
 export default ClientJobApplicants;

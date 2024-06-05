@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
     )
     .required("This field is required!"),
   contactPhone: Yup.string()
-    .matches(/^\+3816[0-9]{7,8}$/, 'Invalid Serbian mobile phone number')
+    .matches(/^\+381\d{8,9}$/, "Please enter a valid Serbian phone number")
     .required("This field is required!"),
   location: Yup.string()
     .required("Please, select your location.")

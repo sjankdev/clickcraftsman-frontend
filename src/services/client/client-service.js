@@ -186,6 +186,19 @@ const getClientJobPostingCount = async (jobId) => {
   }
 };
 
+const getJobDetails = async (jobId) => {
+  const url = `${API_URL_JOB}/details/${jobId}`;
+
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    console.log("getJobDetails method, client");
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching job details for job ${jobId}`, error);
+    throw error;
+  }
+};
+
 const clientService = {
   getClientJobPostings,
   getClientJobApplications,
@@ -200,6 +213,7 @@ const clientService = {
   getLiveClientJobPostingsCount,
   getArchivedClientJobPostingsCount,
   getClientJobPostingCount,
+  getJobDetails,
 };
 
 export default clientService;

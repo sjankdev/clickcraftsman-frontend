@@ -6,6 +6,8 @@ import "../../assets/css/clientProfile.css";
 import ClientService from "../../services/client/client-service";
 import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { AiOutlineGlobal, AiFillLinkedin, AiFillInstagram, AiOutlineBank, AiOutlineTeam, AiOutlineFieldTime, AiFillEdit } from 'react-icons/ai';
+import validationSchemaUpdate from "../../services/utils/validationSchemasUpdate";
+
 const ClientProfile = () => {
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
@@ -14,6 +16,8 @@ const ClientProfile = () => {
   const [profilePictureData, setProfilePictureData] = useState(null);
   const [liveJobPostingCount, setLiveJobPostingCount] = useState(0);
   const [archivedJobPostingCount, setArchivedJobPostingCount] = useState(0);
+  const [validationErrors, setValidationErrors] = useState({});
+
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -106,11 +110,27 @@ const ClientProfile = () => {
       ...prevData,
       [name]: value,
     }));
+    try {
+      const updatedFormData = { ...updateFormData, [name]: value };
+      validationSchemaUpdate.validateSyncAt(name, updatedFormData);
+      setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    } catch (error) {
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: error.message,
+      }));
+    }
   };
 
   const handleUpdateClick = async () => {
     try {
+      validationSchemaUpdate.validateSync(updateFormData, { abortEarly: false });
+
       const { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram } = updateFormData;
+
+      console.log("Updating client data...");
+      console.log("Data to be sent:", { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram });
+
       await axios.post(
         "http://localhost:8080/api/client/update",
         { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram },
@@ -118,6 +138,9 @@ const ClientProfile = () => {
           headers: authHeader(),
         }
       );
+
+      console.log("Client data updated successfully!");
+
       setIsEditing(false);
       const response = await axios.get(
         "http://localhost:8080/api/client/profile",
@@ -127,9 +150,18 @@ const ClientProfile = () => {
       );
       setUserData(response.data);
     } catch (error) {
-      console.error("Error updating client data:", error);
+      if (error.name === "ValidationError") {
+        const errors = {};
+        error.inner.forEach(err => {
+          errors[err.path] = err.message;
+        });
+        setValidationErrors(errors);
+      } else {
+        console.error("Error updating client data:", error);
+      }
     }
   };
+
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -193,6 +225,9 @@ const ClientProfile = () => {
               value={updateFormData.firstName}
               onChange={handleInputChange}
             />
+            {validationErrors.firstName && (
+              <div className="error-message">{validationErrors.firstName}</div>
+            )}
           </div>
           <div className="form-group-clientee1">
             <label htmlFor="lastName">Last Name:</label>
@@ -204,6 +239,9 @@ const ClientProfile = () => {
               value={updateFormData.lastName}
               onChange={handleInputChange}
             />
+            {validationErrors.lastName && (
+              <div className="error-message">{validationErrors.lastName}</div>
+            )}
           </div>
           <div className="form-group-clientee1">
             <label htmlFor="contactPhone">Contact Phone:</label>
@@ -215,6 +253,9 @@ const ClientProfile = () => {
               value={updateFormData.contactPhone}
               onChange={handleInputChange}
             />
+            {validationErrors.contactPhone && (
+              <div className="error-message">{validationErrors.contactPhone}</div>
+            )}
           </div>
           <div className="form-group-clientee1">
             <label htmlFor="location">Location:</label>
@@ -234,9 +275,12 @@ const ClientProfile = () => {
                 </option>
               ))}
             </select>
+            {validationErrors.location && (
+              <div className="error-message">{validationErrors.location}</div>
+            )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyName">Company name</label>
+            <label htmlFor="companyName">Company Name:</label>
             <input
               className="input-field"
               type="text"
@@ -247,7 +291,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyIndustry">Company industry</label>
+            <label htmlFor="companyIndustry">Company Industry:</label>
             <input
               className="input-field"
               type="text"
@@ -258,7 +302,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companySize">Company size</label>
+            <label htmlFor="companySize">Company Size:</label>
             <input
               className="input-field"
               type="text"
@@ -269,7 +313,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyLocation">Company location</label>
+            <label htmlFor="companyLocation">Company location:</label>
             <input
               className="input-field"
               type="text"
@@ -280,7 +324,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="website">Website</label>
+            <label htmlFor="website">Website:</label>
             <input
               className="input-field"
               type="text"
@@ -289,9 +333,12 @@ const ClientProfile = () => {
               value={updateFormData.website}
               onChange={handleInputChange}
             />
+            {validationErrors.website && (
+              <div className="error-message">{validationErrors.website}</div>
+            )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="instagram">Instagram</label>
+            <label htmlFor="instagram">Instagram:</label>
             <input
               className="input-field"
               type="text"
@@ -300,9 +347,12 @@ const ClientProfile = () => {
               value={updateFormData.instagram}
               onChange={handleInputChange}
             />
+            {validationErrors.instagram && (
+              <div className="error-message">{validationErrors.instagram}</div>
+            )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="linkedin">Linkedin</label>
+            <label htmlFor="linkedin">Linkedin:</label>
             <input
               className="input-field"
               type="text"
@@ -311,6 +361,9 @@ const ClientProfile = () => {
               value={updateFormData.linkedin}
               onChange={handleInputChange}
             />
+            {validationErrors.linkedin && (
+              <div className="error-message">{validationErrors.linkedin}</div>
+            )}
           </div>
           <button type="button" className="update-button-clientee1" onClick={handleUpdateClick}>
             Update

@@ -6,7 +6,7 @@ import "../../assets/css/clientProfile.css";
 import ClientService from "../../services/client/client-service";
 import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { AiOutlineGlobal, AiFillLinkedin, AiFillInstagram, AiOutlineBank, AiOutlineTeam, AiOutlineFieldTime, AiFillEdit } from 'react-icons/ai';
-import validationSchemaUpdate from "../../services/utils/validationSchemasUpdate";
+import validationSchemaUpdate from "../../services/utils/validationSchemasUpdateClient";
 
 const ClientProfile = () => {
   const locations = useApiData(

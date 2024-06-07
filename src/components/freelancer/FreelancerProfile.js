@@ -3,26 +3,15 @@ import axios from "axios";
 import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/freelancerProfile.css";
-
-const JobOfferItem = ({ jobOffer }) => {
-  return (
-    <div className="job-offer-item">
-      <div>Offer Date: {jobOffer.offerDate}</div>
-      <div>Message: {jobOffer.messageToFreelancer}</div>
-    </div>
-  );
-};
+import validationSchemaUpdate from "../../services/utils/validationSchemasUpdateFreelancer";
 
 const FreelancerProfile = () => {
-  const [jobOffers, setJobOffers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const locations = useApiData(
     "http://localhost:8080/api/utils/getAllLocations"
   );
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
   const skillsArray = Array.isArray(skills) ? skills : [skills];
-
+  const [validationErrors, setValidationErrors] = useState({});
   const [profilePictureData, setProfilePictureData] = useState(null);
   const [userData, setUserData] = useState({
     firstName: "",
@@ -60,7 +49,6 @@ const FreelancerProfile = () => {
 
         if (response.data.profilePictureData) {
           setProfilePictureData(response.data.profilePictureData);
-        } else {
         }
 
         const freelancerDataWithLocation = {
@@ -77,26 +65,37 @@ const FreelancerProfile = () => {
 
     fetchFreelancerData();
   }, [skillsArray]);
-  const handleInputChange = (e) => {
-    const { name, value, options } = e.target;
-
-    const isMultiSelect = options && options.length > 1;
-    const inputValue = isMultiSelect ? getSelectedOptions(options) : value;
-
-    setUpdateFormData((prevData) => ({
-      ...prevData,
-      [name]: name === "location" ? inputValue[0] : inputValue,
-    }));
-  };
-
-  const getSelectedOptions = (options) => {
-    return Array.from(options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
-  };
 
   const handleEditClick = () => {
     setIsEditing(true);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, options } = e.target;
+
+    let newValue = value;
+
+    if (name === "skills") {
+      newValue = Array.from(options)
+        .filter((option) => option.selected)
+        .map((option) => option.value);
+    }
+
+    setUpdateFormData((prevData) => ({
+      ...prevData,
+      [name]: newValue,
+    }));
+
+    try {
+      const updatedFormData = { ...updateFormData, [name]: newValue };
+      validationSchemaUpdate.validateSyncAt(name, updatedFormData);
+      setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    } catch (error) {
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: error.message,
+      }));
+    }
   };
 
   const handleUpdateClick = async () => {
@@ -137,7 +136,6 @@ const FreelancerProfile = () => {
         }
       );
 
-      console.log("Received updated freelancer profile data:", response.data);
       setUserData(response.data);
     } catch (error) {
       console.error("Error updating freelancer data:", error);
@@ -149,52 +147,64 @@ const FreelancerProfile = () => {
       <div className="profile-header">
         <h2>Freelancer Profile</h2>
       </div>
-      
+
       {isEditing ? (
         <div>
           <div className="form-field">
-            <label>
-              First Name:
-              <input
-                type="text"
-                name="firstName"
-                value={updateFormData.firstName}
-                onChange={handleInputChange}
-              />
-            </label>
+            <label htmlFor="firstName">First Name:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={updateFormData.firstName}
+              onChange={handleInputChange}
+            />
+            {validationErrors.firstName && (
+              <div className="error-message">{validationErrors.firstName}</div>
+            )}
           </div>
           <div className="form-field">
-            <label>
-              Last Name:
-              <input
-                type="text"
-                name="lastName"
-                value={updateFormData.lastName}
-                onChange={handleInputChange}
-              />
-            </label>
+            <label htmlFor="lastName">Last name:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={updateFormData.lastName}
+              onChange={handleInputChange}
+            />
+            {validationErrors.lastName && (
+              <div className="error-message">{validationErrors.firstName}</div>
+            )}
           </div>
           <div className="form-field">
-            <label>
-              About me:
-              <input
-                type="text"
-                name="aboutFreelancer"
-                value={updateFormData.aboutFreelancer}
-                onChange={handleInputChange}
-              />
-            </label>
+            <label htmlFor="aboutFreelancer">About me:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="aboutFreelancer"
+              name="aboutFreelancer"
+              value={updateFormData.aboutFreelancer}
+              onChange={handleInputChange}
+            />
+            {validationErrors.aboutFreelancer && (
+              <div className="error-message">{validationErrors.aboutFreelancer}</div>
+            )}
           </div>
           <div className="form-field">
-            <label>
-              Contact Phone:
-              <input
-                type="text"
-                name="contactPhone"
-                value={updateFormData.contactPhone}
-                onChange={handleInputChange}
-              />
-            </label>
+            <label htmlFor="contactPhone">Contact phone:</label>
+            <input
+              className="input-field"
+              type="text"
+              id="contactPhone"
+              name="contactPhone"
+              value={updateFormData.contactPhone}
+              onChange={handleInputChange}
+            />
+            {validationErrors.contactPhone && (
+              <div className="error-message">{validationErrors.contactPhone}</div>
+            )}
           </div>
           <div className="form-field">
             <label>
@@ -227,22 +237,25 @@ const FreelancerProfile = () => {
             </label>
           </div>
           <div className="form-field">
-            <label>
-              Years of Experience:
-              <input
-                type="number"
-                name="yearsOfExperience"
-                value={updateFormData.yearsOfExperience}
-                onChange={handleInputChange}
-              />
-            </label>
+            <label htmlFor="yearsOfExperience">Years of experience:</label>
+            <input
+              className="input-field"
+              type="number"
+              id="yearsOfExperience"
+              name="yearsOfExperience"
+              value={updateFormData.yearsOfExperience}
+              onChange={handleInputChange}
+            />
+            {validationErrors.yearsOfExperience && (
+              <div className="error-message">{validationErrors.yearsOfExperience}</div>
+            )}
           </div>
           <div className="form-field">
             <label htmlFor="skills">Select Skills:</label>
             <select
               name="skills"
               multiple
-              className="form-control"
+              className={`form-control ${validationErrors.skills ? "is-invalid" : ""}`}
               value={updateFormData.skills}
               onChange={handleInputChange}
             >
@@ -255,6 +268,9 @@ const FreelancerProfile = () => {
                 </option>
               ))}
             </select>
+            {validationErrors.skills && (
+              <div className="invalid-feedback">{validationErrors.skills}</div>
+            )}
           </div>
           <button onClick={handleUpdateClick}>Update</button>
         </div>

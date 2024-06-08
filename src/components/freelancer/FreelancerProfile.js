@@ -175,7 +175,7 @@ const FreelancerProfile = () => {
               onChange={handleInputChange}
             />
             {validationErrors.lastName && (
-              <div className="error-message">{validationErrors.firstName}</div>
+              <div className="error-message">{validationErrors.lastName}</div>
             )}
           </div>
           <div className="form-field">

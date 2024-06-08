@@ -13,7 +13,9 @@ const JobPostForm = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
   const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
-  const locations = useApiData("http://localhost:8080/api/utils/getAllLocations");
+  const locations = useApiData(
+    "http://localhost:8080/api/utils/getAllLocations"
+  );
 
   useEffect(() => {
     UserService.getUserBoard().then(
@@ -21,7 +23,8 @@ const JobPostForm = () => {
         setContent(response.data);
       },
       (error) => {
-        const unauthorizedError = error.response && error.response.status === 401;
+        const unauthorizedError =
+          error.response && error.response.status === 401;
 
         if (unauthorizedError) {
           setErrorMessage("You are not authorized to view this content.");
@@ -73,8 +76,10 @@ const JobPostForm = () => {
       })
       .catch((error) => {
         setErrorMessage(
-          (error.response && error.response.data && error.response.data.message) ||
-          "An error occurred while posting the job."
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            "An error occurred while posting the job."
         );
         setSubmitting(false);
       });
@@ -86,8 +91,12 @@ const JobPostForm = () => {
         <>
           <h2>Post a Job</h2>
           <div className="form-container">
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-            {successMessage && <div className="success-message">{successMessage}</div>}
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
+            {successMessage && (
+              <div className="success-message">{successMessage}</div>
+            )}
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchemaCreateJob}
@@ -95,120 +104,216 @@ const JobPostForm = () => {
               validateOnChange={true}
               validateOnBlur={true}
             >
-              {({ isSubmitting, setFieldValue, values, validateForm }) => (
-                <Form className="form">
-                  <div className="form-row">
-                    <div className="form-section">
-                      <label htmlFor="jobName">Job Name</label>
-                      <Field type="text" id="jobName" name="jobName" />
-                      <ErrorMessage name="jobName" component="div" className="error-message" />
-                    </div>
-                    <div className="form-section">
-                      <label htmlFor="description">Job Description</label>
-                      <Field as="textarea" id="description" name="description" />
-                      <ErrorMessage name="description" component="div" className="error-message" />
-                    </div>
-                  </div>
-                  <div className="form-row">
-                    <div className="form-section">
-                      <label htmlFor="skills">Required Skills:</label>
-                      <Select
-                        options={skills.map((skill) => ({
-                          value: skill.skillName,
-                          label: skill.skillName,
-                        }))}
-                        isMulti
-                        onChange={(selectedOptions) => setFieldValue("selectedSkills", selectedOptions)}
-                      />
-                      <ErrorMessage name="selectedSkills" component="div" className="error-message" />
-                    </div>
-                    <div className="form-section">
-                      <label htmlFor="priceType">Price Type:</label>
-                      <Select
-                        options={[
-                          { value: "PER_HOUR", label: "Per Hour" },
-                          { value: "PER_MONTH", label: "Per Month" },
-                          { value: "FIXED_PRICE", label: "Fixed Price" },
-                        ]}
-                        onChange={(selectedOption) => {
-                          setFieldValue("priceType", selectedOption.value);
-                          setFieldValue("priceRangeFrom", "");
-                          setFieldValue("priceRangeTo", "");
-                          setFieldValue("budget", "");
-                          validateForm();
-                        }}
-                      />
-                      <ErrorMessage name="priceType" component="div" className="error-message" />
-                    </div>
-                    {(values.priceType === "PER_HOUR" || values.priceType === "PER_MONTH") && (
-                      <div className="form-section">
-                        <div className="price-range">
-                          <label htmlFor="priceRangeFrom">Price Range From:</label>
-                          <Field type="number" id="priceRangeFrom" name="priceRangeFrom" />
-                          <ErrorMessage name="priceRangeFrom" component="div" className="error-message" />
-                        </div>
-                        <div className="price-range">
-                          <label htmlFor="priceRangeTo">Price Range To:</label>
-                          <Field type="number" id="priceRangeTo" name="priceRangeTo" />
-                          <ErrorMessage name="priceRangeTo" component="div" className="error-message" />
-                        </div>
-                      </div>
-                    )}
-                    {values.priceType === "FIXED_PRICE" && (
-                      <div className="form-section">
-                        <label htmlFor="budget">Budget:</label>
-                        <Field type="number" id="budget" name="budget" />
-                        <ErrorMessage name="budget" component="div" className="error-message" />
-                      </div>
-                    )}
-                    <div className="form-section">
-                      <label htmlFor="jobType">Job Type:</label>
-                      <Select
-                        options={[
-                          { value: "FULL_TIME", label: "Full Time" },
-                          { value: "PART_TIME", label: "Part Time" },
-                          { value: "CONTRACT", label: "Contract" },
-                          { value: "FREELANCE", label: "Freelance" },
-                          { value: "INTERNSHIP", label: "Internship" },
-                        ]}
-                        onChange={(selectedOption) => setFieldValue("jobType", selectedOption.value)}
-                      />
-                      <ErrorMessage name="jobType" component="div" className="error-message" />
-                    </div>
-                  </div>
-                  <div className="form-row">
-                    <div className="form-section">
-                      <label htmlFor="isRemote">Is Remote?</label>
-                      <Field type="checkbox" id="
+              {({
+                isSubmitting,
+                setFieldValue,
+                setFieldTouched,
+                values,
+                validateForm,
+                touched,
+                errors,
+              }) => {
+                console.log("touched:", touched);
+                console.log("errors:", errors);
 
-isRemote" name="isRemote" onChange={(e) => {
-                          setFieldValue("isRemote", e.target.checked);
-                          setFieldValue("location", "");
-                        }} />
-                      <ErrorMessage name="isRemote" component="div" className="error-message" />
-                      {!values.isRemote && (
-                        <div className="location-section">
-                          <label htmlFor="location">Location:</label>
-                          <Select
-                            options={locations.map((location) => ({
-                              value: location,
-                              label: location,
-                            }))}
-                            onChange={(selectedOption) => setFieldValue("location", selectedOption.value)}
-                          />
-                          <ErrorMessage name="location" component="div" className="error-message" />
+                return (
+                  <Form className="form">
+                    <div className="form-row">
+                      <div className="form-section">
+                        <label htmlFor="jobName">Job Name</label>
+                        <Field type="text" id="jobName" name="jobName" />
+                        <ErrorMessage
+                          name="jobName"
+                          component="div"
+                          className="error-message"
+                        />
+                      </div>
+                      <div className="form-section">
+                        <label htmlFor="description">Job Description</label>
+                        <Field
+                          as="textarea"
+                          id="description"
+                          name="description"
+                        />
+                        <ErrorMessage
+                          name="description"
+                          component="div"
+                          className="error-message"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-section">
+                        <label htmlFor="skills">Required Skills:</label>
+                        <Select
+                          options={skills.map((skill) => ({
+                            value: skill.skillName,
+                            label: skill.skillName,
+                          }))}
+                          isMulti
+                          onChange={(selectedOptions) =>
+                            setFieldValue("selectedSkills", selectedOptions)
+                          }
+                        />
+                        <ErrorMessage
+                          name="selectedSkills"
+                          component="div"
+                          className="error-message"
+                        />
+                      </div>
+                      <div className="form-section">
+                        <label htmlFor="priceType">Price Type:</label>
+                        <Select
+                          options={[
+                            { value: "PER_HOUR", label: "Per Hour" },
+                            { value: "PER_MONTH", label: "Per Month" },
+                            { value: "FIXED_PRICE", label: "Fixed Price" },
+                          ]}
+                          onChange={(selectedOption) => {
+                            setFieldValue("priceType", selectedOption.value);
+                            setFieldValue("priceRangeFrom", "");
+                            setFieldValue("priceRangeTo", "");
+                            setFieldValue("budget", "");
+                            setFieldTouched("priceType", true, false);
+                            validateForm();
+                          }}
+                          onBlur={() => {
+                            setFieldTouched("priceType", true, false);
+                            validateForm();
+                          }}
+                        />
+
+                        {touched.priceType && errors.priceType && (
+                          <div className="error-message">
+                            {errors.priceType}
+                          </div>
+                        )}
+                      </div>
+                      {(values.priceType === "PER_HOUR" ||
+                        values.priceType === "PER_MONTH") && (
+                        <div className="form-section">
+                          <div className="price-range">
+                            <label htmlFor="priceRangeFrom">
+                              Price Range From:
+                            </label>
+                            <Field
+                              type="number"
+                              id="priceRangeFrom"
+                              name="priceRangeFrom"
+                            />
+                            <ErrorMessage
+                              name="priceRangeFrom"
+                              component="div"
+                              className="error-message"
+                            />
+                          </div>
+                          <div className="price-range">
+                            <label htmlFor="priceRangeTo">
+                              Price Range To:
+                            </label>
+                            <Field
+                              type="number"
+                              id="priceRangeTo"
+                              name="priceRangeTo"
+                            />
+                            <ErrorMessage
+                              name="priceRangeTo"
+                              component="div"
+                              className="error-message"
+                            />
+                          </div>
                         </div>
                       )}
+                      {values.priceType === "FIXED_PRICE" && (
+                        <div className="form-section">
+                          <label htmlFor="budget">Budget:</label>
+                          <Field type="number" id="budget" name="budget" />
+                          <ErrorMessage
+                            name="budget"
+                            component="div"
+                            className="error-message"
+                          />
+                        </div>
+                      )}
+                      <div className="form-section">
+                        <label htmlFor="jobType">Job Type:</label>
+                        <Select
+                          options={[
+                            { value: "FULL_TIME", label: "Full Time" },
+                            { value: "PART_TIME", label: "Part Time" },
+                            { value: "CONTRACT", label: "Contract" },
+                            { value: "FREELANCE", label: "Freelance" },
+                            { value: "INTERNSHIP", label: "Internship" },
+                          ]}
+                          onChange={(selectedOption) =>
+                            setFieldValue("jobType", selectedOption.value)
+                          }
+                        />
+                        <ErrorMessage
+                          name="jobType"
+                          component="div"
+                          className="error-message"
+                        />
+                      </div>
                     </div>
-                    <div className="form-section">
-                      <label htmlFor="resumeRequired">Resume Required?</label>
-                      <Field type="checkbox" id="resumeRequired" name="resumeRequired" />
-                      <ErrorMessage name="resumeRequired" component="div" className="error-message" />
+                    <div className="form-row">
+                      <div className="form-section">
+                        <label htmlFor="isRemote">Is Remote?</label>
+                        <Field
+                          type="checkbox"
+                          id="
+isRemote"
+                          name="isRemote"
+                          onChange={(e) => {
+                            setFieldValue("isRemote", e.target.checked);
+                            setFieldValue("location", "");
+                          }}
+                        />
+                        <ErrorMessage
+                          name="isRemote"
+                          component="div"
+                          className="error-message"
+                        />
+                        {!values.isRemote && (
+                          <div className="location-section">
+                            <label htmlFor="location">Location:</label>
+                            <Select
+                              options={locations.map((location) => ({
+                                value: location,
+                                label: location,
+                              }))}
+                              onChange={(selectedOption) =>
+                                setFieldValue("location", selectedOption.value)
+                              }
+                            />
+                            <ErrorMessage
+                              name="location"
+                              component="div"
+                              className="error-message"
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <div className="form-section">
+                        <label htmlFor="resumeRequired">Resume Required?</label>
+                        <Field
+                          type="checkbox"
+                          id="resumeRequired"
+                          name="resumeRequired"
+                        />
+                        <ErrorMessage
+                          name="resumeRequired"
+                          component="div"
+                          className="error-message"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <button type="submit" disabled={isSubmitting}>Post Job</button>
-                </Form>
-              )}
+                    <button type="submit" disabled={isSubmitting}>
+                      Post Job
+                    </button>
+                  </Form>
+                );
+              }}
             </Formik>
           </div>
         </>

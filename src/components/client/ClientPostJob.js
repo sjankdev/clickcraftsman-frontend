@@ -261,8 +261,7 @@ const JobPostForm = () => {
                         <label htmlFor="isRemote">Is Remote?</label>
                         <Field
                           type="checkbox"
-                          id="
-isRemote"
+                          id="isRemote"
                           name="isRemote"
                           onChange={(e) => {
                             setFieldValue("isRemote", e.target.checked);

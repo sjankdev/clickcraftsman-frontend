@@ -4,6 +4,7 @@ import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/freelancerProfile.css";
 import validationSchemaUpdate from "../../services/utils/validationSchemasUpdateFreelancer";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const FreelancerProfile = () => {
   const locations = useApiData(
@@ -251,7 +252,7 @@ const FreelancerProfile = () => {
                 {validationErrors.yearsOfExperience}
               </div>
             )}
-          </div>
+          </div>{" "}
           <div className="form-field">
             <label htmlFor="skills">Select Skills:</label>
             <select
@@ -295,20 +296,20 @@ const FreelancerProfile = () => {
           </div>
           <div className="details">
             <div className="detail">
+              <i className="fas fa-book"></i>
               <span>{userData.skills.join(", ")}</span>
-              <label>Skills</label>
             </div>
             <div className="detail">
-              <span>{userData.yearsOfExperience}</span>
-              <label>Years of experience</label>
+              <i className="fas fa-clock"></i>
+              <span>Years of Experience: {userData.yearsOfExperience}</span>
             </div>
             <div className="detail">
+              <i className="fas fa-suitcase"></i>
               <span>{userData.portfolio}</span>
-              <label>Portfolio</label>
             </div>
             <div className="detail">
+              <i className="fas fa-phone-alt"></i>
               <span>{userData.contactPhone}</span>
-              <label>Contact phone</label>
             </div>
           </div>
           <button className="show-more-btn" onClick={handleEditClick}>

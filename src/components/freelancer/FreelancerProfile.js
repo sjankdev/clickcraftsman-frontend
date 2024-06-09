@@ -291,7 +291,10 @@ const FreelancerProfile = () => {
             <h2>
               {userData.firstName} {userData.lastName}
             </h2>
-            <p>{userData.location}</p>
+            <p>
+              <i className="fas fa-map-marker-alt"></i>{" "}
+              <strong>{userData.location}</strong>
+            </p>
             <p>{userData.aboutFreelancer}</p>
           </div>
           <div className="details">

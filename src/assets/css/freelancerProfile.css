@@ -1,7 +1,7 @@
 .profile-card {
   width: 100%;
   max-width: 600px;
-  margin: 50px auto;
+  margin: 150px auto 50px auto;
   padding: 30px 20px;
   background: linear-gradient(to bottom, #fff, #f9f9f9);
   border-radius: 15px;
@@ -10,8 +10,6 @@
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #333;
   position: relative;
-  overflow: hidden;
-  padding-top: 100px;
 }
 
 .profile-card::before {
@@ -27,12 +25,7 @@
 }
 
 .profile-picture {
-  position: relative;
-  top: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: -60px;
-  z-index: 1;
+  margin-top: -100px;
 }
 
 .profile-picture img {
@@ -41,10 +34,6 @@
   border-radius: 50%;
   border: 5px solid #fff;
   object-fit: cover;
-}
-
-.profile-info {
-  margin-bottom: 20px;
 }
 
 .profile-info h2 {
@@ -57,6 +46,24 @@
   font-size: 14px;
   color: #777;
   margin: 0;
+}
+
+.form-field {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
 }
 
 .details {
@@ -89,24 +96,6 @@ button {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
   margin: 10px;
-}
-
-.connect-btn {
-  background-color: #ff416c;
-  color: #fff;
-}
-
-.connect-btn:hover {
-  background-color: #e12c55;
-}
-
-.message-btn {
-  background-color: #ff4b2b;
-  color: #fff;
-}
-
-.message-btn:hover {
-  background-color: #e03a1e;
 }
 
 .show-more-btn {

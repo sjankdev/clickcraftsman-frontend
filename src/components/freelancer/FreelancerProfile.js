@@ -144,10 +144,6 @@ const FreelancerProfile = () => {
 
   return (
     <div className="freelancer-profile">
-      <div className="profile-header">
-        <h2>Freelancer Profile</h2>
-      </div>
-
       {isEditing ? (
         <div>
           <div className="form-field">
@@ -189,7 +185,9 @@ const FreelancerProfile = () => {
               onChange={handleInputChange}
             />
             {validationErrors.aboutFreelancer && (
-              <div className="error-message">{validationErrors.aboutFreelancer}</div>
+              <div className="error-message">
+                {validationErrors.aboutFreelancer}
+              </div>
             )}
           </div>
           <div className="form-field">
@@ -203,7 +201,9 @@ const FreelancerProfile = () => {
               onChange={handleInputChange}
             />
             {validationErrors.contactPhone && (
-              <div className="error-message">{validationErrors.contactPhone}</div>
+              <div className="error-message">
+                {validationErrors.contactPhone}
+              </div>
             )}
           </div>
           <div className="form-field">
@@ -247,7 +247,9 @@ const FreelancerProfile = () => {
               onChange={handleInputChange}
             />
             {validationErrors.yearsOfExperience && (
-              <div className="error-message">{validationErrors.yearsOfExperience}</div>
+              <div className="error-message">
+                {validationErrors.yearsOfExperience}
+              </div>
             )}
           </div>
           <div className="form-field">
@@ -255,7 +257,9 @@ const FreelancerProfile = () => {
             <select
               name="skills"
               multiple
-              className={`form-control ${validationErrors.skills ? "is-invalid" : ""}`}
+              className={`form-control ${
+                validationErrors.skills ? "is-invalid" : ""
+              }`}
               value={updateFormData.skills}
               onChange={handleInputChange}
             >
@@ -276,49 +280,38 @@ const FreelancerProfile = () => {
         </div>
       ) : (
         <div className="profile-card">
-          {profilePictureData && (
-            <div className="profile-picture">
-              <img
-                src={`data:image/png;base64,${profilePictureData}`}
-                alt="Profile"
-              />
-            </div>
-          )}
+          <div className="profile-picture">
+            <img
+              src={`data:image/png;base64,${profilePictureData}`}
+              alt="Profile"
+            />
+          </div>
           <div className="profile-info">
-            <div className="data-field">
-              <div className="field-label">First Name:</div>
-              <div className="field-value">{userData.firstName}</div>
+            <h2>
+              {userData.firstName} {userData.lastName}
+            </h2>
+            <p>{userData.location}</p>
+            <p>{userData.aboutFreelancer}</p>
+          </div>
+          <div className="details">
+            <div className="detail">
+              <span>{userData.skills.join(", ")}</span>
+              <label>Skills</label>
             </div>
-            <div className="data-field">
-              <div className="field-label">Last Name:</div>
-              <div className="field-value">{userData.lastName}</div>
+            <div className="detail">
+              <span>{userData.yearsOfExperience}</span>
+              <label>Years of experience</label>
             </div>
-            <div className="data-field">
-              <div className="field-label">About me:</div>
-              <div className="field-value">{userData.aboutFreelancer}</div>
+            <div className="detail">
+              <span>{userData.portfolio}</span>
+              <label>Portfolio</label>
             </div>
-            <div className="data-field">
-              <div className="field-label">Contact Phone:</div>
-              <div className="field-value">{userData.contactPhone}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Location:</div>
-              <div className="field-value">{userData.location}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Portfolio:</div>
-              <div className="field-value">{userData.portfolio}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Years of Experience:</div>
-              <div className="field-value">{userData.yearsOfExperience}</div>
-            </div>
-            <div className="data-field">
-              <div className="field-label">Skills:</div>
-              <div className="field-value">{userData.skills.join(", ")}</div>
+            <div className="detail">
+              <span>{userData.contactPhone}</span>
+              <label>Contact phone</label>
             </div>
           </div>
-          <button className="edit-btn" onClick={handleEditClick}>
+          <button className="show-more-btn" onClick={handleEditClick}>
             Edit
           </button>
         </div>

@@ -8,9 +8,9 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const FreelancerProfile = () => {
   const locations = useApiData(
-    "http://localhost:8080/api/utils/getAllLocations"
+    "https://clickcraftsman-frontend.vercel.app/api/utils/getAllLocations"
   );
-  const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
+  const skills = useApiData("https://clickcraftsman-frontend.vercel.app/api/utils/getAllSkills");
   const skillsArray = Array.isArray(skills) ? skills : [skills];
   const [validationErrors, setValidationErrors] = useState({});
   const [profilePictureData, setProfilePictureData] = useState(null);
@@ -42,7 +42,7 @@ const FreelancerProfile = () => {
     const fetchFreelancerData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/freelancer/profile",
+          "https://clickcraftsman-frontend.vercel.app/api/freelancer/profile",
           {
             headers: authHeader(),
           }
@@ -121,7 +121,7 @@ const FreelancerProfile = () => {
       };
 
       await axios.post(
-        "http://localhost:8080/api/freelancer/update",
+        "https://clickcraftsman-frontend.vercel.app/api/freelancer/update",
         updatedData,
         {
           headers: authHeader(),
@@ -131,7 +131,7 @@ const FreelancerProfile = () => {
       setIsEditing(false);
 
       const response = await axios.get(
-        "http://localhost:8080/api/freelancer/profile",
+        "https://clickcraftsman-frontend.vercel.app/api/freelancer/profile",
         {
           headers: authHeader(),
         }

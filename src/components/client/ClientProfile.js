@@ -10,7 +10,7 @@ import validationSchemaUpdate from "../../services/utils/validationSchemasUpdate
 
 const ClientProfile = () => {
   const locations = useApiData(
-    "http://localhost:8080/api/utils/getAllLocations"
+    "https://clickcraftsman-frontend.vercel.app/api/utils/getAllLocations"
   );
 
   const [profilePictureData, setProfilePictureData] = useState(null);
@@ -68,7 +68,7 @@ const ClientProfile = () => {
     const fetchClientData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/client/profile",
+          "https://clickcraftsman-frontend.vercel.app/api/client/profile",
           {
             headers: authHeader(),
           }
@@ -132,7 +132,7 @@ const ClientProfile = () => {
       console.log("Data to be sent:", { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram });
 
       await axios.post(
-        "http://localhost:8080/api/client/update",
+        "https://clickcraftsman-frontend.vercel.app/api/client/update",
         { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram },
         {
           headers: authHeader(),
@@ -143,7 +143,7 @@ const ClientProfile = () => {
 
       setIsEditing(false);
       const response = await axios.get(
-        "http://localhost:8080/api/client/profile",
+        "https://clickcraftsman-frontend.vercel.app/api/client/profile",
         {
           headers: authHeader(),
         }

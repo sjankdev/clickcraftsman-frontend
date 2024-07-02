@@ -10,9 +10,9 @@ const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const locations = useApiData(
-    "http://localhost:8080/api/utils/getAllLocations"
+    "https://clickcraftsman-frontend.vercel.app/api/utils/getAllLocations"
   );
-  const skills = useApiData("http://localhost:8080/api/utils/getAllSkills");
+  const skills = useApiData("https://clickcraftsman-frontend.vercel.app/api/utils/getAllSkills");
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();

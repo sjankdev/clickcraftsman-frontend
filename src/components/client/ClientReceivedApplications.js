@@ -68,7 +68,7 @@ const ClientReceivedApplications = () => {
                       <p>Applied On: {application.formattedApplicationTime}</p>
                     </div>
                     {application.hasResume ? (
-                      <a href={`http://localhost:8080/api/job/resume/${application.id}`} download className="resume-download-clienetee">
+                      <a href={`https://clickcraftsman-frontend.vercel.app/api/job/resume/${application.id}`} download className="resume-download-clienetee">
                         Download Resume <AiOutlineFilePdf />
                       </a>
                     ) : (

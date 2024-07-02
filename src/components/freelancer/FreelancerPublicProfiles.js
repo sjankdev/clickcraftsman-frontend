@@ -23,7 +23,7 @@ const FreelancerPublicProfiles = () => {
     const fetchSkills = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/utils/getAllSkills"
+          "https://clickcraftsman-frontend.vercel.app/api/utils/getAllSkills"
         );
         const formattedSkills = response.data.map((skill) => ({
           value: skill.id,
@@ -38,7 +38,7 @@ const FreelancerPublicProfiles = () => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/utils/getAllLocations"
+          "https://clickcraftsman-frontend.vercel.app/api/utils/getAllLocations"
         );
         const formattedLocations = response.data.map((location) => ({
           value: location,
@@ -74,7 +74,7 @@ const FreelancerPublicProfiles = () => {
           queryParams.yearsOfExperienceRange = yearsOfExperienceRange;
         }
         const response = await axios.get(
-          "http://localhost:8080/api/freelancer/search",
+          "https://clickcraftsman-frontend.vercel.app/api/freelancer/search",
           { params: queryParams }
         );
         if (isMounted) {

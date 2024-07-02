@@ -1,0 +1,50 @@
+.public-profile-detail-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.profile-picture-details {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  border: 5px solid #fff;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+.profile-info {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.profile-info:last-child {
+  margin-bottom: 0;
+}
+
+.profile-info strong {
+  color: #333;
+  font-weight: bold;
+}
+
+.profile-info a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.profile-info a:hover {
+  color: #0056b3;
+}

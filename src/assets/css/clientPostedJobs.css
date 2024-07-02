@@ -1,0 +1,94 @@
+.container-clients {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.job-postings-clients,
+.archived-job-postings-clients {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.job-card-clients {
+  width: calc(33.33% - 20px);
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.job-card-clients:hover {
+  transform: translateY(-5px);
+}
+
+.button-group-clients {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.bottom-buttons-clients {
+  margin-top: auto;
+  display: flex;
+}
+
+.btn-clients {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none !important;
+}
+
+.btn-view-clients {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-delete-clients {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-archive-clients {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-unarchive-clients {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.job-description-clients {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 992px) {
+  .job-card-clients {
+    width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .job-card-clients {
+    width: calc(50% - 20px);
+  }
+
+  @media (max-width: 576px) {
+    .job-card-clients {
+      width: calc(100% - 20px);
+    }
+  }
+}

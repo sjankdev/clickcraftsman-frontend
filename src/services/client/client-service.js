@@ -1,8 +1,8 @@
 import axios from "axios";
 import authHeader from "../security/auth-header";
 
-const API_URL_JOB = "https://clickcraftsman-backend.vercel.app/api/job";
-const API_URL_CLIENT = "https://clickcraftsman-backend.vercel.app/api/client";
+const API_URL_JOB = "https://clickcraftsman-frontend.vercel.app/api/job";
+const API_URL_CLIENT = "https://clickcraftsman-frontend.vercel.app/api/client";
 
 const getClientJobPostings = async () => {
   const url = `${API_URL_JOB}/client-job-postings`;
@@ -44,7 +44,7 @@ const getJobApplicationsForJob = async (jobId) => {
 };
 
 const getPublicProfiles = async (freelancerId) => {
-  const url = `https://clickcraftsman-backend.vercel.app/api/freelancer/${freelancerId}`;
+  const url = `https://clickcraftsman-frontend.vercel.app/api/freelancer/${freelancerId}`;
 
   try {
     const response = await axios.get(url, { headers: authHeader() });

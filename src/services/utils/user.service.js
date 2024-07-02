@@ -1,8 +1,8 @@
 import axios from "axios";
 import authHeader from "../security/auth-header";
 
-const API_URL = "https://clickcraftsman-frontend.vercel.app/api/test/";
-const API_URL_JOB = "https://clickcraftsman-frontend.vercel.app/api/job";
+const API_URL = "https://clickcraftsman-backend-latest.onrender.com/api/test/";
+const API_URL_JOB = "https://clickcraftsman-backend-latest.onrender.com/api/job";
 
 const getPublicContent = () => {
   return axios.get(API_URL + "all");

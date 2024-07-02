@@ -79,7 +79,7 @@ const FreelancerOpenProjects = () => {
     const fetchSkillsAndLocations = async () => {
       try {
         const skillsResponse = await axios.get(
-          "https://clickcraftsman-frontend.vercel.app/api/utils/getAllSkills"
+          "https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllSkills"
         );
         const formattedSkills = skillsResponse.data.map((skill) => ({
           value: skill.id,
@@ -88,7 +88,7 @@ const FreelancerOpenProjects = () => {
         setSkillsList(formattedSkills);
 
         const locationsResponse = await axios.get(
-          "https://clickcraftsman-frontend.vercel.app/api/utils/getAllLocations"
+          "https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllLocations"
         );
         const formattedLocations = locationsResponse.data.map((location) => ({
           value: location,
@@ -306,7 +306,7 @@ const FreelancerOpenProjects = () => {
         }
 
         const queryString = new URLSearchParams(queryParams).toString();
-        const url = `https://clickcraftsman-frontend.vercel.app/api/job/searchJobs?${queryString}`;
+        const url = `https://clickcraftsman-backend-latest.onrender.com/api/job/searchJobs?${queryString}`;
         const response = await axios.get(url);
         if (isMounted) {
           setContent(response.data);

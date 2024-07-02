@@ -1,8 +1,8 @@
 import axios from "axios";
 import authHeader from "../security/auth-header";
 
-const API_URL_JOB = "https://clickcraftsman-frontend.vercel.app/api/job";
-const API_URL_FREELANCER = "https://clickcraftsman-frontend.vercel.app/api/freelancer";
+const API_URL_JOB = "https://clickcraftsman-backend-latest.onrender.com/api/job";
+const API_URL_FREELANCER = "https://clickcraftsman-backend-latest.onrender.com/api/freelancer";
 
 const applyForJob = async (jobId, applicationData) => {
   const url = `${API_URL_JOB}/apply/${jobId}`;

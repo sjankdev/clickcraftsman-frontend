@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://clickcraftsman-frontend.vercel.app/api/auth/";
+const API_URL = "https://clickcraftsman-backend-latest.onrender.com/api/auth/";
 
 const register = (
   email,

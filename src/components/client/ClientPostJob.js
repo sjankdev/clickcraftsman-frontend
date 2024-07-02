@@ -12,9 +12,9 @@ const JobPostForm = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [content, setContent] = useState("");
-  const skills = useApiData("https://clickcraftsman-frontend.vercel.app/api/utils/getAllSkills");
+  const skills = useApiData("https://clickcraftsman-backend.vercel.app/api/utils/getAllSkills");
   const locations = useApiData(
-    "https://clickcraftsman-frontend.vercel.app/api/utils/getAllLocations"
+    "https://clickcraftsman-backend.vercel.app/api/utils/getAllLocations"
   );
 
   useEffect(() => {

@@ -52,7 +52,7 @@ const ClientJobApplicants = () => {
           <p>{applicant.messageToClient}</p>
           <p>Applied On: {applicant.formattedApplicationTime}</p>
           {applicant.hasResume && (
-            <a href={`https://clickcraftsman-frontend.vercel.app/api/job/resume/${applicant.id}`} download className="resume-download-cliente">
+            <a href={`https://clickcraftsman-backend.vercel.app/api/job/resume/${applicant.id}`} download className="resume-download-cliente">
               Download Resume <AiOutlineFilePdf />
             </a>
           )}

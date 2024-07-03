@@ -14,14 +14,19 @@ const ClientPostedJobs = () => {
     const fetchData = async () => {
       try {
         const response = await ClientService.getClientJobPostings();
-        const activeJobs = response.filter(job => !job.archived);
-        const archivedJobs = response.filter(job => job.archived);
+        const activeJobs = response.filter((job) => !job.archived);
+        const archivedJobs = response.filter((job) => job.archived);
         setJobPostings(activeJobs || []);
         setArchivedJobPostings(archivedJobs || []);
         setLoading(false);
       } catch (error) {
-        const unauthorizedError = error.response && error.response.status === 401;
-        setErrorMessage(unauthorizedError ? "You are not authorized to view this content." : "An unexpected error occurred.");
+        const unauthorizedError =
+          error.response && error.response.status === 401;
+        setErrorMessage(
+          unauthorizedError
+            ? "You are not authorized to view this content."
+            : "An unexpected error occurred."
+        );
         setLoading(false);
       }
     };
@@ -35,32 +40,42 @@ const ClientPostedJobs = () => {
     if (window.confirm("Are you sure you want to delete this job posting?")) {
       try {
         await ClientService.deleteJobPosting(jobId);
-        setJobPostings(jobPostings.filter(job => job.id !== jobId));
+        setJobPostings(jobPostings.filter((job) => job.id !== jobId));
       } catch (error) {
-        console.error('Error deleting job posting:', error);
+        console.error("Error deleting job posting:", error);
       }
     }
   };
 
   const handleToggleArchive = async (jobId, isArchived) => {
-    const confirmMessage = isArchived ? "Are you sure you want to unarchive this job posting?" : "Are you sure you want to archive this job posting?";
+    const confirmMessage = isArchived
+      ? "Are you sure you want to unarchive this job posting?"
+      : "Are you sure you want to archive this job posting?";
     if (window.confirm(confirmMessage)) {
       try {
         if (isArchived) {
           await ClientService.unarchiveJobPosting(jobId);
-          const updatedJobPostings = jobPostings.filter(job => job.id !== jobId);
-          const unarchivedJob = archivedJobPostings.find(job => job.id === jobId);
+          const updatedJobPostings = jobPostings.filter(
+            (job) => job.id !== jobId
+          );
+          const unarchivedJob = archivedJobPostings.find(
+            (job) => job.id === jobId
+          );
           setJobPostings([...updatedJobPostings, unarchivedJob]);
-          setArchivedJobPostings(archivedJobPostings.filter(job => job.id !== jobId));
+          setArchivedJobPostings(
+            archivedJobPostings.filter((job) => job.id !== jobId)
+          );
         } else {
           await ClientService.archiveJobPosting(jobId);
-          const updatedJobPostings = jobPostings.filter(job => job.id !== jobId);
-          const archivedJob = jobPostings.find(job => job.id === jobId);
+          const updatedJobPostings = jobPostings.filter(
+            (job) => job.id !== jobId
+          );
+          const archivedJob = jobPostings.find((job) => job.id === jobId);
           setJobPostings(updatedJobPostings);
           setArchivedJobPostings([...archivedJobPostings, archivedJob]);
         }
       } catch (error) {
-        console.error('Error toggling archive status:', error);
+        console.error("Error toggling archive status:", error);
       }
     }
   };
@@ -72,9 +87,7 @@ const ClientPostedJobs = () => {
           <h2>My Job Postings</h2>
           {loading && <div>Loading...</div>}
           {errorMessage && !loading && (
-            <div className="error-clients">
-              Error: {errorMessage}
-            </div>
+            <div className="error-clients">Error: {errorMessage}</div>
           )}
           {jobPostings.length > 0 ? (
             <div className="job-postings-clients">
@@ -83,12 +96,26 @@ const ClientPostedJobs = () => {
                   <h3>{job.jobName}</h3>
                   <p className="job-description-clients">{job.description}</p>
                   <div className="button-group-clients">
-                    <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">
-                      View Applicants ({job.numberOfApplicants}) ({job.numberOfRecentApplicants} new)
-                    </a>
+                    <Link
+                      to={`/client/job/${job.id}`}
+                      className="view-applicants-clients btn-clients btn-view-clients"
+                    >
+                      View Applicants ({job.numberOfApplicants}) (
+                      {job.numberOfRecentApplicants} new)
+                    </Link>
                     <div className="bottom-buttons-clients">
-                      <button onClick={() => handleDeleteJob(job.id)} className="btn-clients btn-delete-clients">Delete</button>
-                      <button onClick={() => handleToggleArchive(job.id, false)} className="btn-clients btn-archive-clients">Archive</button>
+                      <button
+                        onClick={() => handleDeleteJob(job.id)}
+                        className="btn-clients btn-delete-clients"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => handleToggleArchive(job.id, false)}
+                        className="btn-clients btn-archive-clients"
+                      >
+                        Archive
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -112,9 +139,19 @@ const ClientPostedJobs = () => {
                     <h3>{job.jobName}</h3>
                     <p className="job-description-clients">{job.description}</p>
                     <div className="button-group-clients">
-                      <a href={`/client/job/${job.id}`} className="view-applicants-clients btn-clients btn-view-clients">View Applicants ({job.numberOfApplicants})</a>
+                      <Link
+                        to={`/client/job/${job.id}`}
+                        className="view-applicants-clients btn-clients btn-view-clients"
+                      >
+                        View Applicants ({job.numberOfApplicants})
+                      </Link>
                       <div className="bottom-buttons-clients">
-                        <button onClick={() => handleToggleArchive(job.id, true)} className="btn-clients btn-unarchive-clients">Unarchive</button>
+                        <button
+                          onClick={() => handleToggleArchive(job.id, true)}
+                          className="btn-clients btn-unarchive-clients"
+                        >
+                          Unarchive
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -130,7 +167,6 @@ const ClientPostedJobs = () => {
       )}
     </div>
   );
-
 };
 
 export default ClientPostedJobs;

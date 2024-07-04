@@ -1,10 +1,9 @@
 .navbar {
   background-color: #343a40;
-}
-
-.navbar-brand {
-  color: #ffffff;
-  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
 }
 
 .navbar-toggler {
@@ -24,25 +23,31 @@
   border-radius: 1px;
 }
 
-.navbar-toggler-icon + .navbar-toggler-icon {
-  margin-top: 4px;
+.navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.navbar-nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 
 .navbar-nav .nav-link {
   color: #ffffff;
+  margin-left: 20px;
 }
 
 .navbar-nav .nav-link:hover {
   color: #adb5bd;
 }
 
-.container {
-  padding-top: 20px;
-}
-
 @media (max-width: 768px) {
   .navbar-nav {
     flex-direction: column;
+    text-align: center;
+    margin-left: 0;
   }
 
   .navbar-nav .nav-item {

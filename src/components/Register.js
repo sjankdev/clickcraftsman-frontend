@@ -27,21 +27,21 @@ const Register = () => {
     lastName: "",
     contactPhone: "",
     location: "",
-    portfolio: "",
-    yearsOfExperience: 0,
     profilePicture: "",
+    portfolio: "", 
+    yearsOfExperience: 0, 
+    aboutFreelancer: "", 
+    skills: [], 
     companyName: "", 
     companyLocation: "", 
     companySize: "", 
     companyIndustry: "", 
-    linkedin: "",
+    linkedin: "", 
     website: "", 
-    instagram: "",
-    aboutFreelancer: "", 
-    skills: [],
+    instagram: "", 
   };
 
-  const handleRegister = (formValue, { resetForm }) => {
+  const handleRegister = (formValues, { resetForm }) => {
     const {
       email,
       password,
@@ -50,40 +50,43 @@ const Register = () => {
       lastName,
       contactPhone,
       location,
+      profilePicture,
       portfolio,
       yearsOfExperience,
+      aboutFreelancer,
       skills,
-      profilePicture,
       companyName,
       companyLocation,
       companySize,
       companyIndustry,
       linkedin,
       website,
-      aboutFreelancer,
-    } = formValue;
+      instagram,
+    } = formValues;
 
     const rolesArray = Array.isArray(role) ? role : [role];
-    const skillsArray = Array.isArray(skills) ? skills : [skills];
 
     const additionalFields = {
       firstName,
       lastName,
       contactPhone,
       location,
-      portfolio,
-      yearsOfExperience,
-      skills: selectedRole === "freelancer" ? skillsArray : [],
       profilePicture,
+      ...(selectedRole === "freelancer" && {
+        portfolio,
+        yearsOfExperience,
+        aboutFreelancer,
+        skills,
+      }),
       ...(selectedRole === "client" && {
         companyName,
         companyLocation,
         companySize,
         companyIndustry,
+        linkedin,
         website,
+        instagram,
       }),
-      ...(selectedRole === "freelancer" && { aboutFreelancer }),
-      linkedin,
     };
 
     dispatch(
@@ -102,8 +105,7 @@ const Register = () => {
       });
   };
 
-  const handleRoleChange = (event) => {
-    const role = event.target.value;
+  const handleRoleChange = (role) => {
     setSelectedRole(role);
   };
 
@@ -129,9 +131,7 @@ const Register = () => {
             <div className="d-flex justify-content-center mb-4">
               <button
                 type="button"
-                onClick={() =>
-                  handleRoleChange({ target: { value: "client" } })
-                }
+                onClick={() => handleRoleChange("client")}
                 className={`btn btn-role ${
                   selectedRole === "client" ? "btn-primary" : "btn-secondary"
                 }`}
@@ -140,9 +140,7 @@ const Register = () => {
               </button>
               <button
                 type="button"
-                onClick={() =>
-                  handleRoleChange({ target: { value: "freelancer" } })
-                }
+                onClick={() => handleRoleChange("freelancer")}
                 className={`btn btn-role ${
                   selectedRole === "freelancer"
                     ? "btn-primary"
@@ -285,37 +283,6 @@ const Register = () => {
 
                       <div className="col-md-12">
                         <div className="form-group">
-                          <label htmlFor="portfolio">Portfolio</label>
-                          <Field
-                            name="portfolio"
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter your portfolio URL"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="yearsOfExperience">
-                            Years of Experience
-                          </label>
-                          <Field
-                            name="yearsOfExperience"
-                            type="number"
-                            className="form-control"
-                            placeholder="Enter years of experience"
-                          />
-                          <ErrorMessage
-                            name="yearsOfExperience"
-                            component="div"
-                            className="alert alert-danger"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
                           <label htmlFor="profilePicture">
                             Upload Profile Picture
                           </label>
@@ -334,120 +301,186 @@ const Register = () => {
                         </div>
                       </div>
 
-                      <div className="col-md-12">
-                        <div className="form-group">
-                          <label htmlFor="skills">Select Skills:</label>
-                          <Field
-                            name="skills"
-                            as="select"
-                            multiple
-                            className="form-control"
-                          >
-                            {skills.map((skill) => (
-                              <option
-                                key={skill.id || skill.skillName}
-                                value={skill.skillName}
-                              >
-                                {skill.skillName}
-                              </option>
-                            ))}
-                          </Field>
-                          <ErrorMessage
-                            name="skills"
-                            component="div"
-                            className="alert alert-danger"
-                          />
-                        </div>
-                      </div>
-
-                      {selectedRole === "client" && (
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label htmlFor="companyName">Company Name</label>
-                            <Field
-                              name="companyName"
-                              type="text"
-                              className="form-control"
-                              placeholder="Enter your company name"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {selectedRole === "client" && (
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label htmlFor="companyLocation">
-                              Company Location
-                            </label>
-                            <Field
-                              name="companyLocation"
-                              type="text"
-                              className="form-control"
-                              placeholder="Enter your company location"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {selectedRole === "client" && (
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label htmlFor="companySize">Company Size</label>
-                            <Field
-                              name="companySize"
-                              type="text"
-                              className="form-control"
-                              placeholder="Enter your company size"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {selectedRole === "client" && (
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label htmlFor="companyIndustry">
-                              Company Industry
-                            </label>
-                            <Field
-                              name="companyIndustry"
-                              type="text"
-                              className="form-control"
-                              placeholder="Enter your company industry"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {selectedRole === "client" && (
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label htmlFor="website">Website</label>
-                            <Field
-                              name="website"
-                              type="text"
-                              className="form-control"
-                              placeholder="Enter your company website"
-                            />
-                          </div>
-                        </div>
-                      )}
-
                       {selectedRole === "freelancer" && (
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label htmlFor="aboutFreelancer">
-                              About Freelancer
-                            </label>
-                            <Field
-                              name="aboutFreelancer"
-                              as="textarea"
-                              className="form-control"
-                              placeholder="Tell us about yourself"
-                            />
+                        <>
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="portfolio">Portfolio</label>
+                              <Field
+                                name="portfolio"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your portfolio URL"
+                              />
+                            </div>
                           </div>
-                        </div>
+
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="yearsOfExperience">
+                                Years of Experience
+                              </label>
+                              <Field
+                                name="yearsOfExperience"
+                                type="number"
+                                className="form-control"
+                                placeholder="Enter years of experience"
+                              />
+                              <ErrorMessage
+                                name="yearsOfExperience"
+                                component="div"
+                                className="alert alert-danger"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="aboutFreelancer">
+                                About Freelancer
+                              </label>
+                              <Field
+                                name="aboutFreelancer"
+                                as="textarea"
+                                className="form-control"
+                                placeholder="Tell us about yourself"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="skills">Select Skills:</label>
+                              <Field
+                                name="skills"
+                                as="select"
+                                multiple
+                                className="form-control"
+                              >
+                                {skills.map((skill) => (
+                                  <option
+                                    key={skill.id || skill.skillName}
+                                    value={skill.skillName}
+                                  >
+                                    {skill.skillName}
+                                  </option>
+                                ))}
+                              </Field>
+                              <ErrorMessage
+                                name="skills"
+                                component="div"
+                                className="alert alert-danger"
+                              />
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {selectedRole === "client" && (
+                        <>
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="companyName">Company Name</label>
+                              <Field
+                                name="companyName"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your company name"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="companyLocation">
+                                Company Location
+                              </label>
+                              <Field
+                                name="companyLocation"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your company location"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="companySize">Company Size</label>
+                              <Field
+                                name="companySize"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your company size"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="companyIndustry">
+                                Company Industry
+                              </label>
+                              <Field
+                                name="companyIndustry"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your company industry"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="linkedin">LinkedIn</label>
+                              <Field
+                                name="linkedin"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your LinkedIn URL"
+                              />
+                              <ErrorMessage
+                                name="linkedin"
+                                component="div"
+                                className="alert alert-danger"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="website">Website</label>
+                              <Field
+                                name="website"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your company website"
+                              />
+                               <ErrorMessage
+                                name="website"
+                                component="div"
+                                className="alert alert-danger"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label htmlFor="instagram">Instagram</label>
+                              <Field
+                                name="instagram"
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your Instagram URL"
+                              />
+                              <ErrorMessage
+                                name="instagram"
+                                component="div"
+                                className="alert alert-danger"
+                              />
+                            </div>
+                          </div>
+                        </>
                       )}
                     </div>
 

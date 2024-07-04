@@ -21,11 +21,30 @@ const Home = () => {
     );
   }, []);
 
+
   return (
     <div className="container">
       <header className="jumbotron">
-        <h3>{content}</h3>
+        <h1>Welcome to Our Platform</h1>
+        <div className="buttons">
+          <a href="/register" className="btn btn-primary mr-2">Sign Up</a>
+          <a href="/login" className="btn btn-outline-primary">Log In</a>
+        </div>
       </header>
+      <section className="features">
+        <div className="feature">
+          <h2>Find Jobs</h2>
+          <p>Explore a variety of freelance opportunities.</p>
+        </div>
+        <div className="feature">
+          <h2>Hire Freelancers</h2>
+          <p>Post your projects and find talented freelancers.</p>
+        </div>
+        <div className="feature">
+          <h2>Grow Your Career</h2>
+          <p>Build your portfolio and skills.</p>
+        </div>
+      </section>
     </div>
   );
 };

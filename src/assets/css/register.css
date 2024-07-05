@@ -4,7 +4,7 @@
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  background-color: #292f36;
 }
 
 .form-group {
@@ -22,14 +22,15 @@
 
 .form-control:focus {
   outline: none;
-  border-color: #4caf50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
+  color: #ffffff;
 }
 
 .form-group .alert {
@@ -42,19 +43,19 @@
   border-radius: 8px;
   border: none;
   transition: background-color 0.3s ease, transform 0.2s ease-out;
-  background-color: #4caf50;
+  background-color: #4ecdc4;
   color: #ffffff;
   cursor: pointer;
 }
 
 .btn-role:hover {
-  background-color: #45a049;
+  background-color: #3da6a0;
   transform: scale(1.05);
 }
 
 .btn-role:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
 }
 
 .btn-role + .btn-role {
@@ -62,12 +63,12 @@
 }
 
 .btn-primary {
-  background-color: #4caf50;
+  background-color: #4ecdc4;
   border: none;
 }
 
 .btn-primary:hover {
-  background-color: #45a049;
+  background-color: #3da6a0;
 }
 
 @media (max-width: 768px) {
@@ -87,9 +88,9 @@
 
 .optional-text {
   font-size: 12px;
-  color: #999; 
+  color: #999;
 }
 
 .text-danger {
-  color: red;
+  color: #ff6b6b;
 }

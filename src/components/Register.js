@@ -134,9 +134,11 @@ const Register = () => {
         >
           {({ setFieldValue, values }) => (
             <Form>
-              <div className="form-group">
-                <label htmlFor="role">Select Role:</label>
-                <div>
+              <div className="form-group text-center">
+                <label htmlFor="role" className="label-role mb-3">
+                  Are you registering as a client or freelancer?
+                </label>
+                <div className="d-flex justify-content-center">
                   <button
                     type="button"
                     onClick={(e) => handleRoleChange(e, setFieldValue)}
@@ -159,7 +161,6 @@ const Register = () => {
                   </button>
                 </div>
               </div>
-
               {values.role === "freelancer" && (
                 <>
                   <div className="row">

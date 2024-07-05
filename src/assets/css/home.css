@@ -40,8 +40,10 @@
 .btn {
   text-decoration: none;
   color: #fff;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 5px;
+  margin-right: 10px;
+  display: inline-block;
 }
 
 .btn-primary {
@@ -56,13 +58,11 @@
 }
 
 @media (max-width: 768px) {
-  .features {
-    flex-direction: column;
-    align-items: center;
+  .buttons {
+    text-align: center;
   }
 
-  .feature {
-    flex: 1 1 100%;
-    margin: 10px 0;
+  .btn {
+    margin-bottom: 10px;
   }
 }

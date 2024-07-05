@@ -21,14 +21,17 @@ const Home = () => {
     );
   }, []);
 
-
   return (
     <div className="container">
       <header className="jumbotron">
         <h1>Welcome to Our Platform</h1>
         <div className="buttons">
-          <a href="/register" className="btn btn-primary mr-2">Sign Up</a>
-          <a href="/login" className="btn btn-outline-primary">Log In</a>
+          <a href="/register" className="btn btn-primary mr-2">
+            Sign Up
+          </a>
+          <a href="/login" className="btn btn-outline-primary">
+            Log In
+          </a>
         </div>
       </header>
       <section className="features">

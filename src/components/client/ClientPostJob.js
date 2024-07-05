@@ -83,7 +83,7 @@ const JobPostForm = () => {
     <div className="job-post-form">
       {userRoles.includes("ROLE_CLIENT") ? (
         <>
-          <h2>Post a Job</h2>
+          <h2>Publish Job</h2>
           <div className="form-container">
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             {successMessage && <div className="success-message">{successMessage}</div>}

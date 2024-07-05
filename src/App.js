@@ -27,21 +27,7 @@ import { logout } from "./slices/auth";
 import EventBus from "./common/EventBus";
 
 const App = () => {
-  const [showFreelancerPublicProfilesBoard, setFreelancerPublicProfilesBoard] =
-    useState(false);
-  const [showFreelancerProfile, setFreelancerProfile] = useState(false);
-  const [showFreelancerProfileDetail, setFreelancerProfileDetail] =
-    useState(false);
-  const [showUserProfileBoard, setUserProfileBoard] = useState(false);
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
-  const [showUserBoard, setUserBoard] = useState(false);
-  const [showFreelancerBoard, setShowFreelancerBoard] = useState(false);
-  const [showFreelancerOpenprojectsBoard, setFreelancerOpenProjectsBoard] =
-    useState(false);
-  const [showClientReceivedApplicationsBoard, setClientReceivedApplications] =
-    useState(false);
-  const [showClientPostedJobsBoard, setClientPostedJobsBoard] = useState(false);
-  const [showClientProfile, setClientProfile] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -51,38 +37,6 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentUser) {
-      setShowFreelancerBoard(currentUser.roles.includes("ROLE_FREELANCER"));
-      setFreelancerProfile(currentUser.roles.includes("ROLE_FREELANCER"));
-      setFreelancerOpenProjectsBoard(
-        currentUser.roles.includes("ROLE_FREELANCER")
-      );
-      setFreelancerProfileDetail(currentUser.roles.includes("ROLE_CLIENT"));
-      setFreelancerPublicProfilesBoard(
-        currentUser.roles.includes("ROLE_CLIENT")
-      );
-      setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
-      setClientProfile(currentUser.roles.includes("ROLE_CLIENT"));
-      setUserBoard(currentUser.roles.includes("ROLE_CLIENT"));
-      setClientPostedJobsBoard(currentUser.roles.includes("ROLE_CLIENT"));
-      setClientReceivedApplications(currentUser.roles.includes("ROLE_CLIENT"));
-      setUserProfileBoard(
-        currentUser.roles.includes("ROLE_CLIENT") ||
-          currentUser.roles.includes("ROLE_FREELANCER")
-      );
-    } else {
-      setFreelancerPublicProfilesBoard(false);
-      setFreelancerProfileDetail(false);
-      setShowAdminBoard(false);
-      setUserBoard(false);
-      setShowFreelancerBoard(false);
-      setFreelancerOpenProjectsBoard(false);
-      setClientReceivedApplications(false);
-      setUserProfileBoard(false);
-      setFreelancerProfile(false);
-      setClientProfile(false);
-    }
-
     EventBus.on("logout", () => {
       logOut();
     });
@@ -90,116 +44,185 @@ const App = () => {
     return () => {
       EventBus.remove("logout");
     };
-  }, [currentUser, logOut]);
+  }, [logOut]);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const handleLinkClick = () => {
+    setShowMenu(false);
+  };
 
   return (
     <Router>
       <div>
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
-            ClickCraftsman
-          </Link>
-          <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
-                Home
-              </Link>
-            </li>
-            {showFreelancerProfile && (
-              <li className="nav-item">
-                <Link to={"/freelancer/my-profile"} className="nav-link">
-                  My profile
-                </Link>
-              </li>
-            )}
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container">
+            <Link to={"/"} className="navbar-brand">
+              ClickCraftsman
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              onClick={toggleMenu}
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
 
-            {showClientProfile && (
-              <li className="nav-item">
-                <Link to={"/client/my-profile"} className="nav-link">
-                  My profile
-                </Link>
-              </li>
-            )}
+            <div
+              className={`collapse navbar-collapse ${showMenu ? "show" : ""}`}
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                  <Link
+                    to={"/home"}
+                    className="nav-link"
+                    onClick={handleLinkClick}
+                  >
+                    Home
+                  </Link>
+                </li>
+                {currentUser &&
+                  currentUser.roles.includes("ROLE_FREELANCER") && (
+                    <li className="nav-item">
+                      <Link
+                        to={"/freelancer/my-profile"}
+                        className="nav-link"
+                        onClick={handleLinkClick}
+                      >
+                        My profile
+                      </Link>
+                    </li>
+                  )}
 
-            {showFreelancerOpenprojectsBoard && (
-              <li className="nav-item">
-                <Link to={"/projects"} className="nav-link">
-                  Projects
-                </Link>
-              </li>
-            )}
-            {showFreelancerProfileDetail && (
-              <li className="nav-item">
-                <Link
-                  to={"/client/freelancer-public-profiles"}
-                  className="nav-link"
-                >
-                  Freelancers
-                </Link>
-              </li>
-            )}
+                {currentUser && currentUser.roles.includes("ROLE_CLIENT") && (
+                  <li className="nav-item">
+                    <Link
+                      to={"/client/my-profile"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      My profile
+                    </Link>
+                  </li>
+                )}
 
-            {showClientPostedJobsBoard && (
-              <li className="nav-item">
-                <Link to={"/client/projects"} className="nav-link">
-                  Projects
-                </Link>
-              </li>
-            )}
+                {currentUser &&
+                  currentUser.roles.includes("ROLE_FREELANCER") && (
+                    <li className="nav-item">
+                      <Link
+                        to={"/projects"}
+                        className="nav-link"
+                        onClick={handleLinkClick}
+                      >
+                        Projects
+                      </Link>
+                    </li>
+                  )}
+                {currentUser && currentUser.roles.includes("ROLE_CLIENT") && (
+                  <li className="nav-item">
+                    <Link
+                      to={"/client/freelancer-public-profiles"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      Freelancers
+                    </Link>
+                  </li>
+                )}
 
-            {showClientReceivedApplicationsBoard && (
-              <li className="nav-item">
-                <Link to={"/client/received-applications"} className="nav-link">
-                  Received applications
-                </Link>
-              </li>
-            )}
+                {currentUser && currentUser.roles.includes("ROLE_CLIENT") && (
+                  <li className="nav-item">
+                    <Link
+                      to={"/client/projects"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      Projects
+                    </Link>
+                  </li>
+                )}
 
-            {showAdminBoard && (
-              <li className="nav-item">
-                <Link to={"/admin"} className="nav-link">
-                  Admin Board
-                </Link>
-              </li>
-            )}
+                {currentUser && currentUser.roles.includes("ROLE_CLIENT") && (
+                  <li className="nav-item">
+                    <Link
+                      to={"/client/received-applications"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      Received applications
+                    </Link>
+                  </li>
+                )}
 
-            {showUserBoard && (
-              <li className="nav-item">
-                <Link to={"/client/post-job"} className="nav-link">
-                  Post a job
-                </Link>
-              </li>
-            )}
+                {currentUser && currentUser.roles.includes("ROLE_ADMIN") && (
+                  <li className="nav-item">
+                    <Link
+                      to={"/admin"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      Admin Board
+                    </Link>
+                  </li>
+                )}
+
+                {currentUser && currentUser.roles.includes("ROLE_CLIENT") && (
+                  <li className="nav-item">
+                    <Link
+                      to={"/client/post-job"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      Post a job
+                    </Link>
+                  </li>
+                )}
+              </ul>
+
+              {currentUser ? (
+                <ul className="navbar-nav ml-auto">
+                  <li className="nav-item">
+                    <Link to={"/"} className="nav-link">
+                      {currentUser.username}
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/login" className="nav-link" onClick={logOut}>
+                      LogOut
+                    </Link>
+                  </li>
+                </ul>
+              ) : (
+                <ul className="navbar-nav ml-auto">
+                  <li className="nav-item">
+                    <Link
+                      to={"/login"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      Login
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link
+                      to={"/register"}
+                      className="nav-link"
+                      onClick={handleLinkClick}
+                    >
+                      Sign Up
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </div>
           </div>
-
-          {currentUser ? (
-            <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/"} className="nav-link">
-                  {currentUser.username}
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/login" className="nav-link" onClick={logOut}>
-                  LogOut
-                </Link>
-              </li>
-            </div>
-          ) : (
-            <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
-                  Login
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
-                  Sign Up
-                </Link>
-              </li>
-            </div>
-          )}
         </nav>
 
         <div className="container mt-3">

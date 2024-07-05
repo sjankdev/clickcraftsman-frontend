@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import UserService from "../services/utils/user.service";
 import "../assets/css/home.css";
 
 const Home = () => {
   const [content, setContent] = useState("");
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   useEffect(() => {
     UserService.getPublicContent().then(
@@ -25,14 +28,16 @@ const Home = () => {
     <div className="container">
       <header className="jumbotron">
         <h1>Welcome to Our Platform</h1>
-        <div className="buttons">
-          <a href="/register" className="btn btn-primary mr-2">
-            Sign Up
-          </a>
-          <a href="/login" className="btn btn-outline-primary">
-            Log In
-          </a>
-        </div>
+        {!isLoggedIn && (
+          <div className="buttons">
+            <Link to="/register" className="btn btn-primary mr-2">
+              Sign Up
+            </Link>
+            <Link to="/login" className="btn btn-outline-primary">
+              Log In
+            </Link>
+          </div>
+        )}
       </header>
       <section className="features">
         <div className="feature">

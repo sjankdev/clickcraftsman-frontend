@@ -305,18 +305,11 @@ const ClientProfile = () => {
           </p>
         </div>
         <div className="jobs-info-clientee1">
-          <p>
-            <strong>Jobs Info</strong>
-          </p>
-          <p>
-            <strong>Live job posting:</strong> {liveJobPostingCount}
-          </p>
-          <p>
-            <strong>Archived job posting:</strong> {archivedJobPostingCount}
-          </p>
+          <p>Jobs Info</p>
+          <p>Live job posting: {liveJobPostingCount}</p>
+          <p>Archived job posting: {archivedJobPostingCount}</p>
         </div>
       </div>
-
       <button
         type="button"
         className="update-button-clientee1"

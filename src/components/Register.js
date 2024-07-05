@@ -165,24 +165,39 @@ const Register = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="profilePicture">
-                          Upload Profile Picture
+                        <label htmlFor="firstName">
+                          First Name<span className="text-danger"> *</span>
                         </label>
-                        <input
-                          type="file"
-                          id="profilePicture"
-                          name="profilePicture"
-                          onChange={(event) => {
-                            setFieldValue(
-                              "profilePicture",
-                              event.currentTarget.files[0]
-                            );
-                          }}
+                        <Field
+                          name="firstName"
+                          type="text"
                           className="form-control"
+                        />
+                        <ErrorMessage
+                          name="firstName"
+                          component="div"
+                          className="alert alert-danger"
                         />
                       </div>
                       <div className="form-group">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="lastName">
+                          Last Name<span className="text-danger"> *</span>
+                        </label>
+                        <Field
+                          name="lastName"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="lastName"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="email">
+                          Email<span className="text-danger"> *</span>
+                        </label>
                         <Field
                           name="email"
                           type="email"
@@ -194,9 +209,10 @@ const Register = () => {
                           className="alert alert-danger"
                         />
                       </div>
-
                       <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">
+                          Password<span className="text-danger"> *</span>
+                        </label>
                         <Field
                           name="password"
                           type="password"
@@ -208,53 +224,10 @@ const Register = () => {
                           className="alert alert-danger"
                         />
                       </div>
-
                       <div className="form-group">
-                        <label htmlFor="firstName">First Name</label>
-                        <Field
-                          name="firstName"
-                          type="text"
-                          className="form-control"
-                        />
-                        <ErrorMessage
-                          name="firstName"
-                          component="div"
-                          className="alert alert-danger"
-                        />
-                      </div>
-
-                      <div className="form-group">
-                        <label htmlFor="lastName">Last Name</label>
-                        <Field
-                          name="lastName"
-                          type="text"
-                          className="form-control"
-                        />
-                        <ErrorMessage
-                          name="lastName"
-                          component="div"
-                          className="alert alert-danger"
-                        />
-                      </div>
-
-                      <div className="form-group">
-                        <label htmlFor="aboutFreelancer">About Me</label>
-                        <Field
-                          name="aboutFreelancer"
-                          as="textarea"
-                          className="form-control"
-                        />
-                        <ErrorMessage
-                          name="aboutFreelancer"
-                          component="div"
-                          className="alert alert-danger"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="contactPhone">Contact Phone</label>
+                        <label htmlFor="contactPhone">
+                          Contact Phone<span className="text-danger"> *</span>
+                        </label>
                         <Field
                           name="contactPhone"
                           type="text"
@@ -267,7 +240,9 @@ const Register = () => {
                         />
                       </div>
                       <div className="form-group">
-                        <label htmlFor="location">Location:</label>
+                        <label htmlFor="location">
+                          Location:<span className="text-danger"> *</span>
+                        </label>
                         <Field name="location">
                           {({ field, form }) => (
                             <Select
@@ -293,9 +268,12 @@ const Register = () => {
                           className="alert alert-danger"
                         />
                       </div>
-
+                    </div>
+                    <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="skills">Select Skills:</label>
+                        <label htmlFor="skills">
+                          Select Skills<span className="text-danger"> *</span>
+                        </label>
                         <Field
                           name="skills"
                           as="select"
@@ -319,17 +297,24 @@ const Register = () => {
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="portfolio">Portfolio</label>
+                        <label htmlFor="aboutFreelancer">
+                          About Me<span className="text-danger"> *</span>
+                        </label>
                         <Field
-                          name="portfolio"
-                          type="text"
+                          name="aboutFreelancer"
+                          as="textarea"
                           className="form-control"
                         />
+                        <ErrorMessage
+                          name="aboutFreelancer"
+                          component="div"
+                          className="alert alert-danger"
+                        />
                       </div>
-
                       <div className="form-group">
                         <label htmlFor="yearsOfExperience">
                           Years of Experience
+                          <span className="text-danger"> *</span>
                         </label>
                         <Field
                           name="yearsOfExperience"
@@ -342,11 +327,39 @@ const Register = () => {
                           className="alert alert-danger"
                         />
                       </div>
+                      <div className="form-group">
+                        <label htmlFor="portfolio">
+                          Portfolio{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="portfolio"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="profilePicture">
+                          Upload Profile Picture{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <input
+                          type="file"
+                          id="profilePicture"
+                          name="profilePicture"
+                          onChange={(event) => {
+                            setFieldValue(
+                              "profilePicture",
+                              event.currentTarget.files[0]
+                            );
+                          }}
+                          className="form-control"
+                        />
+                      </div>
                     </div>
                   </div>
                 </>
               )}
-
               {values.role === "client" && (
                 <>
                   <div className="row">

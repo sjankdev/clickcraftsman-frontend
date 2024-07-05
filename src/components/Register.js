@@ -13,7 +13,9 @@ const Register = () => {
   const locations = useApiData(
     "https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllLocations"
   );
-  const skills = useApiData("https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllSkills");
+  const skills = useApiData(
+    "https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllSkills"
+  );
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
@@ -139,7 +141,9 @@ const Register = () => {
                     type="button"
                     onClick={(e) => handleRoleChange(e, setFieldValue)}
                     value="client"
-                    className="btn btn-role"
+                    className={`btn btn-role ${
+                      values.role === "client" ? "active" : ""
+                    }`}
                   >
                     Client
                   </button>
@@ -147,7 +151,9 @@ const Register = () => {
                     type="button"
                     onClick={(e) => handleRoleChange(e, setFieldValue)}
                     value="freelancer"
-                    className="btn btn-role ml-2"
+                    className={`btn btn-role ml-2 ${
+                      values.role === "freelancer" ? "active" : ""
+                    }`}
                   >
                     Freelancer
                   </button>
@@ -156,294 +162,432 @@ const Register = () => {
 
               {values.role === "freelancer" && (
                 <>
-                  <div className="form-group">
-                    <label htmlFor="profilePicture">Upload Profile Picture</label>
-                    <input
-                      type="file"
-                      id="profilePicture"
-                      name="profilePicture"
-                      onChange={(event) => {
-                        setFieldValue(
-                          "profilePicture",
-                          event.currentTarget.files[0]
-                        );
-                      }}
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <Field name="email" type="email" className="form-control" />
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <Field name="password" type="password" className="form-control" />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="firstName">First Name</label>
-                    <Field name="firstName" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="firstName"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="lastName">Last Name</label>
-                    <Field name="lastName" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="lastName"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="aboutFreelancer">About Me</label>
-                    <Field name="aboutFreelancer" as="textarea" className="form-control" />
-                    <ErrorMessage
-                      name="aboutFreelancer"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="contactPhone">Contact Phone</label>
-                    <Field name="contactPhone" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="contactPhone"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="location">Location:</label>
-                    <Field name="location">
-                      {({ field, form }) => (
-                        <Select
-                          {...field}
-                          options={locationOptions}
-                          isSearchable
-                          placeholder="Search or select a location"
-                          value={locationOptions.find(
-                            (option) => option.value === field.value
-                          )}
-                          onChange={(selectedOption) =>
-                            form.setFieldValue(
-                              "location",
-                              selectedOption ? selectedOption.value : ""
-                            )
-                          }
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="profilePicture">
+                          Upload Profile Picture
+                        </label>
+                        <input
+                          type="file"
+                          id="profilePicture"
+                          name="profilePicture"
+                          onChange={(event) => {
+                            setFieldValue(
+                              "profilePicture",
+                              event.currentTarget.files[0]
+                            );
+                          }}
+                          className="form-control"
                         />
-                      )}
-                    </Field>
-                    <ErrorMessage
-                      name="location"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <Field
+                          name="email"
+                          type="email"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="skills">Select Skills:</label>
-                    <Field name="skills" as="select" multiple className="form-control">
-                      {skills.map((skill) => (
-                        <option key={skill.id || skill.skillName} value={skill.skillName}>
-                          {skill.skillName}
-                        </option>
-                      ))}
-                    </Field>
-                    <ErrorMessage
-                      name="skills"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="portfolio">Portfolio</label>
-                    <Field name="portfolio" type="text" className="form-control" />
-                  </div>
+                      <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <Field
+                          name="password"
+                          type="password"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="password"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="yearsOfExperience">Years of Experience</label>
-                    <Field name="yearsOfExperience" type="number" className="form-control" />
-                    <ErrorMessage
-                      name="yearsOfExperience"
-                      component="div"
-                      className="alert alert-danger"
-                    />
+                      <div className="form-group">
+                        <label htmlFor="firstName">First Name</label>
+                        <Field
+                          name="firstName"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="firstName"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="lastName">Last Name</label>
+                        <Field
+                          name="lastName"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="lastName"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="aboutFreelancer">About Me</label>
+                        <Field
+                          name="aboutFreelancer"
+                          as="textarea"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="aboutFreelancer"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="contactPhone">Contact Phone</label>
+                        <Field
+                          name="contactPhone"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="contactPhone"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="location">Location:</label>
+                        <Field name="location">
+                          {({ field, form }) => (
+                            <Select
+                              {...field}
+                              options={locationOptions}
+                              isSearchable
+                              placeholder="Search or select a location"
+                              value={locationOptions.find(
+                                (option) => option.value === field.value
+                              )}
+                              onChange={(selectedOption) =>
+                                form.setFieldValue(
+                                  "location",
+                                  selectedOption ? selectedOption.value : ""
+                                )
+                              }
+                            />
+                          )}
+                        </Field>
+                        <ErrorMessage
+                          name="location"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="skills">Select Skills:</label>
+                        <Field
+                          name="skills"
+                          as="select"
+                          multiple
+                          className="form-control"
+                        >
+                          {skills.map((skill) => (
+                            <option
+                              key={skill.id || skill.skillName}
+                              value={skill.skillName}
+                            >
+                              {skill.skillName}
+                            </option>
+                          ))}
+                        </Field>
+                        <ErrorMessage
+                          name="skills"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="portfolio">Portfolio</label>
+                        <Field
+                          name="portfolio"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="yearsOfExperience">
+                          Years of Experience
+                        </label>
+                        <Field
+                          name="yearsOfExperience"
+                          type="number"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="yearsOfExperience"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </>
               )}
 
               {values.role === "client" && (
                 <>
-                  <div className="form-group">
-                    <label htmlFor="profilePicture">Upload Profile Picture</label>
-                    <input
-                      type="file"
-                      id="profilePicture"
-                      name="profilePicture"
-                      onChange={(event) => {
-                        setFieldValue(
-                          "profilePicture",
-                          event.currentTarget.files[0]
-                        );
-                      }}
-                      className="form-control"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <Field name="email" type="email" className="form-control" />
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-
-
-                  <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <Field name="password" type="password" className="form-control" />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="firstName">First Name</label>
-                    <Field name="firstName" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="firstName"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="lastName">Last Name</label>
-                    <Field name="lastName" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="lastName"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="contactPhone">Contact Phone</label>
-                    <Field name="contactPhone" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="contactPhone"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="location">Location:</label>
-                    <Field name="location">
-                      {({ field, form }) => (
-                        <Select
-                          {...field}
-                          options={locationOptions}
-                          isSearchable
-                          placeholder="Search or select a location"
-                          value={locationOptions.find(
-                            (option) => option.value === field.value
-                          )}
-                          onChange={(selectedOption) =>
-                            form.setFieldValue(
-                              "location",
-                              selectedOption ? selectedOption.value : ""
-                            )
-                          }
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="firstName">
+                          First Name<span className="text-danger"> *</span>
+                        </label>
+                        <Field
+                          name="firstName"
+                          type="text"
+                          className="form-control"
                         />
-                      )}
-                    </Field>
-                    <ErrorMessage
-                      name="location"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
+                        <ErrorMessage
+                          name="firstName"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="companyName">Company Name</label>
-                    <Field name="companyName" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="companyName"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
+                      <div className="form-group">
+                        <label htmlFor="lastName">
+                          Last Name<span className="text-danger"> *</span>
+                        </label>
+                        <Field
+                          name="lastName"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="lastName"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="companyLocation">Company Location</label>
-                    <Field name="companyLocation" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="companyLocation"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
+                      <div className="form-group">
+                        <label htmlFor="email">
+                          Email<span className="text-danger"> *</span>
+                        </label>
+                        <Field
+                          name="email"
+                          type="email"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="companySize">Company Size</label>
-                    <Field name="companySize" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="companySize"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
+                      <div className="form-group">
+                        <label htmlFor="password">
+                          Password<span className="text-danger"> *</span>
+                        </label>
+                        <Field
+                          name="password"
+                          type="password"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="password"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="companyIndustry">Company Industry</label>
-                    <Field name="companyIndustry" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="companyIndustry"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
+                      <div className="form-group">
+                        <label htmlFor="contactPhone">
+                          Contact Phone<span className="text-danger"> *</span>
+                        </label>
+                        <Field
+                          name="contactPhone"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="contactPhone"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="linkedin">LinkedIn</label>
-                    <Field name="linkedin" type="text" className="form-control" />
-                  </div>
+                      <div className="form-group">
+                        <label htmlFor="location">
+                          Location<span className="text-danger"> *</span>
+                        </label>
+                        <Field name="location">
+                          {({ field, form }) => (
+                            <Select
+                              {...field}
+                              options={locationOptions}
+                              isSearchable
+                              placeholder="Search or select a location"
+                              value={locationOptions.find(
+                                (option) => option.value === field.value
+                              )}
+                              onChange={(selectedOption) =>
+                                form.setFieldValue(
+                                  "location",
+                                  selectedOption ? selectedOption.value : ""
+                                )
+                              }
+                            />
+                          )}
+                        </Field>
+                        <ErrorMessage
+                          name="location"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="website">Website</label>
-                    <Field name="website" type="text" className="form-control" />
-                  </div>
+                      <div className="form-group">
+                        <label htmlFor="profilePicture">
+                          Upload Profile Picture{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <input
+                          type="file"
+                          id="profilePicture"
+                          name="profilePicture"
+                          onChange={(event) => {
+                            setFieldValue(
+                              "profilePicture",
+                              event.currentTarget.files[0]
+                            );
+                          }}
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="companyName">
+                          Company Name{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="companyName"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="companyName"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="instagram">Instagram</label>
-                    <Field name="instagram" type="text" className="form-control" />
+                      <div className="form-group">
+                        <label htmlFor="companyLocation">
+                          Company Location{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="companyLocation"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="companyLocation"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="companySize">
+                          Company Size{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="companySize"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="companySize"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="companyIndustry">
+                          Company Industry{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="companyIndustry"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="companyIndustry"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="linkedin">
+                          LinkedIn{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="linkedin"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="website">
+                          Website{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="website"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="instagram">
+                          Instagram{" "}
+                          <span className="optional-text">(Optional)</span>
+                        </label>
+                        <Field
+                          name="instagram"
+                          type="text"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </>
               )}
-
               {selectedRole && (
                 <div className="form-group">
                   <button type="submit" className="btn btn-primary btn-block">

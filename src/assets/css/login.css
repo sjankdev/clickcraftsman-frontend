@@ -1,0 +1,93 @@
+.card-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #292f36; 
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-control {
+    font-size: 16px;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #4ecdc4; 
+    box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #ffffff; /* White */
+  }
+  
+  .form-group .alert {
+    margin-top: 8px;
+  }
+  
+  .btn-role {
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease-out;
+    background-color: #4ecdc4; /* Medium turquoise */
+    color: #ffffff; /* White */
+    cursor: pointer;
+  }
+  
+  .btn-role:hover {
+    background-color: #3da6a0; 
+    transform: scale(1.05);
+  }
+  
+  .btn-role:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
+  }
+  
+  .btn-primary {
+    background-color: #4ecdc4; 
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #3da6a0; 
+  }
+  
+  @media (max-width: 768px) {
+    .card-container {
+      padding: 20px;
+    }
+  
+    .btn-role {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  
+    .btn-role + .btn-role {
+      margin-left: 10px;
+    }
+  }
+  
+  .optional-text {
+    font-size: 12px;
+    color: #999; 
+  }
+  
+  .text-danger {
+    color: #ff6b6b;
+  }
+  

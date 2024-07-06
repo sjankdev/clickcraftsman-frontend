@@ -126,7 +126,7 @@ const Register = () => {
 
   return (
     <div className="col-md-12 signup-form">
-      <div className="card card-container">
+      <div className="card card-container-register">
         <Formik
           initialValues={initialValues}
           onSubmit={handleRegister}
@@ -134,33 +134,35 @@ const Register = () => {
         >
           {({ setFieldValue, values }) => (
             <Form>
-              <div className="form-group text-center">
-                <label htmlFor="role" className="label-role mb-3">
-                  Are you registering as a client or freelancer?
-                </label>
-                <div className="d-flex justify-content-center">
-                  <button
-                    type="button"
-                    onClick={(e) => handleRoleChange(e, setFieldValue)}
-                    value="client"
-                    className={`btn btn-role ${
-                      values.role === "client" ? "active" : ""
-                    }`}
-                  >
-                    Client
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(e) => handleRoleChange(e, setFieldValue)}
-                    value="freelancer"
-                    className={`btn btn-role ml-2 ${
-                      values.role === "freelancer" ? "active" : ""
-                    }`}
-                  >
-                    Freelancer
-                  </button>
+              {!successful && (
+                <div className="form-group text-center">
+                  <label htmlFor="role" className="label-role mb-3">
+                    Are you registering as a client or freelancer?
+                  </label>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      type="button"
+                      onClick={(e) => handleRoleChange(e, setFieldValue)}
+                      value="client"
+                      className={`btn btn-role ${
+                        values.role === "client" ? "active" : ""
+                      }`}
+                    >
+                      Client
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => handleRoleChange(e, setFieldValue)}
+                      value="freelancer"
+                      className={`btn btn-role ml-2 ${
+                        values.role === "freelancer" ? "active" : ""
+                      }`}
+                    >
+                      Freelancer
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
               {values.role === "freelancer" && (
                 <>
                   <div className="row">
@@ -604,22 +606,35 @@ const Register = () => {
               )}
               {selectedRole && (
                 <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block">
-                    Sign Up
-                  </button>
-                </div>
-              )}
-
-              {message && (
-                <div className="form-group">
-                  <div
-                    className={
-                      successful ? "alert alert-success" : "alert alert-danger"
-                    }
-                    role="alert"
-                  >
-                    {message}
-                  </div>
+                  {message && (
+                    <div className="form-group">
+                      <div
+                        className={
+                          successful
+                            ? "alert alert-success"
+                            : "alert alert-danger"
+                        }
+                        role="alert"
+                      >
+                        {message}
+                      </div>
+                    </div>
+                  )}
+                  {successful ? (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-block"
+                      onClick={() => {
+                        window.location.href = "/login";
+                      }}
+                    >
+                      Login
+                    </button>
+                  ) : (
+                    <button type="submit" className="btn btn-primary btn-block">
+                      Sign Up
+                    </button>
+                  )}
                 </div>
               )}
             </Form>

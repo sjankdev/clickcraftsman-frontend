@@ -4,8 +4,16 @@ import authHeader from "../../services/security/auth-header";
 import useApiData from "../../services/utils/useApiData";
 import "../../assets/css/clientProfile.css";
 import ClientService from "../../services/client/client-service";
-import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
-import { AiOutlineGlobal, AiFillLinkedin, AiFillInstagram, AiOutlineBank, AiOutlineTeam, AiOutlineFieldTime, AiFillEdit } from 'react-icons/ai';
+import { FaMapMarkerAlt, FaPhone } from "react-icons/fa";
+import {
+  AiOutlineGlobal,
+  AiFillLinkedin,
+  AiFillInstagram,
+  AiOutlineBank,
+  AiOutlineTeam,
+  AiOutlineFieldTime,
+  AiFillEdit,
+} from "react-icons/ai";
 import validationSchemaUpdate from "../../services/utils/validationSchemasUpdateClient";
 
 const ClientProfile = () => {
@@ -51,8 +59,10 @@ const ClientProfile = () => {
   useEffect(() => {
     const fetchJobPostingCounts = async () => {
       try {
-        const liveResponse = await ClientService.getLiveClientJobPostingsCount();
-        const archivedResponse = await ClientService.getArchivedClientJobPostingsCount();
+        const liveResponse =
+          await ClientService.getLiveClientJobPostingsCount();
+        const archivedResponse =
+          await ClientService.getArchivedClientJobPostingsCount();
 
         setLiveJobPostingCount(liveResponse);
         setArchivedJobPostingCount(archivedResponse);
@@ -124,16 +134,54 @@ const ClientProfile = () => {
 
   const handleUpdateClick = async () => {
     try {
-      validationSchemaUpdate.validateSync(updateFormData, { abortEarly: false });
+      validationSchemaUpdate.validateSync(updateFormData, {
+        abortEarly: false,
+      });
 
-      const { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram } = updateFormData;
+      const {
+        firstName,
+        lastName,
+        contactPhone,
+        location,
+        companyName,
+        companySize,
+        companyIndustry,
+        companyLocation,
+        website,
+        linkedin,
+        instagram,
+      } = updateFormData;
 
       console.log("Updating client data...");
-      console.log("Data to be sent:", { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram });
+      console.log("Data to be sent:", {
+        firstName,
+        lastName,
+        contactPhone,
+        location,
+        companyName,
+        companySize,
+        companyIndustry,
+        companyLocation,
+        website,
+        linkedin,
+        instagram,
+      });
 
       await axios.post(
         "https://clickcraftsman-backend-latest.onrender.com/api/client/update",
-        { firstName, lastName, contactPhone, location, companyName, companySize, companyIndustry, companyLocation, website, linkedin, instagram },
+        {
+          firstName,
+          lastName,
+          contactPhone,
+          location,
+          companyName,
+          companySize,
+          companyIndustry,
+          companyLocation,
+          website,
+          linkedin,
+          instagram,
+        },
         {
           headers: authHeader(),
         }
@@ -152,7 +200,7 @@ const ClientProfile = () => {
     } catch (error) {
       if (error.name === "ValidationError") {
         const errors = {};
-        error.inner.forEach(err => {
+        error.inner.forEach((err) => {
           errors[err.path] = err.message;
         });
         setValidationErrors(errors);
@@ -162,9 +210,13 @@ const ClientProfile = () => {
     }
   };
 
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
+  const handleCancelClick = () => {
+    setUpdateFormData(userData);
+    setIsEditing(false);
+  };
 
   return (
     <div className="client-profile-container-clientee1">
@@ -183,40 +235,93 @@ const ClientProfile = () => {
             </div>
           </div>
           <div className="contact-info-clientee1">
-            <span className="icon-clientee1"><FaMapMarkerAlt /></span>
-            <span className="location-clientee1">{userData.location}</span>
-            <span className="icon-clientee1"><FaPhone /></span>
-            <span className="contact-phone-clientee1">{userData.contactPhone}</span>
+            <div className="icon-and-text">
+              <span className="icon-clientee1">
+                <FaMapMarkerAlt />
+              </span>
+              <span className="location-clientee1">{userData.location}</span>
+            </div>
+            <div className="icon-and-text">
+              <span className="icon-clientee1">
+                <FaPhone />
+              </span>
+              <span className="contact-phone-clientee1">
+                {userData.contactPhone}
+              </span>
+            </div>
           </div>
           <div className="social-links-clientee1">
-            <div><AiOutlineGlobal /> Website: {userData.website}</div>
-            <div><AiFillLinkedin /> Linkedin: {userData.linkedin}</div>
-            <div><AiFillInstagram /> Instagram: {userData.instagram}</div>
+            <div>
+              <AiOutlineGlobal /> Website:{" "}
+              {userData.website && (
+                <a
+                  href={userData.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {userData.website}
+                </a>
+              )}
+            </div>
+            <div>
+              <AiFillLinkedin /> Linkedin:{" "}
+              {userData.linkedin && (
+                <a
+                  href={userData.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {userData.linkedin}
+                </a>
+              )}
+            </div>
+            <div>
+              <AiFillInstagram /> Instagram:{" "}
+              {userData.instagram && (
+                <a
+                  href={userData.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {userData.instagram}
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>
       <hr className="line-clientee1" />
       <div className="company-and-jobs-info-clientee1">
         <div className="company-info-clientee1">
-          <p>Company Info</p>
-          <p><AiOutlineBank /> {userData.companyName}</p>
-          <p><FaMapMarkerAlt /> {userData.companyLocation}</p>
-          <p><AiOutlineTeam /> {userData.companySize}</p>
-          <p><AiOutlineFieldTime /> {userData.companyIndustry}</p>
+          <p>
+            <strong>Company Info</strong>
+          </p>
+          <p>
+            <AiOutlineBank /> {userData.companyName}
+          </p>
+          <p>
+            <FaMapMarkerAlt /> {userData.companyLocation}
+          </p>
+          <p>
+            <AiOutlineTeam /> {userData.companySize}
+          </p>
+          <p>
+            <AiOutlineFieldTime /> {userData.companyIndustry}
+          </p>
         </div>
         <div className="jobs-info-clientee1">
           <p>Jobs Info</p>
-          <p><strong>Live job posting:</strong> {liveJobPostingCount}</p>
-          <p><strong>Archived job posting:</strong> {archivedJobPostingCount}</p>
+          <p>Live job posting: {liveJobPostingCount}</p>
+          <p>Archived job posting: {archivedJobPostingCount}</p>
         </div>
       </div>
-      <button type="button" className="update-button-clientee1" onClick={handleEditClick}>
-        <AiFillEdit /> Edit Profile
+      <button className="show-more-btn" onClick={handleEditClick}>
+        Edit Profile
       </button>
       {isEditing && (
         <form className="edit-form-clientee1">
           <div className="form-group-clientee1">
-            <label htmlFor="firstName">First Name:</label>
+            <label htmlFor="firstName">First Name</label>
             <input
               className="input-field"
               type="text"
@@ -230,7 +335,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="lastName">Last Name:</label>
+            <label htmlFor="lastName">Last Name</label>
             <input
               className="input-field"
               type="text"
@@ -244,7 +349,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="contactPhone">Contact Phone:</label>
+            <label htmlFor="contactPhone">Contact Phone</label>
             <input
               className="input-field"
               type="text"
@@ -254,11 +359,13 @@ const ClientProfile = () => {
               onChange={handleInputChange}
             />
             {validationErrors.contactPhone && (
-              <div className="error-message">{validationErrors.contactPhone}</div>
+              <div className="error-message">
+                {validationErrors.contactPhone}
+              </div>
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="location">Location:</label>
+            <label htmlFor="location">Location</label>
             <select
               className="input-field"
               id="location"
@@ -280,7 +387,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyName">Company Name:</label>
+            <label htmlFor="companyName">Company Name</label>
             <input
               className="input-field"
               type="text"
@@ -291,7 +398,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyIndustry">Company Industry:</label>
+            <label htmlFor="companyIndustry">Company Industry</label>
             <input
               className="input-field"
               type="text"
@@ -302,7 +409,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companySize">Company Size:</label>
+            <label htmlFor="companySize">Company Size</label>
             <input
               className="input-field"
               type="text"
@@ -313,7 +420,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyLocation">Company location:</label>
+            <label htmlFor="companyLocation">Company location</label>
             <input
               className="input-field"
               type="text"
@@ -338,7 +445,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="instagram">Instagram:</label>
+            <label htmlFor="instagram">Instagram</label>
             <input
               className="input-field"
               type="text"
@@ -352,7 +459,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="linkedin">Linkedin:</label>
+            <label htmlFor="linkedin">Linkedin</label>
             <input
               className="input-field"
               type="text"
@@ -365,13 +472,20 @@ const ClientProfile = () => {
               <div className="error-message">{validationErrors.linkedin}</div>
             )}
           </div>
-          <button type="button" className="update-button-clientee1" onClick={handleUpdateClick}>
+          <button
+            type="button"
+            className="update-button-clientee1"
+            onClick={handleUpdateClick}
+          >
             Update
+          </button>
+          <button className="btn-cancel" onClick={handleCancelClick}>
+            Cancel
           </button>
         </form>
       )}
     </div>
   );
-}
+};
 
 export default ClientProfile;

@@ -15,16 +15,25 @@
 .job-card-clients {
   width: calc(33.33% - 20px);
   margin-bottom: 20px;
+  margin-right: 10px;
   padding: 20px;
   border: 1px solid #eaeaea;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .job-card-clients:hover {
   transform: translateY(-5px);
+}
+
+.job-description-clients {
+  flex-grow: 1;
+  margin-bottom: 20px;
 }
 
 .button-group-clients {
@@ -32,18 +41,20 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .bottom-buttons-clients {
-  margin-top: auto;
   display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .btn-clients {
   padding: 10px 20px;
   border: none;
   cursor: pointer;
-  margin-right: 10px;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
@@ -71,10 +82,6 @@
   color: #000;
 }
 
-.job-description-clients {
-  margin-bottom: 20px;
-}
-
 @media (max-width: 992px) {
   .job-card-clients {
     width: calc(50% - 20px);
@@ -85,10 +92,28 @@
   .job-card-clients {
     width: calc(50% - 20px);
   }
+}
 
-  @media (max-width: 576px) {
-    .job-card-clients {
-      width: calc(100% - 20px);
-    }
+@media (max-width: 576px) {
+  .job-card-clients {
+    width: calc(100% - 20px);
+  }
+
+  .button-group-clients {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bottom-buttons-clients {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-clients {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 4px;
   }
 }

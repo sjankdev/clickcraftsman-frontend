@@ -75,19 +75,8 @@
   font-size: 16px;
 }
 
-.show-more-btn {
-  background-color: #4ecdc4;
-  color: #ffffff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
-}
-
-.show-more-btn:hover {
-  background-color: #3da6a0;
+.form-field {
+  margin-bottom: 20px;
 }
 
 .error-message {
@@ -96,21 +85,7 @@
   margin-top: 5px;
 }
 
-.input-field {
-  font-size: 16px;
-  padding: 12px 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 100%;
-  transition: border-color 0.3s ease;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: #4ecdc4;
-  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
-}
-
+.input-field,
 .select-field {
   font-size: 16px;
   padding: 12px 16px;
@@ -118,6 +93,16 @@
   border-radius: 8px;
   width: 100%;
   transition: border-color 0.3s ease;
+}
+
+.input-field:focus,
+.select-field:focus {
+  outline: none;
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
+}
+
+.select-field {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23999'%3E%3Cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -125,25 +110,47 @@
   background-position-y: center;
 }
 
-.select-field:focus {
-  outline: none;
-  border-color: #4ecdc4;
-  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
-}
-
-.btn-update {
-  background-color: #4ecdc4;
-  color: #ffffff;
+.show-more-btn,
+.btn-update,
+.btn-cancel {
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   margin-top: 20px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.show-more-btn {
+  background-color: #4ecdc4;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+.show-more-btn:hover {
+  background-color: #3da6a0;
+}
+
+.btn-update {
+  background-color: #45aaf2;
+  color: #ffffff;
 }
 
 .btn-update:hover {
-  background-color: #3da6a0;
+  background-color: #3a8fcb;
+}
+
+.btn-cancel {
+  background-color: #ff6b6b;
+  color: #ffffff;
+}
+
+.btn-cancel:hover {
+  background-color: #e36161;
+}
+
+.btn-cancel {
+  margin-left: 10px;
 }
 
 @media (max-width: 768px) {
@@ -162,7 +169,9 @@
     padding: 10px 14px;
   }
 
-  .btn-update {
+  .show-more-btn,
+  .btn-update,
+  .btn-cancel {
     padding: 10px 20px;
   }
 }

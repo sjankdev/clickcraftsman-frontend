@@ -10,7 +10,9 @@ const FreelancerProfile = () => {
   const locations = useApiData(
     "https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllLocations"
   );
-  const skills = useApiData("https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllSkills");
+  const skills = useApiData(
+    "https://clickcraftsman-backend-latest.onrender.com/api/utils/getAllSkills"
+  );
   const skillsArray = Array.isArray(skills) ? skills : [skills];
   const [validationErrors, setValidationErrors] = useState({});
   const [profilePictureData, setProfilePictureData] = useState(null);
@@ -141,6 +143,12 @@ const FreelancerProfile = () => {
     } catch (error) {
       console.error("Error updating freelancer data:", error);
     }
+  };
+
+  const handleCancelClick = () => {
+    // Reset updateFormData to current userData
+    setUpdateFormData(userData);
+    setIsEditing(false); // Turn off editing mode
   };
 
   return (
@@ -277,7 +285,12 @@ const FreelancerProfile = () => {
               <div className="invalid-feedback">{validationErrors.skills}</div>
             )}
           </div>
-          <button onClick={handleUpdateClick}>Update</button>
+          <button className="btn-update" onClick={handleUpdateClick}>
+            Update
+          </button>
+          <button className="btn-cancel" onClick={handleCancelClick}>
+            Cancel
+          </button>
         </div>
       ) : (
         <div className="profile-card">

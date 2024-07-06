@@ -158,14 +158,14 @@ const FreelancerPublicProfiles = () => {
               <p className="profile-detail-opens">
                 <AiOutlineTool className="icon" /> {profile.skills.join(", ")}
               </p>
-              <div className="view-profile-button-container">
-                <Link
-                  to={`/public-profile/${profile.id}`}
-                  className="view-profile-link-opens"
-                >
-                  View Profile
-                </Link>
-              </div>
+            </div>
+            <div className="view-profile-button-container">
+              <Link
+                to={`/public-profile/${profile.id}`}
+                className="view-profile-link-opens"
+              >
+                View Profile
+              </Link>
             </div>
           </div>
         ))}

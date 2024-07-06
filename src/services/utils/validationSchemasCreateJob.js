@@ -10,8 +10,9 @@ const validationSchemaCreateJob = Yup.object().shape({
     .min(10, "Description must be at least 10 characters")
     .required("Description is required"),
   selectedSkills: Yup.array().min(1, "At least one skill is required"),
+  isRemote: Yup.string().required("Is Remote is required"),
   location: Yup.string().when("isRemote", {
-    is: false,
+    is: "No",
     then: Yup.string().required("Location is required for non-remote jobs"),
   }),
   priceType: Yup.string().required("Price type is required"),

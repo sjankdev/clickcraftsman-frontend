@@ -126,7 +126,7 @@ const Register = () => {
 
   return (
     <div className="col-md-12 signup-form">
-      <div className="card card-container">
+      <div className="card card-container-register">
         <Formik
           initialValues={initialValues}
           onSubmit={handleRegister}

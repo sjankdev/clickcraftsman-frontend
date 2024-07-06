@@ -35,9 +35,9 @@ const FreelancerOpenProjects = () => {
   const [jobName, setJobName] = useState("");
   const [isRemote, setIsRemote] = useState(false);
   const resumeRequirementOptions = [
-    { value: "All", label: "Obavezan CV?" },
-    { value: "Yes", label: "Da" },
-    { value: "No", label: "Ne" },
+    { value: "All", label: "Resume required?" },
+    { value: "Yes", label: "Yes" },
+    { value: "No", label: "No" },
   ];
   const [selectedDateFilter, setSelectedDateFilter] = useState("");
   const [resumeRequirementFilter, setResumeRequirementFilter] = useState(
@@ -346,7 +346,7 @@ const FreelancerOpenProjects = () => {
             id="job-name"
             value={jobName}
             onChange={handleJobNameChange}
-            placeholder="Ključne reči"
+            placeholder="Search by keywords"
             className="input-field"
           />
         </div>
@@ -357,12 +357,12 @@ const FreelancerOpenProjects = () => {
             onChange={handleDateFilterChange}
             className="input-field"
           >
-            <option value="">Objavljeno</option>
-            <option value="today">Danas</option>
-            <option value="yesterday">Juče</option>
-            <option value="thisWeek">Ove nedelje</option>
-            <option value="thisMonth">Ovog meseca</option>
-            <option value="earlierThanThisMonth">Stariji od mesec</option>
+            <option value="">Posted</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="thisWeek">This week</option>
+            <option value="thisMonth">This month</option>
+            <option value="earlierThanThisMonth">Older then month</option>
           </select>
         </div>
         <div className="filter-group">
@@ -371,7 +371,7 @@ const FreelancerOpenProjects = () => {
             value={resumeRequirementFilter}
             onChange={handleResumeRequirementChange}
             options={resumeRequirementOptions}
-            placeholder="Resume Required"
+            placeholder="Resume required?"
           />
         </div>
         <div className="filter-group">
@@ -380,7 +380,7 @@ const FreelancerOpenProjects = () => {
             options={skillsList}
             value={selectedSkills}
             onChange={setSelectedSkills}
-            placeholder="Veštine"
+            placeholder="Skills"
           />
         </div>
         <div className="filter-group">
@@ -389,7 +389,7 @@ const FreelancerOpenProjects = () => {
             options={locationsList}
             value={selectedLocations}
             onChange={setSelectedLocations}
-            placeholder="Lokacija"
+            placeholder="Location"
           />
         </div>
         <div className="filter-group">
@@ -404,7 +404,7 @@ const FreelancerOpenProjects = () => {
             ]}
             value={selectedJobTypes}
             onChange={setSelectedJobTypes}
-            placeholder="Tip posla"
+            placeholder="Job type"
           />
         </div>
         <div className="filter-group">
@@ -417,7 +417,7 @@ const FreelancerOpenProjects = () => {
             ]}
             value={selectedPriceTypes}
             onChange={setSelectedPriceTypes}
-            placeholder="Način isplate"
+            placeholder="Payment type"
           />
         </div>
         {isFixedPriceSelected() && (
@@ -427,7 +427,7 @@ const FreelancerOpenProjects = () => {
               id="budget-from"
               value={budgetFrom}
               onChange={handleBudgetFromChange}
-              placeholder="Budžet od..."
+              placeholder="Budget from..."
               className="input-field"
             />
             <input
@@ -435,7 +435,7 @@ const FreelancerOpenProjects = () => {
               id="budget-to"
               value={budgetTo}
               onChange={handleBudgetToChange}
-              placeholder="Budžet do..."
+              placeholder="Budget to..."
               className="input-field"
             />
           </div>
@@ -447,7 +447,7 @@ const FreelancerOpenProjects = () => {
               id="priceFrom"
               value={priceRangeFrom}
               onChange={handlePriceRangeFromChange}
-              placeholder="Satnica od..."
+              placeholder="Per hour from..."
               className="input-field"
             />
             <input
@@ -455,13 +455,13 @@ const FreelancerOpenProjects = () => {
               id="priceTo"
               value={priceRangeTo}
               onChange={handlePriceRangeToChange}
-              placeholder="Satnica do..."
+              placeholder="Per hour to..."
               className="input-field"
             />
           </div>
         )}
         <div className="filter-group checkbox-group">
-          <label htmlFor="is-remote">Rad od kuće?</label>
+          <label htmlFor="is-remote">Remote?</label>
           <input
             type="checkbox"
             id="is-remote"

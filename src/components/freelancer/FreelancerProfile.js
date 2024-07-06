@@ -155,7 +155,7 @@ const FreelancerProfile = () => {
       {isEditing ? (
         <div>
           <div className="form-field">
-            <label htmlFor="firstName">First Name:</label>
+            <label htmlFor="firstName">First Name</label>
             <input
               className="input-field"
               type="text"
@@ -169,7 +169,7 @@ const FreelancerProfile = () => {
             )}
           </div>
           <div className="form-field">
-            <label htmlFor="lastName">Last name:</label>
+            <label htmlFor="lastName">Last Name</label>
             <input
               className="input-field"
               type="text"
@@ -183,7 +183,7 @@ const FreelancerProfile = () => {
             )}
           </div>
           <div className="form-field">
-            <label htmlFor="aboutFreelancer">About me:</label>
+            <label htmlFor="aboutFreelancer">About me</label>
             <input
               className="input-field"
               type="text"
@@ -199,7 +199,7 @@ const FreelancerProfile = () => {
             )}
           </div>
           <div className="form-field">
-            <label htmlFor="contactPhone">Contact phone:</label>
+            <label htmlFor="contactPhone">Contact phone</label>
             <input
               className="input-field"
               type="text"
@@ -216,7 +216,7 @@ const FreelancerProfile = () => {
           </div>
           <div className="form-field">
             <label>
-              Location:
+              Location 
               <select
                 name="location"
                 value={updateFormData.location}
@@ -235,7 +235,7 @@ const FreelancerProfile = () => {
           </div>
           <div className="form-field">
             <label>
-              Portfolio:
+              Portfolio 
               <input
                 type="text"
                 name="portfolio"
@@ -245,7 +245,7 @@ const FreelancerProfile = () => {
             </label>
           </div>
           <div className="form-field">
-            <label htmlFor="yearsOfExperience">Years of experience:</label>
+            <label htmlFor="yearsOfExperience">Years of experience</label>
             <input
               className="input-field"
               type="number"
@@ -261,7 +261,7 @@ const FreelancerProfile = () => {
             )}
           </div>{" "}
           <div className="form-field">
-            <label htmlFor="skills">Select Skills:</label>
+            <label htmlFor="skills">Choose Your Skills</label>
             <select
               name="skills"
               multiple
@@ -328,7 +328,7 @@ const FreelancerProfile = () => {
             </div>
           </div>
           <button className="show-more-btn" onClick={handleEditClick}>
-            Edit
+            Edit Profile
           </button>
         </div>
       )}

@@ -315,17 +315,13 @@ const ClientProfile = () => {
           <p>Archived job posting: {archivedJobPostingCount}</p>
         </div>
       </div>
-      <button
-        type="button"
-        className="update-button-clientee1"
-        onClick={handleEditClick}
-      >
-        <AiFillEdit /> Edit Profile
+      <button className="show-more-btn" onClick={handleEditClick}>
+        Edit Profile
       </button>
       {isEditing && (
         <form className="edit-form-clientee1">
           <div className="form-group-clientee1">
-            <label htmlFor="firstName">First Name:</label>
+            <label htmlFor="firstName">First Name</label>
             <input
               className="input-field"
               type="text"
@@ -339,7 +335,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="lastName">Last Name:</label>
+            <label htmlFor="lastName">Last Name</label>
             <input
               className="input-field"
               type="text"
@@ -353,7 +349,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="contactPhone">Contact Phone:</label>
+            <label htmlFor="contactPhone">Contact Phone</label>
             <input
               className="input-field"
               type="text"
@@ -369,7 +365,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="location">Location:</label>
+            <label htmlFor="location">Location</label>
             <select
               className="input-field"
               id="location"
@@ -391,7 +387,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyName">Company Name:</label>
+            <label htmlFor="companyName">Company Name</label>
             <input
               className="input-field"
               type="text"
@@ -402,7 +398,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyIndustry">Company Industry:</label>
+            <label htmlFor="companyIndustry">Company Industry</label>
             <input
               className="input-field"
               type="text"
@@ -413,7 +409,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companySize">Company Size:</label>
+            <label htmlFor="companySize">Company Size</label>
             <input
               className="input-field"
               type="text"
@@ -424,7 +420,7 @@ const ClientProfile = () => {
             />
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="companyLocation">Company location:</label>
+            <label htmlFor="companyLocation">Company location</label>
             <input
               className="input-field"
               type="text"
@@ -449,7 +445,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="instagram">Instagram:</label>
+            <label htmlFor="instagram">Instagram</label>
             <input
               className="input-field"
               type="text"
@@ -463,7 +459,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="form-group-clientee1">
-            <label htmlFor="linkedin">Linkedin:</label>
+            <label htmlFor="linkedin">Linkedin</label>
             <input
               className="input-field"
               type="text"

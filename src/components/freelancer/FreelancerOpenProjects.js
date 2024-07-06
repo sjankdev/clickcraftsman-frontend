@@ -35,10 +35,11 @@ const FreelancerOpenProjects = () => {
   const [jobName, setJobName] = useState("");
   const [isRemote, setIsRemote] = useState(false);
   const resumeRequirementOptions = [
-    { value: "All", label: "Prikazi sve" },
+    { value: "All", label: "Obavezan CV?" },
     { value: "Yes", label: "Da" },
     { value: "No", label: "Ne" },
-  ]; const [selectedDateFilter, setSelectedDateFilter] = useState("");
+  ];
+  const [selectedDateFilter, setSelectedDateFilter] = useState("");
   const [resumeRequirementFilter, setResumeRequirementFilter] = useState(
     resumeRequirementOptions[0]
   );
@@ -337,22 +338,24 @@ const FreelancerOpenProjects = () => {
   ]);
 
   return (
-    <div className="jobs-container-freelancere">
-      <div className="filters-grid">
-        <div className="custom-select-wrapper">
+    <div className="job-search-container">
+      <div className="filter-section">
+        <div className="filter-group">
           <input
             type="text"
             id="job-name"
             value={jobName}
             onChange={handleJobNameChange}
             placeholder="Ključne reči"
+            className="input-field"
           />
         </div>
-        <div className="filter-item">
+        <div className="filter-group">
           <select
             id="date-filter"
             value={selectedDateFilter}
             onChange={handleDateFilterChange}
+            className="input-field"
           >
             <option value="">Objavljeno</option>
             <option value="today">Danas</option>
@@ -362,25 +365,16 @@ const FreelancerOpenProjects = () => {
             <option value="earlierThanThisMonth">Stariji od mesec</option>
           </select>
         </div>
-        <div className="checkbox-wrapper">
-          <label htmlFor="is-remote">Rad od kuće?</label>
-          <input
-            type="checkbox"
-            id="is-remote"
-            checked={isRemote}
-            onChange={handleRemoteChange}
-          />
-        </div>
-        <div className="select-wrapper">
-          <label htmlFor="resume-required-filter">CV obavezan?:</label>
+        <div className="filter-group">
           <Select
             id="resume-required-filter"
             value={resumeRequirementFilter}
             onChange={handleResumeRequirementChange}
             options={resumeRequirementOptions}
+            placeholder="Resume Required"
           />
         </div>
-        <div className="custom-select-wrapper">
+        <div className="filter-group">
           <Select
             isMulti
             options={skillsList}
@@ -389,7 +383,7 @@ const FreelancerOpenProjects = () => {
             placeholder="Veštine"
           />
         </div>
-        <div className="custom-select-wrapper">
+        <div className="filter-group">
           <Select
             isMulti
             options={locationsList}
@@ -398,7 +392,7 @@ const FreelancerOpenProjects = () => {
             placeholder="Lokacija"
           />
         </div>
-        <div className="custom-select-wrapper">
+        <div className="filter-group">
           <Select
             isMulti
             options={[
@@ -413,7 +407,7 @@ const FreelancerOpenProjects = () => {
             placeholder="Tip posla"
           />
         </div>
-        <div className="custom-select-wrapper">
+        <div className="filter-group">
           <Select
             isMulti
             options={[
@@ -427,54 +421,59 @@ const FreelancerOpenProjects = () => {
           />
         </div>
         {isFixedPriceSelected() && (
-          <div className="budget-fields">
-            <div>
-              <input
-                type="number"
-                id="budget-from"
-                value={budgetFrom}
-                onChange={handleBudgetFromChange}
-                placeholder="Budžet od..."
-              />
-            </div>
-            <div>
-              <input
-                type="number"
-                id="budget-to"
-                value={budgetTo}
-                onChange={handleBudgetToChange}
-                placeholder="Budžet do..."
-              />
-            </div>
+          <div className="filter-group">
+            <input
+              type="number"
+              id="budget-from"
+              value={budgetFrom}
+              onChange={handleBudgetFromChange}
+              placeholder="Budžet od..."
+              className="input-field"
+            />
+            <input
+              type="number"
+              id="budget-to"
+              value={budgetTo}
+              onChange={handleBudgetToChange}
+              placeholder="Budžet do..."
+              className="input-field"
+            />
           </div>
         )}
         {isHourlyOrMonthlySelected() && (
-          <div className="price-fields">
-            <div>
-              <input
-                type="number"
-                id="priceFrom"
-                value={priceRangeFrom}
-                onChange={handlePriceRangeFromChange}
-                placeholder="Satnica od..."
-              />
-            </div>
-            <div>
-              <input
-                type="number"
-                id="priceTo"
-                value={priceRangeTo}
-                onChange={handlePriceRangeToChange}
-                placeholder="Satnica do..."
-              />
-            </div>
+          <div className="filter-group">
+            <input
+              type="number"
+              id="priceFrom"
+              value={priceRangeFrom}
+              onChange={handlePriceRangeFromChange}
+              placeholder="Satnica od..."
+              className="input-field"
+            />
+            <input
+              type="number"
+              id="priceTo"
+              value={priceRangeTo}
+              onChange={handlePriceRangeToChange}
+              placeholder="Satnica do..."
+              className="input-field"
+            />
           </div>
         )}
+        <div className="filter-group checkbox-group">
+          <label htmlFor="is-remote">Rad od kuće?</label>
+          <input
+            type="checkbox"
+            id="is-remote"
+            checked={isRemote}
+            onChange={handleRemoteChange}
+          />
+        </div>
       </div>
-      <div className="jobs-grid">
+      <div className="job-list">
         {Array.isArray(content) &&
           content.map((job) => (
-            <div className="job-card-freelancere" key={job.id}>
+            <div key={job.id} className="job-card">
               <h3>{job.jobName}</h3>
               <p>{job.description}</p>
               {job.priceType === "FIXED_PRICE" ? (
@@ -513,14 +512,12 @@ const FreelancerOpenProjects = () => {
                     isOpen={isModalOpen && selectedJobId === job.id}
                     onRequestClose={closeModal}
                     contentLabel="Custom Message Modal"
-                    className="custom-modal-freelancere"
-                    overlayClassName="custom-modal-overlay-freelancere"
                   >
-                    <div>
+                    <div className="modal-header">
                       <h2>You're applying for {job.jobName}</h2>
                       <button onClick={closeModal}>&times;</button>
                     </div>
-                    <div>
+                    <div className="modal-body">
                       <h3>Enter Your Custom Message</h3>
                       <textarea
                         value={customMessage}
@@ -567,7 +564,7 @@ const FreelancerOpenProjects = () => {
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div className="modal-footer">
                       <button onClick={handleApplyWithCustomMessage}>
                         Apply
                       </button>

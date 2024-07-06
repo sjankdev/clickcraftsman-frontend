@@ -146,9 +146,8 @@ const FreelancerProfile = () => {
   };
 
   const handleCancelClick = () => {
-    // Reset updateFormData to current userData
     setUpdateFormData(userData);
-    setIsEditing(false); // Turn off editing mode
+    setIsEditing(false);
   };
 
   return (

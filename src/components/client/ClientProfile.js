@@ -213,6 +213,11 @@ const ClientProfile = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  const handleCancelClick = () => {
+    setUpdateFormData(userData);
+    setIsEditing(false);
+  };
+
   return (
     <div className="client-profile-container-clientee1">
       <div className="image-and-profile-info-clientee1">
@@ -477,6 +482,9 @@ const ClientProfile = () => {
             onClick={handleUpdateClick}
           >
             Update
+          </button>
+          <button className="btn-cancel" onClick={handleCancelClick}>
+            Cancel
           </button>
         </form>
       )}

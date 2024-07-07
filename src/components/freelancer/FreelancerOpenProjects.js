@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import UserService from "../../services/utils/user.service";
 import FreelancerService from "../../services/freelancer/freelancer-service";
-import useApiData from "../../services/utils/useApiData";
+import { formatEnum } from "../../services/utils/formatEnums";
 import "../../assets/css/allJobs.css";
 import authHeader from "../../services/security/auth-header";
 import Select from "react-select";
@@ -478,18 +478,18 @@ const FreelancerOpenProjects = () => {
               <p>{job.description}</p>
               {job.priceType === "FIXED_PRICE" ? (
                 <div>
-                  <p>Price type: {job.priceType}</p>
+                  <p>Price Type: {formatEnum(job.priceType)}</p>
                   <p>Budget: ${job.budget}</p>
                 </div>
               ) : (
                 <div>
-                  <p>Price Type: {job.priceType}</p>
+                  Price Type: {formatEnum(job.priceType)}
                   <p>
                     {job.priceRangeFrom}$ - ${job.priceRangeTo}
                   </p>
                 </div>
               )}
-              <p>{job.jobType}</p>
+              <p>Job Type: {formatEnum(job.jobType)}</p>
               <div>
                 <p>Posted: {job.formattedApplicationTime}</p>
                 {job.location && <p>Location: {job.location}</p>}
@@ -540,12 +540,12 @@ const FreelancerOpenProjects = () => {
                       </div>
                       {job.priceType === "FIXED_PRICE" ? (
                         <div className="price-info">
-                          <p>Price type: {job.priceType}</p>
+                          <p>Price Type: {formatEnum(job.priceType)}</p>
                           <p>Budget: ${job.budget}</p>
                         </div>
                       ) : (
                         <div className="price-info">
-                          <p>Price Type: {job.priceType}</p>
+                          <p>Price Type: {formatEnum(job.priceType)}</p>
                           <p>
                             {job.priceRangeFrom}$ - ${job.priceRangeTo}
                           </p>

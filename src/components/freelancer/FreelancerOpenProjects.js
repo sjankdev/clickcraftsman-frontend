@@ -512,63 +512,77 @@ const FreelancerOpenProjects = () => {
                     isOpen={isModalOpen && selectedJobId === job.id}
                     onRequestClose={closeModal}
                     contentLabel="Custom Message Modal"
+                    className="custom-modal"
+                    overlayClassName="custom-modal-overlay"
                   >
                     <div className="modal-header">
                       <h2>You're applying for {job.jobName}</h2>
-                      <button onClick={closeModal}>&times;</button>
+                      <button onClick={closeModal} className="close-button">
+                        &times;
+                      </button>
                     </div>
                     <div className="modal-body">
-                      <h3>Enter Your Custom Message</h3>
                       <textarea
                         value={customMessage}
                         onChange={(e) => setCustomMessage(e.target.value)}
                         placeholder="Insert your message here..."
+                        className="custom-textarea"
                       />
-                      <div>
-                        <label htmlFor="desired-pay">Desired Pay:</label>
+                      <div className="input-group">
                         <input
                           type="number"
                           id="desired-pay"
                           value={desiredPay}
                           onChange={(e) => setDesiredPay(e.target.value)}
                           placeholder="Insert your desired pay here..."
+                          className="custom-input"
                         />
                       </div>
                       {job.priceType === "FIXED_PRICE" ? (
-                        <div>
+                        <div className="price-info">
                           <p>Price type: {job.priceType}</p>
                           <p>Budget: ${job.budget}</p>
                         </div>
                       ) : (
-                        <div>
+                        <div className="price-info">
                           <p>Price Type: {job.priceType}</p>
                           <p>
                             {job.priceRangeFrom}$ - ${job.priceRangeTo}
                           </p>
                         </div>
                       )}
-                      <div>
-                        <label htmlFor="resume-upload">
+                      <div className="input-group">
+                        <label htmlFor="resume-upload" className="upload-label">
                           Upload your resume:{" "}
                           {job.resumeRequired ? "(required)" : "(optional)"}
+                          <input
+                            type="file"
+                            id="resume-upload"
+                            onChange={handleFileChange}
+                            accept=".pdf"
+                            className="browse-button"
+                          />
                         </label>
-                        <input
-                          type="file"
-                          id="resume-upload"
-                          onChange={handleFileChange}
-                          accept=".pdf"
-                        />
-                        <div>
-                          <span>Supported format: PDF</span>
-                          {fileTypeError && <div>{fileTypeError}</div>}
+                        <div className="file-info">
+                          {fileTypeError && (
+                            <div className="error-message">{fileTypeError}</div>
+                          )}
                         </div>
                       </div>
                     </div>
                     <div className="modal-footer">
-                      <button onClick={handleApplyWithCustomMessage}>
+                      <button
+                        onClick={handleApplyWithCustomMessage}
+                        className="custom-button"
+                      >
                         Apply
                       </button>
-                      <button onClick={closeModal}>Cancel</button>
+                      <button
+                        onClick={closeModal}
+                        className="custom-button cancel-button"
+                      >
+                        Cancel
+                      </button>
                     </div>
                   </Modal>
                 </>

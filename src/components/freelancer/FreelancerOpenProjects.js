@@ -34,6 +34,7 @@ const FreelancerOpenProjects = () => {
   const [budgetTo, setBudgetTo] = useState("");
   const [jobName, setJobName] = useState("");
   const [isRemote, setIsRemote] = useState(false);
+  const [filterActive, setFilterActive] = useState(false);
   const resumeRequirementOptions = [
     { value: "All", label: "Resume required?" },
     { value: "Yes", label: "Yes" },
@@ -244,6 +245,39 @@ const FreelancerOpenProjects = () => {
     setResumeRequirementFilter(selectedOption);
   };
 
+  const handleFindMatchingJobs = async () => {
+    try {
+      const userStr = localStorage.getItem("user");
+      if (!userStr) {
+        throw new Error("User not found in localStorage.");
+      }
+
+      const user = JSON.parse(userStr);
+      const userId = user.id;
+
+      const response = await axios.get(
+        `https://clickcraftsman-backend-latest.onrender.com/api/freelancer/${userId}/recommended-jobs`,
+        { headers: authHeader() }
+      );
+
+      if (response && response.data && Array.isArray(response.data)) {
+        const jobs = response.data.map((job) => ({
+          ...job,
+          requiredSkillNames: job.requiredSkills.map(
+            (skill) => skill.skillName
+          ),
+          formattedApplicationTime: job.formattedDatePosted,
+        }));
+        setContent(jobs);
+      } else {
+        setErrorMessage("No jobs found.");
+      }
+    } catch (error) {
+      console.error("Error fetching recommended jobs:", error);
+      setErrorMessage("An error occurred while fetching recommended jobs.");
+    }
+  };
+
   useEffect(() => {
     let isMounted = true;
     const delay = 300;
@@ -336,6 +370,22 @@ const FreelancerOpenProjects = () => {
     priceRangeTo,
     selectedDateFilter,
   ]);
+
+  const handleClearFilter = () => {
+    setJobName("");
+    setIsRemote(false);
+    setResumeRequirementFilter(resumeRequirementOptions[0]);
+    setSelectedLocations([]);
+    setSelectedSkills([]);
+    setSelectedJobTypes([]);
+    setSelectedPriceTypes([]);
+    setPriceRangeFrom("");
+    setPriceRangeTo("");
+    setBudgetFrom("");
+    setBudgetTo("");
+    setSelectedDateFilter("");
+    setFilterActive(false);
+  };
 
   return (
     <div className="job-search-container">
@@ -470,125 +520,146 @@ const FreelancerOpenProjects = () => {
           />
         </div>
       </div>
+      <div className="action-section">
+        <button
+          className="custom-button find-jobs-button"
+          onClick={handleFindMatchingJobs}
+        >
+          Find Matching Jobs
+        </button>
+        <button
+          className="custom-button clear-filter-button"
+          onClick={handleClearFilter}
+        >
+          Clear Filter
+        </button>
+      </div>
       <div className="job-list">
         {Array.isArray(content) &&
-          content.map((job) => (
-            <div key={job.id} className="job-card">
-              <h3>{job.jobName}</h3>
-              <p>{job.description}</p>
-              {job.priceType === "FIXED_PRICE" ? (
+          content.map((job) => {
+            return (
+              <div key={job.id} className="job-card">
+                <h3>{job.jobName}</h3>
+                <p>{job.description}</p>
+                {job.priceType === "FIXED_PRICE" ? (
+                  <div>
+                    <p>Price Type: {formatEnum(job.priceType)}</p>
+                    <p>Budget: ${job.budget}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <p>Price Type: {formatEnum(job.priceType)}</p>
+                    <p>
+                      {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                    </p>
+                  </div>
+                )}
+                <p>Job Type: {formatEnum(job.jobType)}</p>
                 <div>
-                  <p>Price Type: {formatEnum(job.priceType)}</p>
-                  <p>Budget: ${job.budget}</p>
+                  <p>Posted: {job.formattedApplicationTime}</p>
+                  {job.location && <p>Location: {job.location}</p>}
+                  {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
+                  <p>Required Skills: {job.requiredSkillNames.join(", ")}</p>
                 </div>
-              ) : (
-                <div>
-                  Price Type: {formatEnum(job.priceType)}
-                  <p>
-                    {job.priceRangeFrom}$ - ${job.priceRangeTo}
-                  </p>
-                </div>
-              )}
-              <p>Job Type: {formatEnum(job.jobType)}</p>
-              <div>
-                <p>Posted: {job.formattedApplicationTime}</p>
-                {job.location && <p>Location: {job.location}</p>}
-                {!job.location && <p>{job.isRemote ? "Remote" : "No"}</p>}
-                <p>Required Skills: {job.requiredSkillNames.join(", ")}</p>
-              </div>
-              {appliedJobIds.includes(job.id) ? (
-                <p>You have already applied for this job.</p>
-              ) : (
-                <>
-                  <button onClick={() => handleApply(job.id)}>Apply</button>
-                  <hr />
-                  {applicationMessages.map(
-                    (msg) =>
-                      msg.jobId === job.id && (
-                        <p key={msg.jobId}>{msg.message}</p>
-                      )
-                  )}
-                  <Modal
-                    isOpen={isModalOpen && selectedJobId === job.id}
-                    onRequestClose={closeModal}
-                    contentLabel="Custom Message Modal"
-                    className="custom-modal"
-                    overlayClassName="custom-modal-overlay"
-                  >
-                    <div className="modal-header">
-                      <h2>You're applying for {job.jobName}</h2>
-                      <button onClick={closeModal} className="close-button">
-                        &times;
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <textarea
-                        value={customMessage}
-                        onChange={(e) => setCustomMessage(e.target.value)}
-                        placeholder="Insert your message here..."
-                        className="custom-textarea"
-                      />
-                      <div className="input-group">
-                        <input
-                          type="number"
-                          id="desired-pay"
-                          value={desiredPay}
-                          onChange={(e) => setDesiredPay(e.target.value)}
-                          placeholder="Insert your desired pay here..."
-                          className="custom-input"
+                {appliedJobIds.includes(job.id) ? (
+                  <p>You have already applied for this job.</p>
+                ) : (
+                  <>
+                    <button onClick={() => handleApply(job.id)}>Apply</button>
+                    <hr />
+                    {applicationMessages.map(
+                      (msg) =>
+                        msg.jobId === job.id && (
+                          <p key={msg.jobId}>{msg.message}</p>
+                        )
+                    )}
+                    <Modal
+                      isOpen={isModalOpen && selectedJobId === job.id}
+                      onRequestClose={closeModal}
+                      contentLabel="Custom Message Modal"
+                      className="custom-modal"
+                      overlayClassName="custom-modal-overlay"
+                    >
+                      <div className="modal-header">
+                        <h2>You're applying for {job.jobName}</h2>
+                        <button onClick={closeModal} className="close-button">
+                          &times;
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <textarea
+                          value={customMessage}
+                          onChange={(e) => setCustomMessage(e.target.value)}
+                          placeholder="Insert your message here..."
+                          className="custom-textarea"
                         />
-                      </div>
-                      {job.priceType === "FIXED_PRICE" ? (
-                        <div className="price-info">
-                          <p>Price Type: {formatEnum(job.priceType)}</p>
-                          <p>Budget: ${job.budget}</p>
-                        </div>
-                      ) : (
-                        <div className="price-info">
-                          <p>Price Type: {formatEnum(job.priceType)}</p>
-                          <p>
-                            {job.priceRangeFrom}$ - ${job.priceRangeTo}
-                          </p>
-                        </div>
-                      )}
-                      <div className="input-group">
-                        <label htmlFor="resume-upload" className="upload-label">
-                          Upload your resume:{" "}
-                          {job.resumeRequired ? "(required)" : "(optional)"}
+                        <div className="input-group">
                           <input
-                            type="file"
-                            id="resume-upload"
-                            onChange={handleFileChange}
-                            accept=".pdf"
-                            className="browse-button"
+                            type="number"
+                            id="desired-pay"
+                            value={desiredPay}
+                            onChange={(e) => setDesiredPay(e.target.value)}
+                            placeholder="Insert your desired pay here..."
+                            className="custom-input"
                           />
-                        </label>
-                        <div className="file-info">
-                          {fileTypeError && (
-                            <div className="error-message">{fileTypeError}</div>
-                          )}
+                        </div>
+                        {job.priceType === "FIXED_PRICE" ? (
+                          <div className="price-info">
+                            <p>Price Type: {formatEnum(job.priceType)}</p>
+                            <p>Budget: ${job.budget}</p>
+                          </div>
+                        ) : (
+                          <div className="price-info">
+                            <p>Price Type: {formatEnum(job.priceType)}</p>
+                            <p>
+                              {job.priceRangeFrom}$ - ${job.priceRangeTo}
+                            </p>
+                          </div>
+                        )}
+                        <div className="input-group">
+                          <label
+                            htmlFor="resume-upload"
+                            className="upload-label"
+                          >
+                            Upload your resume:{" "}
+                            {job.resumeRequired ? "(required)" : "(optional)"}
+                            <input
+                              type="file"
+                              id="resume-upload"
+                              onChange={handleFileChange}
+                              accept=".pdf"
+                              className="browse-button"
+                            />
+                          </label>
+                          <div className="file-info">
+                            {fileTypeError && (
+                              <div className="error-message">
+                                {fileTypeError}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        onClick={handleApplyWithCustomMessage}
-                        className="custom-button"
-                      >
-                        Apply
-                      </button>
-                      <button
-                        onClick={closeModal}
-                        className="custom-button cancel-button"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </Modal>
-                </>
-              )}
-            </div>
-          ))}
+                      <div className="modal-footer">
+                        <button
+                          onClick={handleApplyWithCustomMessage}
+                          className="custom-button"
+                        >
+                          Apply
+                        </button>
+                        <button
+                          onClick={closeModal}
+                          className="custom-button cancel-button"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </Modal>
+                  </>
+                )}
+              </div>
+            );
+          })}
       </div>
     </div>
   );

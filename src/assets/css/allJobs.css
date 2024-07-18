@@ -189,25 +189,44 @@ body {
 }
 
 .custom-button {
-  padding: 10px 20px;
+  padding: 8px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   background-color: #4ecdc4;
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
 .custom-button:hover {
   background-color: #3bb3a4;
 }
 
-.cancel-button {
+.clear-filter-button {
   background-color: #ff6b6b;
 }
 
-.cancel-button:hover {
+.clear-filter-button:hover {
   background-color: #e65a5a;
+}
+
+.action-section {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .action-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .action-section button {
+    flex: 1;
+    margin: 5px;
+  }
 }
 
 @keyframes fadeIn {
@@ -217,65 +236,4 @@ body {
   to {
     opacity: 1;
   }
-}
-
-@media (max-width: 600px) {
-  .custom-modal {
-    max-width: 100%;
-    margin: 20px;
-  }
-
-  .upload-label {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  .browse-button {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  .modal-footer {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .custom-button,
-  .cancel-button {
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-  }
-}
-.find-jobs-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #4ecdc4;
-  color: #fff;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.find-jobs-button:hover {
-  background-color: #3bb3a4;
-}
-
-.job-search-container {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.filter-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-@media (max-width: 600px) {
 }

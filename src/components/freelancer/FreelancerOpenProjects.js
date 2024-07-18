@@ -34,6 +34,7 @@ const FreelancerOpenProjects = () => {
   const [budgetTo, setBudgetTo] = useState("");
   const [jobName, setJobName] = useState("");
   const [isRemote, setIsRemote] = useState(false);
+  const [filterActive, setFilterActive] = useState(false);
   const resumeRequirementOptions = [
     { value: "All", label: "Resume required?" },
     { value: "Yes", label: "Yes" },
@@ -370,6 +371,22 @@ const FreelancerOpenProjects = () => {
     selectedDateFilter,
   ]);
 
+  const handleClearFilter = () => {
+    setJobName("");
+    setIsRemote(false);
+    setResumeRequirementFilter(resumeRequirementOptions[0]);
+    setSelectedLocations([]);
+    setSelectedSkills([]);
+    setSelectedJobTypes([]);
+    setSelectedPriceTypes([]);
+    setPriceRangeFrom("");
+    setPriceRangeTo("");
+    setBudgetFrom("");
+    setBudgetTo("");
+    setSelectedDateFilter("");
+    setFilterActive(false);
+  };
+
   return (
     <div className="job-search-container">
       <div className="filter-section">
@@ -509,6 +526,12 @@ const FreelancerOpenProjects = () => {
           onClick={handleFindMatchingJobs}
         >
           Find Matching Jobs
+        </button>
+        <button
+          className="custom-button clear-filter-button"
+          onClick={handleClearFilter}
+        >
+          Clear Filter
         </button>
       </div>
       <div className="job-list">

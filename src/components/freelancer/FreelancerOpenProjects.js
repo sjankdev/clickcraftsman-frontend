@@ -503,7 +503,14 @@ const FreelancerOpenProjects = () => {
           />
         </div>
       </div>
-      <button onClick={handleFindMatchingJobs}>Find Matching Jobs</button>
+      <div className="action-section">
+        <button
+          className="custom-button find-jobs-button"
+          onClick={handleFindMatchingJobs}
+        >
+          Find Matching Jobs
+        </button>
+      </div>
       <div className="job-list">
         {Array.isArray(content) &&
           content.map((job) => {
